@@ -6,6 +6,6 @@ class Frm_main(QMainWindow):
 
 app = QApplication()
 frm_main = Frm_main()
-frm_main.setWindowTitle("eduPCR")
 frm_main.show()
 app.exec()
+
