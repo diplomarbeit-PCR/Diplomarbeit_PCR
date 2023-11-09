@@ -11,4 +11,3 @@ app = QApplication()
 frm_main = Frm_main()
 frm_main.show()
 app.exec()
-
