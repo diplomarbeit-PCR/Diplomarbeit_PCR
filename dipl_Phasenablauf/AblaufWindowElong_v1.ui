@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>AblaufWindowDenat</class>
- <widget class="QMainWindow" name="AblaufWindowDenat">
+ <class>AblaufWindowElong</class>
+ <widget class="QMainWindow" name="AblaufWindowElong">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Denaturierung</string>
+   <string>Elongation</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QTextEdit" name="textEdit">
@@ -52,7 +52,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
      </font>
     </property>
     <property name="text">
-     <string>Denaturierung</string>
+     <string>Elongation</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
