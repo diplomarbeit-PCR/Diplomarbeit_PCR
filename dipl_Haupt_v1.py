@@ -1,7 +1,7 @@
 from PySide6.QtWidgets import QApplication, QMainWindow
 
 from dipl_Einfuehrung.einfuehrung_v3 import Ui_StartWindow
-from dipl_Ablauf_Denat.AblaufWindowDenat_v1 import Ui_AblaufWindowDenat
+from dipl_ import Ui_AblaufWindowDenat
 
 class Frm_denat(QMainWindow, Ui_AblaufWindowDenat):
     def __init__(self):
