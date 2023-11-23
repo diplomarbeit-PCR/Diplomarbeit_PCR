@@ -1,5 +1,5 @@
 from PySide6.QtWidgets import QApplication, QMainWindow
-from PySide6.QtCore import QTimer
+from PySide6.QtCore import QTimer, QTimer
 
 from dipl_Einfuehrung.einfuehrung_v3 import Ui_StartWindow
 from dipl_Phasenablauf.AblaufWindowDenat_v1 import Ui_AblaufWindowDenat
@@ -32,12 +32,12 @@ class Frm_elong(QMainWindow, Ui_AblaufWindowElong):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
-
+        
 class Frm_main(QMainWindow, Ui_StartWindow):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
-
+         
         self.btn_Start.clicked.connect(self.phasen_Ablauf)
 
     def phasen_Ablauf(self):
@@ -50,8 +50,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         QTimer.singleShot(30000, frm_sens.hide)  
         QTimer.singleShot(30000, frm_asens.show)  
         QTimer.singleShot(40000, frm_asens.hide) 
-        QTimer.singleShot(40000, frm_elong.show)  
-        
+        QTimer.singleShot(40000, frm_elong.show)   
 
 app = QApplication()
 frm_main = Frm_main()
