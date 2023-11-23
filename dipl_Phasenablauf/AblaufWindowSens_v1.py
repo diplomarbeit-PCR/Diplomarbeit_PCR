@@ -19,12 +19,12 @@ from PySide6.QtWidgets import (QApplication, QLCDNumber, QLabel, QLineEdit,
     QMainWindow, QMenuBar, QPushButton, QSizePolicy,
     QStatusBar, QTextEdit, QWidget)
 
-class Ui_AblaufWindowAneal(object):
-    def setupUi(self, AblaufWindowAneal):
-        if not AblaufWindowAneal.objectName():
-            AblaufWindowAneal.setObjectName(u"AblaufWindowAneal")
-        AblaufWindowAneal.resize(489, 733)
-        self.centralwidget = QWidget(AblaufWindowAneal)
+class Ui_AblaufWindowSens(object):
+    def setupUi(self, AblaufWindowSens):
+        if not AblaufWindowSens.objectName():
+            AblaufWindowSens.setObjectName(u"AblaufWindowSens")
+        AblaufWindowSens.resize(489, 733)
+        self.centralwidget = QWidget(AblaufWindowSens)
         self.centralwidget.setObjectName(u"centralwidget")
         self.textEdit = QTextEdit(self.centralwidget)
         self.textEdit.setObjectName(u"textEdit")
@@ -72,23 +72,23 @@ class Ui_AblaufWindowAneal(object):
         self.Temp_line.setGeometry(QRect(210, 480, 111, 31))
         self.Temp_line.setFont(font2)
         self.Temp_line.setAlignment(Qt.AlignCenter)
-        AblaufWindowAneal.setCentralWidget(self.centralwidget)
-        self.menubar = QMenuBar(AblaufWindowAneal)
+        AblaufWindowSens.setCentralWidget(self.centralwidget)
+        self.menubar = QMenuBar(AblaufWindowSens)
         self.menubar.setObjectName(u"menubar")
         self.menubar.setGeometry(QRect(0, 0, 489, 22))
-        AblaufWindowAneal.setMenuBar(self.menubar)
-        self.statusbar = QStatusBar(AblaufWindowAneal)
+        AblaufWindowSens.setMenuBar(self.menubar)
+        self.statusbar = QStatusBar(AblaufWindowSens)
         self.statusbar.setObjectName(u"statusbar")
-        AblaufWindowAneal.setStatusBar(self.statusbar)
+        AblaufWindowSens.setStatusBar(self.statusbar)
 
-        self.retranslateUi(AblaufWindowAneal)
+        self.retranslateUi(AblaufWindowSens)
 
-        QMetaObject.connectSlotsByName(AblaufWindowAneal)
+        QMetaObject.connectSlotsByName(AblaufWindowSens)
     # setupUi
 
-    def retranslateUi(self, AblaufWindowAneal):
-        AblaufWindowAneal.setWindowTitle(QCoreApplication.translate("AblaufWindowAneal", u"Annealing", None))
-        self.textEdit.setHtml(QCoreApplication.translate("AblaufWindowAneal", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+    def retranslateUi(self, AblaufWindowSens):
+        AblaufWindowSens.setWindowTitle(QCoreApplication.translate("AblaufWindowSens", u"Annealing", None))
+        self.textEdit.setHtml(QCoreApplication.translate("AblaufWindowSens", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "hr { height: 1px; border-width: 0; }\n"
@@ -100,10 +100,10 @@ class Ui_AblaufWindowAneal(object):
 "<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Arial Narrow','sans-serif'; font-size:14pt;\">Besitzt Anti-Codons, das ist ein kurzer Abschnitt der tRNA, mit welcher er sich w\u00e4hrend der Transkription an die mRNA bindet.</span><span style=\" font-family:'Arial Narrow'; font-size:14pt;\"> Weiters, i</span><span style=\" font-family:'Arial Narrow','sans-serif'; font-size:14pt;\">st beteiligt der der \u00dcbersetzung der Basenpaare in Aminos\u00e4urensequenzen verantwortlich.</span><span style=\" font-family:'Arial Narrow'; font-size:14pt;\"> </span></p>\n"
 "<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Arial Narrow'; f"
                         "ont-size:14pt;\">Besitzt die komplement\u00e4re Sequenz zu tRNA.</span></p></body></html>", None))
-        self.label.setText(QCoreApplication.translate("AblaufWindowAneal", u"Anti-Sense-Strang 5\u2018-3\u2018 ", None))
-        self.btn_Kontrolle.setText(QCoreApplication.translate("AblaufWindowAneal", u"Kontrolle", None))
-        self.DL_line.setText(QCoreApplication.translate("AblaufWindowAneal", u"Duruchl\u00e4ufe", None))
-        self.Dauer_line.setText(QCoreApplication.translate("AblaufWindowAneal", u"Dauer", None))
-        self.Temp_line.setText(QCoreApplication.translate("AblaufWindowAneal", u"Temperatur", None))
+        self.label.setText(QCoreApplication.translate("AblaufWindowSens", u"Anti-Sense-Strang 5\u2018-3\u2018 ", None))
+        self.btn_Kontrolle.setText(QCoreApplication.translate("AblaufWindowSens", u"Kontrolle", None))
+        self.DL_line.setText(QCoreApplication.translate("AblaufWindowSens", u"Duruchl\u00e4ufe", None))
+        self.Dauer_line.setText(QCoreApplication.translate("AblaufWindowSens", u"Dauer", None))
+        self.Temp_line.setText(QCoreApplication.translate("AblaufWindowSens", u"Temperatur", None))
     # retranslateUi
 

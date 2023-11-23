@@ -18,12 +18,12 @@ class Frm_aneal(QMainWindow, Ui_AblaufWindowAneal):
         super().__init__()
         self.setupUi(self)
 
-class Frm_sens(QMainWindow, Ui_AblaufWindowAneal):
+class Frm_sens(QMainWindow, Ui_AblaufWindowSens):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
 
-class Frm_asens(QMainWindow, Ui_AblaufWindowAneal):
+class Frm_asens(QMainWindow, Ui_AblaufWindowASens):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
@@ -43,19 +43,21 @@ class Frm_main(QMainWindow, Ui_StartWindow):
     def phasen_Ablauf(self):
         frm_main.hide()
         frm_denat.show()
-        QTimer.singleShot(10000, frm_denat.hide)  # Verzögerung von 5000 ms (5 Sekunden)
-        QTimer.singleShot(10000, frm_aneal.show)  # Verzögerung von 10000 ms (10 Sekunden)
-        QTimer.singleShot(20000, frm_aneal.hide)  # Verzögerung von 15000 ms (15 Sekunden)
-        QTimer.singleShot(10000, frm_sens.show)  # Verzögerung von 10000 ms (10 Sekunden)
-        QTimer.singleShot(20000, frm_sens.hide)  # Verzögerung von 15000 ms (15 Sekunden)
-        QTimer.singleShot(10000, frm_asens.show)  # Verzögerung von 10000 ms (10 Sekunden)
-        QTimer.singleShot(20000, frm_asens.hide)  # Verzögerung von 15000 ms (15 Sekunden)
-        QTimer.singleShot(20000, frm_elong.show)  # Verzögerung von 20000 ms (20 Sekunden)
+        QTimer.singleShot(10000, frm_denat.hide)  
+        QTimer.singleShot(10000, frm_aneal.show)  
+        QTimer.singleShot(20000, frm_aneal.hide)  
+        QTimer.singleShot(10000, frm_sens.show)  
+        QTimer.singleShot(20000, frm_sens.hide)  
+        QTimer.singleShot(10000, frm_asens.show)  
+        QTimer.singleShot(20000, frm_asens.hide) 
+        QTimer.singleShot(20000, frm_elong.show)  
 
 app = QApplication()
 frm_main = Frm_main()
 frm_main.show()
 frm_denat = Frm_denat()
 frm_aneal = Frm_aneal()
+frm_sens = Frm_sens()
+frm_asens = Frm_asens()
 frm_elong = Frm_elong()
 app.exec()
