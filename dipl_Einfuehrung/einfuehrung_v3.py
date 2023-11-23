@@ -41,7 +41,7 @@ class Ui_StartWindow(object):
         self.centralwidget.setObjectName(u"centralwidget")
         self.btn_Start = QPushButton(self.centralwidget)
         self.btn_Start.setObjectName(u"btn_Start")
-        self.btn_Start.setGeometry(QRect(140, 610, 200, 50))
+        self.btn_Start.setGeometry(QRect(150, 620, 191, 51))
         font1 = QFont()
         font1.setFamilies([u"Arial Narrow"])
         font1.setPointSize(20)

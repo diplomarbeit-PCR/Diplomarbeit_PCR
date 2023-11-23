@@ -28,7 +28,8 @@ class Ui_AblaufWindowAneal(object):
         self.centralwidget.setObjectName(u"centralwidget")
         self.textEdit = QTextEdit(self.centralwidget)
         self.textEdit.setObjectName(u"textEdit")
-        self.textEdit.setGeometry(QRect(70, 140, 351, 291))
+        self.textEdit.setGeometry(QRect(70, 140, 351, 301))
+        self.textEdit.setReadOnly(True)
         self.label = QLabel(self.centralwidget)
         self.label.setObjectName(u"label")
         self.label.setGeometry(QRect(-2, 50, 491, 61))
@@ -40,7 +41,7 @@ class Ui_AblaufWindowAneal(object):
         self.label.setAlignment(Qt.AlignCenter)
         self.btn_Kontrolle = QPushButton(self.centralwidget)
         self.btn_Kontrolle.setObjectName(u"btn_Kontrolle")
-        self.btn_Kontrolle.setGeometry(QRect(160, 610, 151, 51))
+        self.btn_Kontrolle.setGeometry(QRect(170, 610, 151, 51))
         font1 = QFont()
         font1.setFamilies([u"Arial Narrow"])
         font1.setPointSize(20)
@@ -63,9 +64,9 @@ class Ui_AblaufWindowAneal(object):
         self.Dauer_line.setGeometry(QRect(40, 480, 121, 31))
         self.Dauer_line.setFont(font2)
         self.Dauer_line.setAlignment(Qt.AlignCenter)
-        self.temp_sens = QLCDNumber(self.centralwidget)
-        self.temp_sens.setObjectName(u"temp_sens")
-        self.temp_sens.setGeometry(QRect(210, 520, 111, 51))
+        self.temp_sensA = QLCDNumber(self.centralwidget)
+        self.temp_sensA.setObjectName(u"temp_sensA")
+        self.temp_sensA.setGeometry(QRect(210, 520, 111, 51))
         self.Temp_line = QLineEdit(self.centralwidget)
         self.Temp_line.setObjectName(u"Temp_line")
         self.Temp_line.setGeometry(QRect(210, 480, 111, 31))
@@ -94,9 +95,8 @@ class Ui_AblaufWindowAneal(object):
 "li.unchecked::marker { content: \"\\2610\"; }\n"
 "li.checked::marker { content: \"\\2612\"; }\n"
 "</style></head><body style=\" font-family:'Segoe UI'; font-size:9pt; font-weight:400; font-style:normal;\" bgcolor=\"#9cd4d6\">\n"
-"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Arial Narrow','sans-serif'; font-size:16pt;\">Denaturierung beschriebt grunds\u00e4tzlich die strukturelle Ver\u00e4nderung von Biopolymeren.</span></p>\n"
-"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Arial Narrow','sans-serif'; font-size:16pt;\">"
-                        "Es wird das Wasser im ersten Becken auf 94-96\u00b0C erhitzt. <br />Dies dient dazu das sich die Wasserstoffbr\u00fccken und somit Doppelhelix der DNA aufl\u00f6st dabei entstehen zwei Einzelstr\u00e4nge. <br />Die Temperatur muss 10 Sekunden bis 1 Minute gehalten werden, um sicherzustelle das jede Doppelhelix zerst\u00f6rt wurde.</span><span style=\" font-family:'Arial Narrow'; font-size:16pt;\"> </span></p></body></html>", None))
+"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Arial Narrow','sans-serif'; font-size:16pt;\">Nachdem nur Einzelstr\u00e4nge vorhanden sind, bindet der Primer an diese. Dabei unterscheidet man die Str\u00e4nge in+ Sense -und Anti-sense. Daf\u00fcr gibt es Reversprimer. Der Primer klammert sich an die gew\u00fcnschte Sequenz und die dazwischenliegenden Sequenzen werden Amplikon benannt. Aufgrund des "
+                        "Primers betr\u00e4gt die Temperatur 60\u00b0C, da ansonsten der Primer zerst\u00f6rt werden k\u00f6nnte. Diese wird f\u00fcr 30 Sekunden bis 1 Minute gehalten. Ein Strang hat ein 3\u2018 und ein 5\u2018 Anfang. </span></p></body></html>", None))
         self.label.setText(QCoreApplication.translate("AblaufWindowAneal", u"Annealing", None))
         self.btn_Kontrolle.setText(QCoreApplication.translate("AblaufWindowAneal", u"Kontrolle", None))
         self.DL_line.setText(QCoreApplication.translate("AblaufWindowAneal", u"Duruchl\u00e4ufe", None))
