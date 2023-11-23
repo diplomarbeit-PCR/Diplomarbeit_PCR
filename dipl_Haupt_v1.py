@@ -51,6 +51,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         QTimer.singleShot(30000, frm_asens.show)  
         QTimer.singleShot(40000, frm_asens.hide) 
         QTimer.singleShot(40000, frm_elong.show)  
+        
 
 app = QApplication()
 frm_main = Frm_main()
