@@ -1,5 +1,5 @@
 from PySide6.QtWidgets import QApplication, QMainWindow, QLCDNumber
-from PySide6.QtCore import QTimer, QTimer
+from PySide6.QtCore import QTimer, QObject
 
 from dipl_Einfuehrung.einfuehrung_v4 import Ui_StartWindow
 from dipl_Phasenablauf.AblaufWindowDenat_v1 import Ui_AblaufWindowDenat
@@ -125,7 +125,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         frm_main.show()
         self.phasen_running = True
         self.DL_zaehler_value = 0
-        self.btn_Start.disconnect()  # Disconnect the existing connection
+        self.btn_Start.clicked.disconnect(self.phasen_Ablauf)  # Disconnect the existing connection
         self.btn_Start.clicked.connect(self.phasen_Ablauf)
 
 app = QApplication()
