@@ -78,8 +78,8 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         QTimer.singleShot(50000, self.run_phasen_Ablauf)  # Nächste Iteration
 
     def kontroll_Erklaerung(self):
-            self.phasen_running = False  # Stoppe phasen_Ablauf
-            self.show()
+        self.phasen_running = False  # Stoppe phasen_Ablauf
+        self.show()
 
 app = QApplication()
 frm_main = Frm_main()
