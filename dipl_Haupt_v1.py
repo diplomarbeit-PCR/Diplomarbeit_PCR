@@ -1,4 +1,3 @@
-import sys
 from PySide6.QtWidgets import QApplication, QMainWindow
 from PySide6.QtCore import QTimer, QTimer
 
@@ -61,25 +60,29 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.run_phasen_Ablauf()
 
     def run_phasen_Ablauf(self):
-        if not self.phasen_running:
-            return
+        #if not self.phasen_running:
+         #   return
         
         self.frm_denat.show()
-        QTimer.singleShot(10000, self.frm_denat.hide)
-        QTimer.singleShot(10000, self.frm_aneal.show)
-        QTimer.singleShot(20000, self.frm_aneal.hide)
-        QTimer.singleShot(20000, self.frm_sens.show)
-        QTimer.singleShot(30000, self.frm_sens.hide)
-        QTimer.singleShot(30000, self.frm_asens.show)
-        QTimer.singleShot(40000, self.frm_asens.hide)
-        QTimer.singleShot(40000, self.frm_elong.show)
-        QTimer.singleShot(50000, self.frm_elong.hide)
+        QTimer.singleShot(1000, self.frm_denat.hide)
+        QTimer.singleShot(1000, self.frm_aneal.show)
+        QTimer.singleShot(2000, self.frm_aneal.hide)
+        QTimer.singleShot(2000, self.frm_sens.show)
+        QTimer.singleShot(3000, self.frm_sens.hide)
+        QTimer.singleShot(3000, self.frm_asens.show)
+        QTimer.singleShot(4000, self.frm_asens.hide)
+        QTimer.singleShot(4000, self.frm_elong.show)
+        QTimer.singleShot(5000, self.frm_elong.hide)
 
-        QTimer.singleShot(50000, self.run_phasen_Ablauf)  # Nächste Iteration
+        if self.phasen_running == False:
+            QTimer.singleShot(5000, self.show)
+
+        else:
+            QTimer.singleShot(5000, self.run_phasen_Ablauf)  # Nächste Iteration
 
     def kontroll_Erklaerung(self):
         self.phasen_running = False  # Stoppe phasen_Ablauf
-        self.show()
+
 
 app = QApplication()
 frm_main = Frm_main()
