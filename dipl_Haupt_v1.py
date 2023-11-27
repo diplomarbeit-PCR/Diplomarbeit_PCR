@@ -52,26 +52,35 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.frm_asens.btn_Kontrolle.clicked.connect(self.kontroll_Erklaerung)
         self.frm_elong.btn_Kontrolle.clicked.connect(self.kontroll_Erklaerung)
 
+        self.phasen_running = False  # Flag für den Zustand von phasen_Ablauf
+
     def phasen_Ablauf(self):
-        frm_main.hide()
-        while not frm_denat.btn_Kontrolle.clicked():
-            frm_denat.show()
-            QTimer.singleShot(10000, frm_denat.hide)  
-            QTimer.singleShot(10000, frm_aneal.show)  
-            QTimer.singleShot(20000, frm_aneal.hide)  
-            QTimer.singleShot(20000, frm_sens.show)  
-            QTimer.singleShot(30000, frm_sens.hide)  
-            QTimer.singleShot(30000, frm_asens.show)  
-            QTimer.singleShot(40000, frm_asens.hide) 
-            QTimer.singleShot(40000, frm_elong.show) 
-            QTimer.singleShot(50000, frm_elong.hide) 
+        self.hide()
+        self.phasen_running = True  # Starte phasen_Ablauf
+        self.run_phasen_Ablauf()
+
+    def run_phasen_Ablauf(self):
+        if not self.phasen_running:
+            return
+
+        self.frm_denat.show()
+        QTimer.singleShot(10000, self.frm_denat.hide)
+        QTimer.singleShot(10000, self.frm_aneal.show)
+        QTimer.singleShot(20000, self.frm_aneal.hide)
+        QTimer.singleShot(20000, self.frm_sens.show)
+        QTimer.singleShot(30000, self.frm_sens.hide)
+        QTimer.singleShot(30000, self.frm_asens.show)
+        QTimer.singleShot(40000, self.frm_asens.hide)
+        QTimer.singleShot(40000, self.frm_elong.show)
+        QTimer.singleShot(50000, self.frm_elong.hide)
+
+        QTimer.singleShot(50000, self.run_phasen_Ablauf)  # Nächste Iteration
 
     def kontroll_Erklaerung(self):
-        frm_main.show()
+        self.phasen_running = False  # Stoppe phasen_Ablauf
+        self.show()
 
 app = QApplication()
 frm_main = Frm_main()
 frm_main.show()
 app.exec()
-
-
