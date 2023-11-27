@@ -122,9 +122,10 @@ class Frm_main(QMainWindow, Ui_StartWindow):
 
     def esc(self):
         self.frm_kont.hide()
-        self.DL_zaehler_value = 0
         frm_main.show()
         self.phasen_running = True
+        self.DL_zaehler_value = 0
+        self.btn_Start.disconnect()  # Disconnect the existing connection
         self.btn_Start.clicked.connect(self.phasen_Ablauf)
 
 app = QApplication()
