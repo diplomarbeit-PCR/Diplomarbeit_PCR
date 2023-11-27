@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import QApplication, QMainWindow, QLCDNumber
+from PySide6.QtWidgets import QApplication, QMainWindow
 from PySide6.QtCore import QTimer
 
 from dipl_Einfuehrung.einfuehrung_v4 import Ui_StartWindow
