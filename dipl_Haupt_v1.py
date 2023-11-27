@@ -1,3 +1,4 @@
+import sys
 from PySide6.QtWidgets import QApplication, QMainWindow
 from PySide6.QtCore import QTimer, QTimer
 
@@ -37,27 +38,40 @@ class Frm_main(QMainWindow, Ui_StartWindow):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
+
+        self.frm_denat = Frm_denat()
+        self.frm_aneal = Frm_aneal()
+        self.frm_sens = Frm_sens()
+        self.frm_asens = Frm_asens()
+        self.frm_elong = Frm_elong()
          
         self.btn_Start.clicked.connect(self.phasen_Ablauf)
+        self.frm_denat.btn_Kontrolle.clicked.connect(self.kontroll_Erklaerung)
+        self.frm_aneal.btn_Kontrolle.clicked.connect(self.kontroll_Erklaerung)
+        self.frm_sens.btn_Kontrolle.clicked.connect(self.kontroll_Erklaerung)
+        self.frm_asens.btn_Kontrolle.clicked.connect(self.kontroll_Erklaerung)
+        self.frm_elong.btn_Kontrolle.clicked.connect(self.kontroll_Erklaerung)
 
     def phasen_Ablauf(self):
         frm_main.hide()
-        frm_denat.show()
-        QTimer.singleShot(10000, frm_denat.hide)  
-        QTimer.singleShot(10000, frm_aneal.show)  
-        QTimer.singleShot(20000, frm_aneal.hide)  
-        QTimer.singleShot(20000, frm_sens.show)  
-        QTimer.singleShot(30000, frm_sens.hide)  
-        QTimer.singleShot(30000, frm_asens.show)  
-        QTimer.singleShot(40000, frm_asens.hide) 
-        QTimer.singleShot(40000, frm_elong.show)   
+        while not frm_denat.btn_Kontrolle.clicked():
+            frm_denat.show()
+            QTimer.singleShot(10000, frm_denat.hide)  
+            QTimer.singleShot(10000, frm_aneal.show)  
+            QTimer.singleShot(20000, frm_aneal.hide)  
+            QTimer.singleShot(20000, frm_sens.show)  
+            QTimer.singleShot(30000, frm_sens.hide)  
+            QTimer.singleShot(30000, frm_asens.show)  
+            QTimer.singleShot(40000, frm_asens.hide) 
+            QTimer.singleShot(40000, frm_elong.show) 
+            QTimer.singleShot(50000, frm_elong.hide) 
+
+    def kontroll_Erklaerung(self):
+        frm_main.show()
 
 app = QApplication()
 frm_main = Frm_main()
 frm_main.show()
-frm_denat = Frm_denat()
-frm_aneal = Frm_aneal()
-frm_sens = Frm_sens()
-frm_asens = Frm_asens()
-frm_elong = Frm_elong()
 app.exec()
+
+
