@@ -7,6 +7,7 @@ from dipl_Phasenablauf.AblaufWindowAneal_v1 import Ui_AblaufWindowAneal
 from dipl_Phasenablauf.AblaufWindowSens_v1 import Ui_AblaufWindowSens
 from dipl_Phasenablauf.AblaufWindowASens_v1 import Ui_AblaufWindowASens
 from dipl_Phasenablauf.AblaufWindowElong_v1 import Ui_AblaufWindowElong
+from dipl_Kontrolle.KontrolLWindow_v1 import Ui_Kontrolle
 
 class Frm_denat(QMainWindow, Ui_AblaufWindowDenat):
     def __init__(self):
@@ -32,6 +33,11 @@ class Frm_elong(QMainWindow, Ui_AblaufWindowElong):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
+
+class Frm_kont(QMainWindow, Ui_Kontrolle):
+    def __init__(self):
+        super().__init__()
+        self.setupUi(self)
         
 class Frm_main(QMainWindow, Ui_StartWindow):
 
@@ -44,25 +50,32 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.frm_sens = Frm_sens()
         self.frm_asens = Frm_asens()
         self.frm_elong = Frm_elong()
+        self.frm_kont = Frm_kont()
          
         self.btn_Start.clicked.connect(self.phasen_Ablauf)
+
         self.frm_denat.btn_Kontrolle.clicked.connect(self.kontroll_Erklaerung)
         self.frm_aneal.btn_Kontrolle.clicked.connect(self.kontroll_Erklaerung)
         self.frm_sens.btn_Kontrolle.clicked.connect(self.kontroll_Erklaerung)
         self.frm_asens.btn_Kontrolle.clicked.connect(self.kontroll_Erklaerung)
         self.frm_elong.btn_Kontrolle.clicked.connect(self.kontroll_Erklaerung)
 
-        self.phasen_running = False  # Flag für den Zustand von phasen_Ablauf
+        self.frm_kont.btn_Fortfuehren.clicked.connect(self.weiter)
+        self.frm_kont.btn_Beenden.clicked.connect(self.esc)
+
+        self.phasen_running = True  # Flag für den Zustand von phasen_Ablauf
 
     def phasen_Ablauf(self):
         self.hide()
-        self.phasen_running = True  # Starte phasen_Ablauf
-        self.run_phasen_Ablauf()
-
-    def run_phasen_Ablauf(self):
-        #if not self.phasen_running:
-         #   return
         
+        if self.phasen_running == False:
+            self.frm_kont.show()
+        
+        else:
+            self.run_phasen_Ablauf()
+    
+    def run_phasen_Ablauf(self):
+        #self.phasen_running = True  # Starte phasen_Ablauf
         self.frm_denat.show()
         QTimer.singleShot(1000, self.frm_denat.hide)
         QTimer.singleShot(1000, self.frm_aneal.show)
@@ -73,15 +86,19 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         QTimer.singleShot(4000, self.frm_asens.hide)
         QTimer.singleShot(4000, self.frm_elong.show)
         QTimer.singleShot(5000, self.frm_elong.hide)
-
-        if self.phasen_running == False:
-            QTimer.singleShot(5000, self.show)
-
-        else:
-            QTimer.singleShot(5000, self.run_phasen_Ablauf)  # Nächste Iteration
+        
+        QTimer.singleShot(5000, self.phasen_Ablauf)  # Nächste Iteration 
 
     def kontroll_Erklaerung(self):
         self.phasen_running = False  # Stoppe phasen_Ablauf
+
+    def weiter(self):
+        self.phasen_running = True
+        self.phasen_Ablauf()
+
+    def esc(self):
+        self.frm_kont.hide()
+        frm_main.show()
 
 
 app = QApplication()
