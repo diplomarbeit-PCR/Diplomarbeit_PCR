@@ -1,5 +1,5 @@
 from PySide6.QtWidgets import QApplication, QMainWindow, QLCDNumber
-from PySide6.QtCore import QTimer, QObject
+from PySide6.QtCore import QTimer
 
 from dipl_Einfuehrung.einfuehrung_v4 import Ui_StartWindow
 from dipl_Phasenablauf.AblaufWindowDenat_v1 import Ui_AblaufWindowDenat
