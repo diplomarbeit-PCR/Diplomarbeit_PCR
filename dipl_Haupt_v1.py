@@ -35,6 +35,7 @@ class Frm_elong(QMainWindow, Ui_AblaufWindowElong):
         self.setupUi(self)
         
 class Frm_main(QMainWindow, Ui_StartWindow):
+
     def __init__(self):
         super().__init__()
         self.setupUi(self)
@@ -62,7 +63,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
     def run_phasen_Ablauf(self):
         if not self.phasen_running:
             return
-
+        
         self.frm_denat.show()
         QTimer.singleShot(10000, self.frm_denat.hide)
         QTimer.singleShot(10000, self.frm_aneal.show)
@@ -77,8 +78,8 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         QTimer.singleShot(50000, self.run_phasen_Ablauf)  # Nächste Iteration
 
     def kontroll_Erklaerung(self):
-        self.phasen_running = False  # Stoppe phasen_Ablauf
-        self.show()
+            self.phasen_running = False  # Stoppe phasen_Ablauf
+            self.show()
 
 app = QApplication()
 frm_main = Frm_main()
