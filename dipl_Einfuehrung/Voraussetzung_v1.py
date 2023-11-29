@@ -1,13 +1,12 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'Vorraussetzung_v1.ui'
+## Form generated from reading UI file 'Voraussetzung_v1.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.6.0
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
-import os
 
 from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
     QMetaObject, QObject, QPoint, QRect,
@@ -19,12 +18,12 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
 from PySide6.QtWidgets import (QApplication, QLabel, QMainWindow, QMenuBar,
     QSizePolicy, QStatusBar, QTextEdit, QWidget)
 
-class Ui_Vorraussetzung(object):
-    def setupUi(self, Vorraussetzung):
-        if not Vorraussetzung.objectName():
-            Vorraussetzung.setObjectName(u"Vorraussetzung")
-        Vorraussetzung.resize(489, 733)
-        self.centralwidget = QWidget(Vorraussetzung)
+class Ui_Voraussetzung(object):
+    def setupUi(self, Voraussetzung):
+        if not Voraussetzung.objectName():
+            Voraussetzung.setObjectName(u"Voraussetzung")
+        Voraussetzung.resize(489, 733)
+        self.centralwidget = QWidget(Voraussetzung)
         self.centralwidget.setObjectName(u"centralwidget")
         self.textEdit = QTextEdit(self.centralwidget)
         self.textEdit.setObjectName(u"textEdit")
@@ -39,28 +38,28 @@ class Ui_Vorraussetzung(object):
         font.setBold(False)
         self.label.setFont(font)
         self.label.setAlignment(Qt.AlignCenter)
-        self.Vorraus_lbl = QLabel(self.centralwidget)
-        self.Vorraus_lbl.setObjectName(u"Vorraus_lbl")
-        self.Vorraus_lbl.setGeometry(QRect(20, 370, 451, 301))
-        self.Vorraus_lbl.setPixmap(QPixmap(r"C:\Daten_Amelie\DA\App\GitHub\Diplomarbeit_PCR\dipl_Einfuehrung\pcrGrundprinzip.png"))
-        self.Vorraus_lbl.setScaledContents(True)
-        Vorraussetzung.setCentralWidget(self.centralwidget)
-        self.menubar = QMenuBar(Vorraussetzung)
+        self.Voraus_lbl = QLabel(self.centralwidget)
+        self.Voraus_lbl.setObjectName(u"Voraus_lbl")
+        self.Voraus_lbl.setGeometry(QRect(20, 370, 451, 301))
+        self.Voraus_lbl.setPixmap(QPixmap(r"C:\Daten_Amelie\DA\App\GitHub\Diplomarbeit_PCR\dipl_Einfuehrung\pcrGrundprinzip.png"))
+        self.Voraus_lbl.setScaledContents(True)
+        Voraussetzung.setCentralWidget(self.centralwidget)
+        self.menubar = QMenuBar(Voraussetzung)
         self.menubar.setObjectName(u"menubar")
         self.menubar.setGeometry(QRect(0, 0, 489, 22))
-        Vorraussetzung.setMenuBar(self.menubar)
-        self.statusbar = QStatusBar(Vorraussetzung)
+        Voraussetzung.setMenuBar(self.menubar)
+        self.statusbar = QStatusBar(Voraussetzung)
         self.statusbar.setObjectName(u"statusbar")
-        Vorraussetzung.setStatusBar(self.statusbar)
+        Voraussetzung.setStatusBar(self.statusbar)
 
-        self.retranslateUi(Vorraussetzung)
+        self.retranslateUi(Voraussetzung)
 
-        QMetaObject.connectSlotsByName(Vorraussetzung)
+        QMetaObject.connectSlotsByName(Voraussetzung)
     # setupUi
 
-    def retranslateUi(self, Vorraussetzung):
-        Vorraussetzung.setWindowTitle(QCoreApplication.translate("Vorraussetzung", u"Vorraussetzungen", None))
-        self.textEdit.setHtml(QCoreApplication.translate("Vorraussetzung", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+    def retranslateUi(self, Voraussetzung):
+        Voraussetzung.setWindowTitle(QCoreApplication.translate("Voraussetzung", u"Voraussetzungen", None))
+        self.textEdit.setHtml(QCoreApplication.translate("Voraussetzung", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "hr { height: 1px; border-width: 0; }\n"
@@ -69,7 +68,7 @@ class Ui_Vorraussetzung(object):
 "</style></head><body style=\" font-family:'Segoe UI'; font-size:9pt; font-weight:400; font-style:normal;\" bgcolor=\"#9cd4d6\">\n"
 "<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Arial','sans-serif'; font-size:16pt;\">Es muss die DNA-Sequenz des suchenden Strangs wie die Probe vorliegen. Um mit dem Prozess zu beginnen werden sogenannte Primer und Enzyme ben\u00f6tigt. <br />Ein Primer gibt den Beginn der Polymerase an. Durch diesen werden unterschiedliche DNA-Abschnitte repliziert. <br />Enzyme induzieren die Reaktionen und red"
                         "uzieren die Aktivierungsenergie. </span></p></body></html>", None))
-        self.label.setText(QCoreApplication.translate("Vorraussetzung", u"Vorraussetzungen", None))
-        self.Vorraus_lbl.setText("")
+        self.label.setText(QCoreApplication.translate("Voraussetzung", u"Voraussetzungen", None))
+        self.Voraus_lbl.setText("")
     # retranslateUi
 

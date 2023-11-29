@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'zeitDefVorraus_v1.ui'
+## Form generated from reading UI file 'zeitDefVoraus_v1.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.6.0
 ##
@@ -103,7 +103,7 @@ class Ui_zeitDef_Voraus(object):
     # setupUi
 
     def retranslateUi(self, zeitDef_Voraus):
-        zeitDef_Voraus.setWindowTitle(QCoreApplication.translate("zeitDef_Voraus", u"Vorraussetzungen", None))
+        zeitDef_Voraus.setWindowTitle(QCoreApplication.translate("zeitDef_Voraus", u"Voraussetzungen", None))
         self.textEdit.setHtml(QCoreApplication.translate("zeitDef_Voraus", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"

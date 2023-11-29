@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Vorraussetzung</class>
- <widget class="QMainWindow" name="Vorraussetzung">
+ <class>Voraussetzung</class>
+ <widget class="QMainWindow" name="Voraussetzung">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Vorraussetzungen</string>
+   <string>Voraussetzungen</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QTextEdit" name="textEdit">
@@ -54,13 +54,13 @@ li.checked::marker { content: &quot;\2612&quot;; }
      </font>
     </property>
     <property name="text">
-     <string>Vorraussetzungen</string>
+     <string>Voraussetzungen</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
     </property>
    </widget>
-   <widget class="QLabel" name="Vorraus_lbl">
+   <widget class="QLabel" name="Voraus_lbl">
     <property name="geometry">
      <rect>
       <x>20</x>
