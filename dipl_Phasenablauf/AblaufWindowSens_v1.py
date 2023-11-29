@@ -59,6 +59,7 @@ class Ui_AblaufWindowSens(object):
         self.DL_line.setAlignment(Qt.AlignCenter)
         self.DL_line.setReadOnly(True)
         self.Timer_zaehler = QLCDNumber(self.centralwidget)
+        self.Timer_zaehler.setDigitCount(8)  # 8 Ziffern für "hh:mm:ss"
         self.Timer_zaehler.setObjectName(u"Timer_zaehler")
         self.Timer_zaehler.setGeometry(QRect(40, 520, 121, 51))
         self.Dauer_line = QLineEdit(self.centralwidget)
