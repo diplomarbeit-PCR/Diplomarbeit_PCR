@@ -7,6 +7,7 @@
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
+import os
 
 from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
     QMetaObject, QObject, QPoint, QRect,
@@ -41,7 +42,7 @@ class Ui_Vorraussetzung(object):
         self.Vorraus_lbl = QLabel(self.centralwidget)
         self.Vorraus_lbl.setObjectName(u"Vorraus_lbl")
         self.Vorraus_lbl.setGeometry(QRect(20, 370, 451, 301))
-        self.Vorraus_lbl.setPixmap(QPixmap(u"pcrGrundprinzip.jpg"))
+        self.Vorraus_lbl.setPixmap(QPixmap(r"C:\Daten_Amelie\DA\App\GitHub\Diplomarbeit_PCR\dipl_Einfuehrung\pcrGrundprinzip.png"))
         self.Vorraus_lbl.setScaledContents(True)
         Vorraussetzung.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(Vorraussetzung)
