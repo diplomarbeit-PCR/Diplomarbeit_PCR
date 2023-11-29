@@ -18,8 +18,6 @@ class Frm_vorraus(QMainWindow, Ui_Vorraussetzung):
         super().__init__()
         self.setupUi(self)
 
-        
-
 class Frm_zeitDef(QMainWindow, Ui_zeitDef_Voraus):
     def __init__(self):
         super().__init__()
@@ -28,8 +26,6 @@ class Frm_zeitDef(QMainWindow, Ui_zeitDef_Voraus):
         self.wasserDauer_denat.valueChanged.connect(self.Value_Denat_change)
         self.wasserDauer_aneal.valueChanged.connect(self.Value_Aneal_change)
         self.wasserDauer_elong.valueChanged.connect(self.Value_Elong_change)
-
-        
 
     def Value_Denat_change(self, value):
         self.value_denat = self.wasserDauer_denat.value()
