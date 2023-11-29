@@ -75,6 +75,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.timer.setInterval(1000)
 
         self.DL_zaehler_value = 0
+        self.interval = 0
 
         self.frm_denat = Frm_denat()
         self.frm_aneal = Frm_aneal()
@@ -100,10 +101,12 @@ class Frm_main(QMainWindow, Ui_StartWindow):
 
     def phasen_Ablauf(self):
         self.hide()
+        self.interval = 0  
 
         if self.phasen_running == False:
             self.frm_kont.showFullScreen()
-        else:
+            self.timer.stop()
+        else:     
             self.DL_zaehler_value += 1
             self.frm_denat.update_DL_zaehler(self.DL_zaehler_value)
             self.frm_aneal.update_DL_zaehler(self.DL_zaehler_value)
@@ -115,6 +118,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
 
     def run_phasen_Ablauf(self):
         self.timer_seconds += 1
+        self.interval += 1
 
         self.frm_denat.Timer_zaehler.display(time.strftime('%H:%M:%S', time.gmtime(self.timer_seconds)))
         self.frm_aneal.Timer_zaehler.display(time.strftime('%H:%M:%S', time.gmtime(self.timer_seconds)))
@@ -122,31 +126,31 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.frm_asens.Timer_zaehler.display(time.strftime('%H:%M:%S', time.gmtime(self.timer_seconds)))
         self.frm_elong.Timer_zaehler.display(time.strftime('%H:%M:%S', time.gmtime(self.timer_seconds)))
 
-        self.frm_denat.showFullScreen()
-        time.sleep(1000)
-                
-        self.frm_denat.hide()
-        self.frm_aneal.showFullScreen()
-        time.sleep(1000)
-        
-        self.frm_aneal.hide()
-        self.frm_sens.showFullScreen()
-        time.sleep(1000)
-        
-        self.frm_sens.hide()
-        self.frm_asens.showFullScreen()
-        time.sleep(1000)
-        
-        self.frm_asens.hide()
-        self.frm_elong.showFullScreen()
-        time.sleep(1000)
+        if self.interval <= 11:
+            self.frm_denat.showFullScreen()
 
-        self.frm_elong.hide()
-        self.phasen_Ablauf  # Nächste Iteration 
+        elif self.interval >= 12 and self.interval <= 21:
+            self.frm_denat.hide()
+            self.frm_aneal.showFullScreen()
+        
+        elif self.interval >= 22 and self.interval <= 31:
+            self.frm_aneal.hide()
+            self.frm_sens.showFullScreen()
+
+        elif self.interval >= 32 and self.interval <= 41:
+            self.frm_sens.hide()
+            self.frm_asens.showFullScreen()
+        
+        elif self.interval >= 42 and self.interval <= 51:
+            self.frm_asens.hide()
+            self.frm_elong.showFullScreen()
+
+        else:
+            self.frm_elong.hide()
+            self.phasen_Ablauf  # Nächste Iteration 
 
     def kontroll_Erklaerung(self):
         self.phasen_running = False  # Stoppe phasen_Ablauf
-        self.timer.stop()
 
     def weiter(self):
         self.phasen_running = True   # Starte phasen_Ablauf
@@ -160,6 +164,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.timer.stop()
         self.timer_seconds = 0
         self.DL_zaehler_value = 0
+        self.interval = 0
         self.btn_Start.clicked.disconnect(self.phasen_Ablauf)  # Disconnect the existing connection
         self.btn_Start.clicked.connect(self.phasen_Ablauf)
 
