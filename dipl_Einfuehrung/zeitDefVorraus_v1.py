@@ -68,13 +68,13 @@ class Ui_zeitDef_Voraus(object):
         self.Dauer_line_2.setFont(font2)
         self.Dauer_line_2.setAlignment(Qt.AlignCenter)
         self.Dauer_line_2.setReadOnly(True)
-        self.wasserDauer_anealing = QSpinBox(self.centralwidget)
-        self.wasserDauer_anealing.setObjectName(u"wasserDauer_aneal")
-        self.wasserDauer_anealing.setRange(30, 60)    # Setze die Mindest- und Höchstwerte
-        self.wasserDauer_anealing.setValue(45)    # Setze den Startwert
-        self.wasserDauer_anealing.setGeometry(QRect(270, 450, 161, 51))
-        self.wasserDauer_anealing.setAlignment(Qt.AlignCenter)
-        self.wasserDauer_anealing.setReadOnly(False)
+        self.wasserDauer_aneal = QSpinBox(self.centralwidget)
+        self.wasserDauer_aneal.setObjectName(u"wasserDauer_aneal")
+        self.wasserDauer_aneal.setRange(30, 60)    # Setze die Mindest- und Höchstwerte
+        self.wasserDauer_aneal.setValue(45)    # Setze den Startwert
+        self.wasserDauer_aneal.setGeometry(QRect(270, 450, 161, 51))
+        self.wasserDauer_aneal.setAlignment(Qt.AlignCenter)
+        self.wasserDauer_aneal.setReadOnly(False)
         self.Dauer_line_3 = QLineEdit(self.centralwidget)
         self.Dauer_line_3.setObjectName(u"Dauer_line_3")
         self.Dauer_line_3.setGeometry(QRect(80, 400, 151, 31))

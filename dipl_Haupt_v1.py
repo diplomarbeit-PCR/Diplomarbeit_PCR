@@ -25,9 +25,11 @@ class Frm_zeitDef(QMainWindow, Ui_zeitDef_Voraus):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
-        self.wasserDauer_aneal = self.wasserDauer_anealing.value() * (1/3)
-        self.wasserDauer_sens = self.wasserDauer_anealing.value() * (2/3)
-        self.wasserDauer_asens = self.wasserDauer_anealing.value()
+        self.value_denat = self.wasserDauer_denat.value() * 1000
+        self.value_aneal = self.wasserDauer_aneal.value() * (1/3) * 1000
+        self.value_sens = self.wasserDauer_aneal.value() * (2/3) * 1000
+        self.value_asens = self.wasserDauer_aneal.value() * 1000
+        self.value_elong = self.wasserDauer_elong.value() * 1000
 
 class Frm_denat(QMainWindow, Ui_AblaufWindowDenat):
     def __init__(self):
@@ -148,17 +150,17 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.DL_counter += 1 
 
         self.frm_denat.show()
-        self.timer.singleShot(self.frm_zeitDef.wasserDauer_denat, self.frm_denat.hide)
-        self.timer.singleShot(self.frm_zeitDef.wasserDauer_denat, self.frm_aneal.show)
-        self.timer.singleShot(self.frm_zeitDef.wasserDauer_aneal, self.frm_aneal.hide)
-        self.timer.singleShot(self.frm_zeitDef.wasserDauer_aneal, self.frm_sens.show)
-        self.timer.singleShot(self.frm_zeitDef.wasserDauer_sens, self.frm_sens.hide)
-        self.timer.singleShot(self.frm_zeitDef.wasserDauer_sens, self.frm_asens.show)
-        self.timer.singleShot(self.frm_zeitDef.wasserDauer_asens, self.frm_asens.hide)
-        self.timer.singleShot(self.frm_zeitDef.wasserDauer_asens, self.frm_elong.show)
-        self.timer.singleShot(self.frm_zeitDef.wasserDauer_elong, self.frm_elong.hide)
+        self.timer.singleShot(self.frm_zeitDef.value_denat, self.frm_denat.hide)
+        self.timer.singleShot(self.frm_zeitDef.value_denat, self.frm_aneal.show)
+        self.timer.singleShot(self.frm_zeitDef.value_denat + self.frm_zeitDef.value_aneal, self.frm_aneal.hide)
+        self.timer.singleShot(self.frm_zeitDef.value_denat + self.frm_zeitDef.value_aneal, self.frm_sens.show)
+        self.timer.singleShot(self.frm_zeitDef.value_denat + self.frm_zeitDef.value_aneal + self.frm_zeitDef.value_sens, self.frm_sens.hide)
+        self.timer.singleShot(self.frm_zeitDef.value_denat + self.frm_zeitDef.value_aneal + self.frm_zeitDef.value_sens, self.frm_asens.show)
+        self.timer.singleShot(self.frm_zeitDef.value_denat + self.frm_zeitDef.value_aneal + self.frm_zeitDef.value_sens + self.frm_zeitDef.value_asens, self.frm_asens.hide)
+        self.timer.singleShot(self.frm_zeitDef.value_denat + self.frm_zeitDef.value_aneal + self.frm_zeitDef.value_sens + self.frm_zeitDef.value_asens, self.frm_elong.show)
+        self.timer.singleShot(self.frm_zeitDef.value_denat + self.frm_zeitDef.value_aneal + self.frm_zeitDef.value_sens + self.frm_zeitDef.value_asens + self.frm_zeitDef.value_elong, self.frm_elong.hide)
         
-        self.timer.singleShot(self.frm_zeitDef.wasserDauer_elong, self.phasen_Ablauf)  # Nächste Iteration 
+        self.timer.singleShot(self.frm_zeitDef.value_elong, self.phasen_Ablauf)  # Nächste Iteration 
 
         if self.DL_counter == 10:
             self.phasen_running = False
