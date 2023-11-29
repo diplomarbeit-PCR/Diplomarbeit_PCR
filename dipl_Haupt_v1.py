@@ -1,10 +1,9 @@
 from PySide6.QtWidgets import QApplication, QMainWindow
 from PySide6.QtCore import QTimer
 
-import time
-
+# Auf die unterschiedlichen WIndows zugreifen (QT Deklaration, die in Py umgewandelt wurden)
 from dipl_Einfuehrung.einfuehrung_v4 import Ui_StartWindow
-from dipl_Einfuehrung.Vorraussetzung_v1 import Ui_Vorraussetzung, QPixmap
+from dipl_Einfuehrung.Vorraussetzung_v1 import Ui_Vorraussetzung
 from dipl_Einfuehrung.zeitDefVorraus_v1 import Ui_zeitDef_Voraus
 from dipl_Phasenablauf.AblaufWindowDenat_v1 import Ui_AblaufWindowDenat
 from dipl_Phasenablauf.AblaufWindowAneal_v1 import Ui_AblaufWindowAneal
@@ -13,6 +12,8 @@ from dipl_Phasenablauf.AblaufWindowASens_v1 import Ui_AblaufWindowASens
 from dipl_Phasenablauf.AblaufWindowElong_v1 import Ui_AblaufWindowElong
 from dipl_Kontrolle.KontrolLWindow_v1 import Ui_Kontrolle
 
+# Es wird eine Klasse für die Voraussetzungen erstellt
+# 
 class Frm_vorraus(QMainWindow, Ui_Vorraussetzung):
     def __init__(self):
         super().__init__()
