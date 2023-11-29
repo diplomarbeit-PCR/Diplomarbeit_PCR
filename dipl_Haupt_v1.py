@@ -29,7 +29,6 @@ class Frm_zeitDef(QMainWindow, Ui_zeitDef_Voraus):
         self.wasserDauer_sens = self.wasserDauer_anealing.value() * (2/3)
         self.wasserDauer_asens = self.wasserDauer_anealing.value()
 
-
 class Frm_denat(QMainWindow, Ui_AblaufWindowDenat):
     def __init__(self):
         super().__init__()
