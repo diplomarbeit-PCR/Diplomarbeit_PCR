@@ -1,6 +1,5 @@
 from PySide6.QtWidgets import QApplication, QMainWindow
 from PySide6.QtCore import QTimer
-import time
 
 # Auf die unterschiedlichen WIndows zugreifen (QT Deklaration, die in Py umgewandelt wurden)
 from dipl_Einfuehrung.einfuehrung_v4 import Ui_StartWindow
@@ -124,22 +123,16 @@ class Frm_main(QMainWindow, Ui_StartWindow):
 
         self.frm_zeitDef.btn_Weiter.clicked.connect(self.phasen_Ablauf)
 
-        self.frm_denat.btn_Kontrolle.clicked.connect(self.kontroll_Erklaerung)
-        self.frm_aneal.btn_Kontrolle.clicked.connect(self.kontroll_Erklaerung)
-        self.frm_sens.btn_Kontrolle.clicked.connect(self.kontroll_Erklaerung)
-        self.frm_asens.btn_Kontrolle.clicked.connect(self.kontroll_Erklaerung)
-        self.frm_elong.btn_Kontrolle.clicked.connect(self.kontroll_Erklaerung)
-
         self.frm_kont.btn_Fortfuehren.clicked.connect(self.weiter)
         self.frm_kont.btn_Beenden.clicked.connect(self.esc)
 
         self.phasen_running = True  # Flag für den Zustand von phasen_Ablauf
-        
-        #self.timer.timeout.connect(self.run_phasen_Ablauf)  # Verbinde den Timer mit der Methode
 
         self.seconds = 0
+        self.timer.timeout.connect(self.run_phasen_Ablauf)  # Verbinde den Timer mit der Methode
         
-        self.timer.timeout.connect(self.run_phasen_Ablauf)
+        self.phaseCount = 0
+        
         
     def erlaubteDauer(self):
         self.hide()
@@ -152,12 +145,21 @@ class Frm_main(QMainWindow, Ui_StartWindow):
     def phasen_Ablauf(self):
         self.frm_zeitDef.hide()
         self.timer.start()
+
+        self.frm_denat.btn_Kontrolle.clicked.connect(self.kontroll_Erklaerung)
+        self.frm_aneal.btn_Kontrolle.clicked.connect(self.kontroll_Erklaerung)
+        self.frm_sens.btn_Kontrolle.clicked.connect(self.kontroll_Erklaerung)
+        self.frm_asens.btn_Kontrolle.clicked.connect(self.kontroll_Erklaerung)
+        self.frm_elong.btn_Kontrolle.clicked.connect(self.kontroll_Erklaerung)
         
         if self.phasen_running == False:
             self.frm_kont.show()
+            self.timer.stop()
         
         else:
             self.run_phasen_Ablauf()
+            
+            self.phaseCount = 0
             
             self.DL_counter += 1 
             
@@ -167,48 +169,44 @@ class Frm_main(QMainWindow, Ui_StartWindow):
             self.frm_sens.update_DL_zaehler(self.DL_zaehler_value)
             self.frm_asens.update_DL_zaehler(self.DL_zaehler_value)
             self.frm_elong.update_DL_zaehler(self.DL_zaehler_value)
-
     
     def run_phasen_Ablauf(self):
         self.timer.start(1000)  # Timer feuert alle 1000 Millisekunden (1 Sekunde)
         self.seconds += 1
+        self.phaseCount += 1
         hours = self.seconds // 3600
         minutes = (self.seconds % 3600) // 60
         seconds = self.seconds % 60
+
         self.frm_denat.Timer_zaehler.display(f"{hours:02d}:{minutes:02d}:{seconds:02d}")
         self.frm_aneal.Timer_zaehler.display(f"{hours:02d}:{minutes:02d}:{seconds:02d}")
         self.frm_sens.Timer_zaehler.display(f"{hours:02d}:{minutes:02d}:{seconds:02d}")
         self.frm_asens.Timer_zaehler.display(f"{hours:02d}:{minutes:02d}:{seconds:02d}")
         self.frm_elong.Timer_zaehler.display(f"{hours:02d}:{minutes:02d}:{seconds:02d}")
-
-       
-
-        #self.frm_denat.Timer_zaehler.display(time.strftime('%H:%M:%S', time.gmtime(self.timer_seconds)))
-        #self.frm_aneal.Timer_zaehler.display(time.strftime('%H:%M:%S', time.gmtime(self.timer_seconds)))
-        #self.frm_sens.Timer_zaehler.display(time.strftime('%H:%M:%S', time.gmtime(self.timer_seconds)))
-        #self.frm_asens.Timer_zaehler.display(time.strftime('%H:%M:%S', time.gmtime(self.timer_seconds)))
-        #self.frm_elong.Timer_zaehler.display(time.strftime('%H:%M:%S', time.gmtime(self.timer_seconds)))
-
-        self.frm_denat.show()
-        self.timer.singleShot(self.frm_zeitDef.value_denat * 1000, self.frm_denat.hide)
-        self.timer.singleShot(self.frm_zeitDef.value_denat * 1000, self.frm_aneal.show)
-        self.timer.singleShot(self.frm_zeitDef.value_aneal * 1000, self.frm_aneal.hide)
-        self.timer.singleShot(self.frm_zeitDef.value_aneal* 1000, self.frm_sens.show)
-        self.timer.singleShot(self.frm_zeitDef.value_sens * 1000, self.frm_sens.hide)
-        self.timer.singleShot(self.frm_zeitDef.value_sens * 1000, self.frm_asens.show)
-        self.timer.singleShot(self.frm_zeitDef.value_asens * 1000, self.frm_asens.hide)
-        self.timer.singleShot(self.frm_zeitDef.value_asens * 1000, self.frm_elong.show)
-        self.timer.singleShot(self.frm_zeitDef.value_elong * 1000, self.frm_elong.hide)
         
-        #self.timer.singleShot(self.frm_zeitDef.value_elong * 1000, self.phasen_Ablauf)  # Nächste Iteration 
+        def check_and_show(phase, start, end):
+            if start < self.phaseCount <= end:
+                phase.show()
+            else:
+                phase.hide()
 
+        check_and_show(self.frm_denat, 0, self.frm_zeitDef.value_denat)
+        check_and_show(self.frm_aneal, self.frm_zeitDef.value_denat, self.frm_zeitDef.value_aneal)
+        check_and_show(self.frm_sens, self.frm_zeitDef.value_aneal, self.frm_zeitDef.value_sens)
+        check_and_show(self.frm_asens, self.frm_zeitDef.value_sens, self.frm_zeitDef.value_asens)
+        check_and_show(self.frm_elong, self.frm_zeitDef.value_asens, self.frm_zeitDef.value_elong)
+
+            
         if self.DL_counter == 10:
             self.phasen_running = False
             self.DL_counter = 0
+            
+        if self.phaseCount > (self.frm_zeitDef.value_elong):
+            self.phaseCount = 0
+            self.phasen_Ablauf()
 
     def kontroll_Erklaerung(self):
         self.phasen_running = False  # Stoppe phasen_Ablauf
-        self.timer.stop()
         self.DL_counter = 0
 
     def weiter(self):
@@ -221,10 +219,17 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         frm_main.show()
         self.phasen_running = True
         self.timer.stop()
-        self.timer_seconds = 0
+        self.seconds = 0
         self.DL_zaehler_value = 0
-        self.btn_Start.clicked.disconnect(self.phasen_Ablauf)  # Disconnect the existing connection
-        self.btn_Start.clicked.connect(self.phasen_Ablauf)
+        self.frm_zeitDef.wasserDauer_denat.setValue(35)
+        self.frm_zeitDef.wasserDauer_aneal.setValue(45)
+        self.frm_zeitDef.wasserDauer_elong.setValue(40)
+
+        self.btn_Start.disconnect(self.erlaubteDauer) 
+        self.btn_Start.clicked.connect(self.erlaubteDauer)
+        
+        self.frm_zeitDef.btn_Weiter.disconnect(self.phasen_Ablauf)
+        self.frm_zeitDef.btn_Weiter.clicked.connect(self.phasen_Ablauf)
 
 app = QApplication()
 frm_main = Frm_main()
