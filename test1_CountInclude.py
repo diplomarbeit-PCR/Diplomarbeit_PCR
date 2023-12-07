@@ -195,7 +195,6 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         check_and_show(self.frm_sens, self.frm_zeitDef.value_aneal, self.frm_zeitDef.value_sens)
         check_and_show(self.frm_asens, self.frm_zeitDef.value_sens, self.frm_zeitDef.value_asens)
         check_and_show(self.frm_elong, self.frm_zeitDef.value_asens, self.frm_zeitDef.value_elong)
-
             
         if self.DL_counter == 10:
             self.phasen_running = False
@@ -224,12 +223,6 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.frm_zeitDef.wasserDauer_denat.setValue(35)
         self.frm_zeitDef.wasserDauer_aneal.setValue(45)
         self.frm_zeitDef.wasserDauer_elong.setValue(40)
-
-        self.btn_Start.disconnect(self.erlaubteDauer) 
-        self.btn_Start.clicked.connect(self.erlaubteDauer)
-        
-        self.frm_zeitDef.btn_Weiter.disconnect(self.phasen_Ablauf)
-        self.frm_zeitDef.btn_Weiter.clicked.connect(self.phasen_Ablauf)
 
 app = QApplication()
 frm_main = Frm_main()
