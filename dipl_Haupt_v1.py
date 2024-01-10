@@ -28,6 +28,13 @@ class Frm_zeitDef(QMainWindow, Ui_zeitDef_Voraus):
         # Initialisierung der Benutzeroberfläche 
         self.setupUi(self)
 
+        # Standardwerte setzen
+        self.value_denat = 35
+        self.value_aneal = 45 * (1/3) + self.value_denat
+        self.value_sens = 45 * (1/3) + self.value_aneal
+        self.value_asens = 45 * (1/3) + self.value_sens
+        self.value_elong = 40 + self.value_asens
+
         # Ändert sich der Wert von wasserDauer_..., so wird die jeweilige Methode aufgerufen
         self.wasserDauer_denat.valueChanged.connect(self.Value_Denat_change)
         self.wasserDauer_aneal.valueChanged.connect(self.Value_Aneal_change)
@@ -175,7 +182,6 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.frm_voraus.showFullScreen()
         QTimer.singleShot(10000, self.frm_voraus.hide)
         QTimer.singleShot(10000, self.frm_zeitDef.show)
-
 
     def phasen_Ablauf(self):
         self.frm_zeitDef.hide()
