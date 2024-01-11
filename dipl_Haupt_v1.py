@@ -4,7 +4,7 @@ from PySide6.QtCore import QTimer
 # Auf die unterschiedlichen WIndows zugreifen (QT Deklaration, die in Py umgewandelt wurden)
 from dipl_Einfuehrung.einfuehrung_v4 import Ui_StartWindow
 from dipl_Einfuehrung.Voraussetzung_v1 import Ui_Voraussetzung
-from dipl_Einfuehrung.zeitDefVoraus_v1 import Ui_zeitDef_Voraus
+from dipl_Einfuehrung.zeitDefVoraus_v2 import Ui_zeitDef_Voraus
 from dipl_Phasenablauf.AblaufWindowDenat_v1 import Ui_AblaufWindowDenat
 from dipl_Phasenablauf.AblaufWindowAneal_v1 import Ui_AblaufWindowAneal
 from dipl_Phasenablauf.AblaufWindowSens_v1 import Ui_AblaufWindowSens
