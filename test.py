@@ -1,5 +1,6 @@
 import smbus
 import time
+import os
 bus = smbus.SMBus(2)
 
 address = 0x27
