@@ -41,8 +41,4 @@ while True:
     time.sleep(1)
 
     recv = readNumber()
-    if recv is not None:
-        # Handle error, for example, you may choose to break the loop or take corrective action.
-        break
-
     print("Arduino sends:", recv)
