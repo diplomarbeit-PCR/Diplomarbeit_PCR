@@ -1,6 +1,7 @@
 import smbus
 import time
-bus = smbus.SMBus(2)
+import os
+bus = smbus.SMBus(10)
 
 address = 0x27
 
@@ -14,6 +15,7 @@ def readNumber():
 
 while True:
     inp = input("Number between 1 and 9: ")
+    inp = int(inp)
     if not inp:
         continue
 
