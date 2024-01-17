@@ -1,10 +1,14 @@
 import smbus
 import time
-import os
 
-bus = smbus.SMBus(0)
-
+bus_number = 1  # Du kannst auch Bus 0 ausprobieren
 address = 0x27
+
+try:
+    bus = smbus.SMBus(bus_number)
+except FileNotFoundError:
+    print(f"Error: I2C bus {bus_number} not found. Check your connections and bus number.")
+    exit()
 
 def writeNumber(value):
     try:
