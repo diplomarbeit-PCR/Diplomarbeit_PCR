@@ -1,9 +1,9 @@
 import smbus
 import time
 
-bus_number = 1  # Du kannst auch Bus 0 ausprobieren
+bus_number = 0  # Du kannst auch Bus 0 ausprobieren
 address = 0x27
-
+#https://prod.liveshare.vsengsaas.visualstudio.com/join?D782CC7934A2ABFE225732FC1764658FBB54
 try:
     bus = smbus.SMBus(bus_number)
 except FileNotFoundError:
