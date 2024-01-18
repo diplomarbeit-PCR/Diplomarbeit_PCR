@@ -1,6 +1,8 @@
 import smbus
 import time
 
+bus = smbus.SMBus(7)
+
 address = 0x27
 
 def writeNumber(value):
@@ -22,4 +24,4 @@ while True:
     time.sleep(1)
 
     recv = readNumber()
-    print("Arduino sends:", recv)
+    print ("Arduino sends: ", recv)
