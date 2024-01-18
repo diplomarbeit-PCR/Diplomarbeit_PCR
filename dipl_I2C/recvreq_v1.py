@@ -6,9 +6,6 @@ bus = smbus.SMBus(7)
 address = 0x28
 slave_address = 0x27
 
-
-
-
 def writeNumber(value):
     bus.write_byte(address, value)
     return -1

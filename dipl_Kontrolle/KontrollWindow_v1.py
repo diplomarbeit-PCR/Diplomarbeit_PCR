@@ -28,14 +28,14 @@ class Ui_Kontrolle(object):
         self.centralwidget.setObjectName(u"centralwidget")
         self.textEdit = QTextEdit(self.centralwidget)
         self.textEdit.setObjectName(u"textEdit")
-        self.textEdit.setGeometry(QRect(70, 140, 351, 431))
+        self.textEdit.setGeometry(QRect(70, 120, 351, 331))
         self.textEdit.setReadOnly(True)
         self.label = QLabel(self.centralwidget)
         self.label.setObjectName(u"label")
         self.label.setGeometry(QRect(-2, 50, 491, 61))
         font = QFont()
         font.setFamilies([u"Tw Cen MT"])
-        font.setPointSize(40)
+        font.setPointSize(35)
         font.setBold(False)
         self.label.setFont(font)
         self.label.setAlignment(Qt.AlignCenter)
@@ -50,6 +50,9 @@ class Ui_Kontrolle(object):
         self.btn_Fortfuehren.setObjectName(u"btn_Fortfuehren")
         self.btn_Fortfuehren.setGeometry(QRect(40, 610, 151, 51))
         self.btn_Fortfuehren.setFont(font1)
+        self.label_detektor = QLabel(self.centralwidget)
+        self.label_detektor.setObjectName(u"label_detektor")
+        self.label_detektor.setGeometry(QRect(50, 470, 401, 101))
         Kontrolle.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(Kontrolle)
         self.menubar.setObjectName(u"menubar")
@@ -73,9 +76,11 @@ class Ui_Kontrolle(object):
 "li.unchecked::marker { content: \"\\2610\"; }\n"
 "li.checked::marker { content: \"\\2612\"; }\n"
 "</style></head><body style=\" font-family:'Segoe UI'; font-size:9pt; font-weight:400; font-style:normal;\" bgcolor=\"#9cd4d6\">\n"
-"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Arial Narrow','sans-serif'; font-size:16pt;\">F\u00fcr die Kontrolle</span></p></body></html>", None))
+"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Arial Narrow','sans-serif'; font-size:16pt;\">Mit einer blauen LED und einer Sammellinse entsteht ein Brennpunkt auf der Probe, was zu einer Anregung f\u00fchrt. Es kommt zu einer Emittierung von gr\u00fcnem Licht. Dieses durchdringt einen Streufilter, welches den kurzwelligen Anteil filtert.<br />Das \u00fcbrigbleibende gr\u00fcne Licht trifft auf die"
+                        " im Deckel enthaltene Fotodiode, welche bei dem kontakt mit Licht Strom erzeugt. <br />Ein Transimpetanzwandler verst\u00e4rkt diesen und erzeugt Spannung. <br />Der Arduino liest diese ein und misst daraus die Lichtintensit\u00e4t.</span></p></body></html>", None))
         self.label.setText(QCoreApplication.translate("Kontrolle", u"Kontrolle", None))
         self.btn_Beenden.setText(QCoreApplication.translate("Kontrolle", u"Beenden", None))
         self.btn_Fortfuehren.setText(QCoreApplication.translate("Kontrolle", u"Fortf\u00fchren", None))
+        self.label_detektor.setText("")
     # retranslateUi
 

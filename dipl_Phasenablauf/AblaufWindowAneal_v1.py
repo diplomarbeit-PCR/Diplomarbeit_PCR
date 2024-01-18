@@ -35,7 +35,7 @@ class Ui_AblaufWindowAneal(object):
         self.label.setGeometry(QRect(-2, 50, 491, 61))
         font = QFont()
         font.setFamilies([u"Tw Cen MT"])
-        font.setPointSize(40)
+        font.setPointSize(35)
         font.setBold(False)
         self.label.setFont(font)
         self.label.setAlignment(Qt.AlignCenter)
@@ -59,7 +59,6 @@ class Ui_AblaufWindowAneal(object):
         self.DL_line.setAlignment(Qt.AlignCenter)
         self.DL_line.setReadOnly(True)
         self.Timer_zaehler = QLCDNumber(self.centralwidget)
-        self.Timer_zaehler.setDigitCount(8)  # 8 Ziffern für "hh:mm:ss"
         self.Timer_zaehler.setObjectName(u"Timer_zaehler")
         self.Timer_zaehler.setGeometry(QRect(40, 520, 121, 51))
         self.Dauer_line = QLineEdit(self.centralwidget)

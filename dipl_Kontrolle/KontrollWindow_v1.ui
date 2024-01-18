@@ -18,9 +18,9 @@
     <property name="geometry">
      <rect>
       <x>70</x>
-      <y>140</y>
+      <y>120</y>
       <width>351</width>
-      <height>431</height>
+      <height>331</height>
      </rect>
     </property>
     <property name="readOnly">
@@ -34,7 +34,7 @@ hr { height: 1px; border-width: 0; }
 li.unchecked::marker { content: &quot;\2610&quot;; }
 li.checked::marker { content: &quot;\2612&quot;; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Segoe UI'; font-size:9pt; font-weight:400; font-style:normal;&quot; bgcolor=&quot;#9cd4d6&quot;&gt;
-&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Arial Narrow','sans-serif'; font-size:16pt;&quot;&gt;Für die Kontrolle&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Arial Narrow','sans-serif'; font-size:16pt;&quot;&gt;Mit einer blauen LED und einer Sammellinse entsteht ein Brennpunkt auf der Probe, was zu einer Anregung führt. Es kommt zu einer Emittierung von grünem Licht. Dieses durchdringt einen Streufilter, welches den kurzwelligen Anteil filtert.&lt;br /&gt;Das übrigbleibende grüne Licht trifft auf die im Deckel enthaltene Fotodiode, welche bei dem kontakt mit Licht Strom erzeugt. &lt;br /&gt;Ein Transimpetanzwandler verstärkt diesen und erzeugt Spannung. &lt;br /&gt;Der Arduino liest diese ein und misst daraus die Lichtintensität.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
    <widget class="QLabel" name="label">
@@ -49,7 +49,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
     <property name="font">
      <font>
       <family>Tw Cen MT</family>
-      <pointsize>40</pointsize>
+      <pointsize>35</pointsize>
       <bold>false</bold>
      </font>
     </property>
@@ -96,6 +96,19 @@ li.checked::marker { content: &quot;\2612&quot;; }
     </property>
     <property name="text">
      <string>Fortführen</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_detektor">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>470</y>
+      <width>401</width>
+      <height>101</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
     </property>
    </widget>
   </widget>

@@ -51,7 +51,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
     <property name="font">
      <font>
       <family>Tw Cen MT</family>
-      <pointsize>40</pointsize>
+      <pointsize>35</pointsize>
       <bold>false</bold>
      </font>
     </property>
