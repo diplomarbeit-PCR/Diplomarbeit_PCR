@@ -15,9 +15,9 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QLabel, QMainWindow, QMenuBar,
-    QPushButton, QSizePolicy, QStatusBar, QTextEdit,
-    QWidget)
+from PySide6.QtWidgets import (QApplication, QLCDNumber, QLabel, QLineEdit,
+    QMainWindow, QMenuBar, QPushButton, QSizePolicy,
+    QStatusBar, QTextEdit, QWidget)
 
 class Ui_Kontrolle(object):
     def setupUi(self, Kontrolle):
@@ -50,9 +50,27 @@ class Ui_Kontrolle(object):
         self.btn_Fortfuehren.setObjectName(u"btn_Fortfuehren")
         self.btn_Fortfuehren.setGeometry(QRect(40, 610, 151, 51))
         self.btn_Fortfuehren.setFont(font1)
-        self.label_detektor = QLabel(self.centralwidget)
-        self.label_detektor.setObjectName(u"label_detektor")
-        self.label_detektor.setGeometry(QRect(50, 470, 401, 101))
+        self.Spg_line = QLineEdit(self.centralwidget)
+        self.Spg_line.setObjectName(u"Spg_line")
+        self.Spg_line.setGeometry(QRect(260, 490, 111, 31))
+        font2 = QFont()
+        font2.setFamilies([u"Arial Narrow"])
+        font2.setPointSize(15)
+        self.Spg_line.setFont(font2)
+        self.Spg_line.setAlignment(Qt.AlignCenter)
+        self.Spg_line.setReadOnly(True)
+        self.Spg_detekt = QLCDNumber(self.centralwidget)
+        self.Spg_detekt.setObjectName(u"Spg_detekt")
+        self.Spg_detekt.setGeometry(QRect(260, 530, 111, 51))
+        self.Licht_detekt = QLCDNumber(self.centralwidget)
+        self.Licht_detekt.setObjectName(u"Licht_detekt")
+        self.Licht_detekt.setGeometry(QRect(90, 530, 121, 51))
+        self.Licht_line = QLineEdit(self.centralwidget)
+        self.Licht_line.setObjectName(u"Licht_line")
+        self.Licht_line.setGeometry(QRect(90, 490, 121, 31))
+        self.Licht_line.setFont(font2)
+        self.Licht_line.setAlignment(Qt.AlignCenter)
+        self.Licht_line.setReadOnly(True)
         Kontrolle.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(Kontrolle)
         self.menubar.setObjectName(u"menubar")
@@ -77,10 +95,11 @@ class Ui_Kontrolle(object):
 "li.checked::marker { content: \"\\2612\"; }\n"
 "</style></head><body style=\" font-family:'Segoe UI'; font-size:9pt; font-weight:400; font-style:normal;\" bgcolor=\"#9cd4d6\">\n"
 "<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Arial Narrow','sans-serif'; font-size:16pt;\">Mit einer blauen LED und einer Sammellinse entsteht ein Brennpunkt auf der Probe, was zu einer Anregung f\u00fchrt. Es kommt zu einer Emittierung von gr\u00fcnem Licht. Dieses durchdringt einen Streufilter, welches den kurzwelligen Anteil filtert.<br />Das \u00fcbrigbleibende gr\u00fcne Licht trifft auf die"
-                        " im Deckel enthaltene Fotodiode, welche bei dem kontakt mit Licht Strom erzeugt. <br />Ein Transimpetanzwandler verst\u00e4rkt diesen und erzeugt Spannung. <br />Der Arduino liest diese ein und misst daraus die Lichtintensit\u00e4t.</span></p></body></html>", None))
+                        " im Deckel enthaltene Fotodiode, welche bei dem kontakt mit Licht Strom erzeugt. <br />Ein Transimpetanzwandler verst\u00e4rkt diesen und erzeugt Spannung im mV Bereich. <br />Der Arduino liest diese ein und misst daraus die Lichtintensit\u00e4t in Millilumen.</span></p></body></html>", None))
         self.label.setText(QCoreApplication.translate("Kontrolle", u"Kontrolle", None))
         self.btn_Beenden.setText(QCoreApplication.translate("Kontrolle", u"Beenden", None))
         self.btn_Fortfuehren.setText(QCoreApplication.translate("Kontrolle", u"Fortf\u00fchren", None))
-        self.label_detektor.setText("")
+        self.Spg_line.setText(QCoreApplication.translate("Kontrolle", u"Spannung:", None))
+        self.Licht_line.setText(QCoreApplication.translate("Kontrolle", u"Lichtintensit\u00e4t:", None))
     # retranslateUi
 

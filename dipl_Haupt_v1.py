@@ -11,6 +11,7 @@ from dipl_Phasenablauf.AblaufWindowSens_v1 import Ui_AblaufWindowSens
 from dipl_Phasenablauf.AblaufWindowASens_v1 import Ui_AblaufWindowASens
 from dipl_Phasenablauf.AblaufWindowElong_v1 import Ui_AblaufWindowElong
 from dipl_Kontrolle.KontrollWindow_v1 import Ui_Kontrolle
+from dipl_Kontrolle.ErgebnisWindow_v1 import Ui_Ergebnis
 
 # Es wird eine Klasse für die Voraussetzungen erstellt
 # Hierfür wird deklariert, dass ein MainWindow verwendet wurde und es auf die Klasse Ui_Voraussetzung
@@ -132,6 +133,12 @@ class Frm_kont(QMainWindow, Ui_Kontrolle):
         super().__init__()
         # Initialisierung der Benutzeroberfläche 
         self.setupUi(self)
+
+class Frm_ergeb(QMainWindow, Ui_Ergebnis):
+    def __init__(self):
+        super().__init__()
+        # Initialisierung der Benutzeroberfläche 
+        self.setupUi(self)
         
 class Frm_main(QMainWindow, Ui_StartWindow):
 
@@ -156,6 +163,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.frm_asens = Frm_asens()
         self.frm_elong = Frm_elong()
         self.frm_kont = Frm_kont()
+        self.frm_ergeb = Frm_ergeb()
          
         # Verbindung des Start-Knopfes mit der Methode erlaubteDauer 
         self.btn_Start.clicked.connect(self.erlaubteDauer)
@@ -166,7 +174,9 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         # Verbindung des Fortfuehren-Knopfes mit der Methode weiter
         self.frm_kont.btn_Fortfuehren.clicked.connect(self.weiter)
         # Verbindung des Beenden-Knopfes mit der Methode esc
-        self.frm_kont.btn_Beenden.clicked.connect(self.esc)
+        self.frm_kont.btn_Beenden.clicked.connect(self.ergebnis)
+        # Verbindung des Beenden-Knopfes mit der Methode esc
+        self.frm_ergeb.btn_Ende.clicked.connect(self.esc)
 
         self.phasen_running = True  # Flag für den Zustand von phasen_Ablauf
 
@@ -267,9 +277,14 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.frm_kont.hide()
         self.phasen_Ablauf()
 
+    def ergebnis(self):
+        # phasen_Ablauf soll wiederholt werden
+        self.frm_kont.hide()
+        self.frm_ergeb.show()
+
     def esc(self):
         # alles auf Start Einstellungen zurücksetzen
-        self.frm_kont.hide()
+        self.frm_ergeb.hide()
         frm_main.show()
         self.phasen_running = True
         self.timer.stop()
