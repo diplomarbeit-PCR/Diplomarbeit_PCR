@@ -1,7 +1,7 @@
 import smbus
 import time
 
-bus_number = 1  # Du kannst auch Bus 0 ausprobieren
+bus_number = 7  # Du kannst auch Bus 7 ausprobieren
 slave_address = 0x27
 
 bus = smbus.SMBus(bus_number)
