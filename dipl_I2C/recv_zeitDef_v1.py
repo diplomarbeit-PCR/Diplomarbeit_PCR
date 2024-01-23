@@ -16,35 +16,27 @@ value_denat = int(value_denat)
 value_aneal = int(value_aneal)
 value_elong = int(value_elong)
  
-def writeNumber(value):
-    bus.write_byte(beweg_address, value)
+def writeNumber(address, value):
+    bus.write_byte(address, value)
     return -1
 
 while True:
-    inp1 = input(value_denat)
-    inp1 = int(inp1)
-    if not inp1:
-        continue
-
-    writeNumber(inp1)
-    print ("RPi sends: ", inp1)
+    value_denat = input("Enter Denat value: ")
+    value_denat = int(value_denat)
+    writeNumber(beweg_address, value_denat)
+    print("RPi sends Denat: ", value_denat)
     time.sleep(1)
 
-    inp2 = input(value_aneal)
-    inp2 = int(inp2)
-    if not inp2:
-        continue
-
-    writeNumber(inp2)
-    print ("RPi sends: ", inp2)
+    value_aneal = input("Enter Aneal value: ")
+    value_aneal = int(value_aneal)
+    writeNumber(beweg_address, value_aneal)
+    print("RPi sends Aneal: ", value_aneal)
     time.sleep(1)
 
-    inp3 = input(value_elong)
-    inp3 = int(inp3)
-    if not inp3:
-        continue
-
-    writeNumber(inp3)
-    print ("RPi sends: ", inp3)
+    value_elong = input("Enter Elong value: ")
+    value_elong = int(value_elong)
+    writeNumber(beweg_address, value_elong)
+    print("RPi sends Elong: ", value_elong)
     time.sleep(1)
+
 
