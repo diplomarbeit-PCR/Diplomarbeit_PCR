@@ -2,6 +2,16 @@ from PySide6.QtWidgets import QApplication, QMainWindow
 from PySide6.QtCore import QTimer
 from PySide6 import QtSql
 
+import smbus
+
+bus = smbus.SMBus(7)
+temp_address = 0x26
+detect_address = 0x27
+beweg_address = 0x028
+denat_address = 0x10
+aneal_address = 0x11
+elong_address = 0x12
+
 # Auf die unterschiedlichen WIndows zugreifen (QT Deklaration, die in Py umgewandelt wurden)
 from dipl_Einfuehrung.einfuehrung_v4 import Ui_StartWindow
 from dipl_Einfuehrung.Voraussetzung_v1 import Ui_Voraussetzung
@@ -46,6 +56,7 @@ class Frm_zeitDef(QMainWindow, Ui_zeitDef_Voraus):
     def Value_Denat_change(self, value):
         # neuer Wert wird in der Instanz-Variable value_denat gespeichert
         self.value_denat = self.wasserDauer_denat.value()
+        bus.write_byte(denat_address, {value})
         # neuer Wert wird ausgegeben
         print(f"DenatWert: {value}")
 
@@ -55,6 +66,7 @@ class Frm_zeitDef(QMainWindow, Ui_zeitDef_Voraus):
         self.value_aneal = self.wasserDauer_aneal.value() * (1/3) + self.value_denat
         self.value_sens = self.wasserDauer_aneal.value() * (1/3) + self.value_aneal
         self.value_asens = self.wasserDauer_aneal.value() * (1/3) + self.value_sens
+        bus.write_byte(aneal_address, {value})
         # der orgiginal Wert (bevor 3-facher Teilung) wird ausgegeben
         print(f"AnealWert: {value}")
         
@@ -62,6 +74,7 @@ class Frm_zeitDef(QMainWindow, Ui_zeitDef_Voraus):
         # neuer Wert wird in der Instanz-Variable value_elong gespeichert
         # Instanz-Variable wird mit dem jeweils vorherigen Wert addiert, um sicherzustellen, dass sie alle nach einander ablaufen
         self.value_elong = self.wasserDauer_elong.value() + self.value_asens
+        bus.write_byte(elong_address, {value})
         # neuer Wert wird ausgegeben
         print(f"ElongWert: {value}")
 
