@@ -14,11 +14,33 @@ value_elong = 40
 value_denat = int(value_denat)
 value_aneal = int(value_aneal)
 value_elong = int(value_elong)
-
-value = [{value_denat}, {value_aneal}, {value_elong}]
-value = int(value)
-
-try:
+ 
+def writeNumber(value):
     bus.write_byte(beweg_address, value)
-except OSError as e:
-    print(f"Error")
+    return -1
+
+while True:
+    inp1 = input(value_denat)
+    inp1 = int(inp1)
+    if not inp1:
+        continue
+
+    writeNumber(inp1)
+    print ("RPi sends: ", inp1)
+
+    inp2 = input(value_aneal)
+    inp2 = int(inp2)
+    if not inp2:
+        continue
+
+    writeNumber(inp2)
+    print ("RPi sends: ", inp2)
+
+    inp3 = input(value_elong)
+    inp3 = int(inp3)
+    if not inp3:
+        continue
+
+    writeNumber(inp3)
+    print ("RPi sends: ", inp3)
+
