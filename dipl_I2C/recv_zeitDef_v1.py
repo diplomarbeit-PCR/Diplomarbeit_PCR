@@ -14,6 +14,9 @@ value_denat = int(value_denat)
 value_aneal = int(value_aneal)
 value_elong = int(value_elong)
 
-bus.write_byte(denat_address, value_denat)
-bus.write_byte(aneal_address, value_aneal)
-bus.write_byte(elong_address, value_elong)
+try:
+    bus.write_byte(denat_address, value_denat)
+    bus.write_byte(aneal_address, value_aneal)
+    bus.write_byte(elong_address, value_elong)
+except OSError as e:
+    return None
