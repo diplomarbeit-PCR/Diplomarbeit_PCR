@@ -19,4 +19,4 @@ try:
     bus.write_byte(aneal_address, value_aneal)
     bus.write_byte(elong_address, value_elong)
 except OSError as e:
-    return None
+    print(f"Error")
