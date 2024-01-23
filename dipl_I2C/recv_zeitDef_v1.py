@@ -1,4 +1,5 @@
 import smbus
+import time
 
 bus = smbus.SMBus(7)
 
@@ -27,6 +28,7 @@ while True:
 
     writeNumber(inp1)
     print ("RPi sends: ", inp1)
+    time.sleep(1)
 
     inp2 = input(value_aneal)
     inp2 = int(inp2)
@@ -35,6 +37,7 @@ while True:
 
     writeNumber(inp2)
     print ("RPi sends: ", inp2)
+    time.sleep(1)
 
     inp3 = input(value_elong)
     inp3 = int(inp3)
@@ -43,4 +46,5 @@ while True:
 
     writeNumber(inp3)
     print ("RPi sends: ", inp3)
+    time.sleep(1)
 
