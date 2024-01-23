@@ -15,7 +15,8 @@ value_denat = int(value_denat)
 value_aneal = int(value_aneal)
 value_elong = int(value_elong)
 
-value = int([{value_denat}, {value_aneal}, {value_elong}])
+value = [{value_denat}, {value_aneal}, {value_elong}]
+value = int(value)
 
 try:
     bus.write_byte(beweg_address, value)
