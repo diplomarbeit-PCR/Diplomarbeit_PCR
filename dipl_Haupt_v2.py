@@ -14,7 +14,7 @@ from dipl_Phasenablauf.AblaufWindowElong_v1 import Ui_AblaufWindowElong
 from dipl_Kontrolle.KontrollWindow_v1 import Ui_Kontrolle
 from dipl_Kontrolle.ErgebnisWindow_v1 import Ui_Ergebnis
 
-db = QtSql.QSqlDatabase.addDatabase("MARIADB")
+db = QtSql.QSqlDatabase.addDatabase("QMARIADB")
 db.setDatabaseName("eduPCR.db")
 
 
