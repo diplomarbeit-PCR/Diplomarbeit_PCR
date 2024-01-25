@@ -187,11 +187,11 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         
         
     def erlaubteDauer(self):
-        self.hide()
-
         self.frm_voraus.showFullScreen()
+        self.hide()
+        
+        QTimer.singleShot(10000, self.frm_zeitDef.showFullScreen)
         QTimer.singleShot(10000, self.frm_voraus.hide)
-        QTimer.singleShot(10000, self.frm_zeitDef.showFullScreen())
 
     def phasen_Ablauf(self):
         self.frm_zeitDef.hide()
