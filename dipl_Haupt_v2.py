@@ -274,18 +274,18 @@ class Frm_main(QMainWindow, Ui_StartWindow):
     def weiter(self):
         # phasen_Ablauf soll wiederholt werden
         self.phasen_running = True   # Starte phasen_Ablauf
-        self.frm_kont.hide()
         self.phasen_Ablauf()
+        self.frm_kont.hide()
 
     def ergebnis(self):
         # phasen_Ablauf soll wiederholt werden
-        self.frm_kont.hide()
         self.frm_ergeb.showFullScreen()
+        self.frm_kont.hide()
 
     def esc(self):
         # alles auf Start Einstellungen zurücksetzen
-        self.frm_ergeb.hide()
         frm_main.showFullScreen()
+        self.frm_ergeb.hide()
         self.phasen_running = True
         self.timer.stop()
         self.seconds = 0

@@ -84,7 +84,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
    <widget class="QLCDNumber" name="DL_zaehler">
     <property name="geometry">
      <rect>
-      <x>370</x>
+      <x>350</x>
       <y>520</y>
       <width>101</width>
       <height>51</height>
@@ -94,7 +94,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
    <widget class="QLineEdit" name="DL_line">
     <property name="geometry">
      <rect>
-      <x>370</x>
+      <x>350</x>
       <y>480</y>
       <width>101</width>
       <height>31</height>
@@ -119,7 +119,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
    <widget class="QLCDNumber" name="Timer_zaehler">
     <property name="geometry">
      <rect>
-      <x>40</x>
+      <x>20</x>
       <y>520</y>
       <width>121</width>
       <height>51</height>
@@ -129,7 +129,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
    <widget class="QLineEdit" name="Dauer_line">
     <property name="geometry">
      <rect>
-      <x>40</x>
+      <x>20</x>
       <y>480</y>
       <width>121</width>
       <height>31</height>
@@ -154,7 +154,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
    <widget class="QLCDNumber" name="temp_sensD">
     <property name="geometry">
      <rect>
-      <x>210</x>
+      <x>190</x>
       <y>520</y>
       <width>111</width>
       <height>51</height>
@@ -164,7 +164,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
    <widget class="QLineEdit" name="Temp_line">
     <property name="geometry">
      <rect>
-      <x>210</x>
+      <x>190</x>
       <y>480</y>
       <width>111</width>
       <height>31</height>
