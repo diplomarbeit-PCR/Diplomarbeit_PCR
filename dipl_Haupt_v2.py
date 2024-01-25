@@ -191,7 +191,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
 
         self.frm_voraus.showFullScreen()
         QTimer.singleShot(10000, self.frm_voraus.hide)
-        QTimer.singleShot(10000, self.frm_zeitDef.show)
+        QTimer.singleShot(10000, self.frm_zeitDef.showFullScreen())
 
     def phasen_Ablauf(self):
         self.frm_zeitDef.hide()
@@ -205,7 +205,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.frm_elong.btn_Kontrolle.clicked.connect(self.kontroll_Erklaerung)
         
         if self.phasen_running == False:
-            self.frm_kont.show()
+            self.frm_kont.showFullScreen()
             self.timer.stop()
         
         else:
@@ -245,7 +245,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         # phase-Pbjekt erkennt anhand check_and_show was ausgefürht werden muss
         def check_and_show(phase, start, end):
             if start < self.phaseCount <= end:
-                phase.show()
+                phase.showFullScreen()
             else:
                 phase.hide()
 
@@ -280,12 +280,12 @@ class Frm_main(QMainWindow, Ui_StartWindow):
     def ergebnis(self):
         # phasen_Ablauf soll wiederholt werden
         self.frm_kont.hide()
-        self.frm_ergeb.show()
+        self.frm_ergeb.showFullScreen()
 
     def esc(self):
         # alles auf Start Einstellungen zurücksetzen
         self.frm_ergeb.hide()
-        frm_main.show()
+        frm_main.showFullScreen()
         self.phasen_running = True
         self.timer.stop()
         self.seconds = 0
