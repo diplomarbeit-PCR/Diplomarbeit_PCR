@@ -80,14 +80,14 @@ class Ui_zeitDef_Voraus(object):
         self.Dauer_line_3.setGeometry(QRect(70, 410, 151, 31))
         self.Dauer_line_3.setFont(font2)
         self.Dauer_line_3.setAlignment(Qt.AlignCenter)
-        self.Dauer_line_3.setReadOnly(False)
+        self.Dauer_line_3.setReadOnly(True)
         self.wasserDauer_denat = QSpinBox(self.centralwidget)
         self.wasserDauer_denat.setObjectName(u"wasserDauer_denat")
         self.wasserDauer_denat.setRange(10, 60)    # Setze die Mindest- und Höchstwerte
         self.wasserDauer_denat.setValue(35)    # Setze den Startwert
         self.wasserDauer_denat.setGeometry(QRect(260, 400, 161, 51))
         self.wasserDauer_denat.setAlignment(Qt.AlignCenter)
-        self.wasserDauer_denat.setReadOnly(True)
+        self.wasserDauer_denat.setReadOnly(False)
         zeitDef_Voraus.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(zeitDef_Voraus)
         self.menubar.setObjectName(u"menubar")
