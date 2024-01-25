@@ -1,6 +1,5 @@
 from PySide6.QtWidgets import QApplication, QMainWindow
 from PySide6.QtCore import QTimer
-from PySide6 import QtSql
 
 # Auf die unterschiedlichen WIndows zugreifen (QT Deklaration, die in Py umgewandelt wurden)
 from dipl_Einfuehrung.einfuehrung_v4 import Ui_StartWindow
@@ -13,10 +12,6 @@ from dipl_Phasenablauf.AblaufWindowASens_v1 import Ui_AblaufWindowASens
 from dipl_Phasenablauf.AblaufWindowElong_v1 import Ui_AblaufWindowElong
 from dipl_Kontrolle.KontrollWindow_v1 import Ui_Kontrolle
 from dipl_Kontrolle.ErgebnisWindow_v1 import Ui_Ergebnis
-
-db = QtSql.QSqlDatabase.addDatabase("MARIADB")
-db.setDatabaseName("eduPCR.db")
-
 
 # Es wird eine Klasse für die Voraussetzungen erstellt
 # Hierfür wird deklariert, dass ein MainWindow verwendet wurde und es auf die Klasse Ui_Voraussetzung
@@ -286,9 +281,6 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         # phasen_Ablauf soll wiederholt werden
         self.frm_ergeb.showFullScreen()
         self.frm_kont.hide()
-        dataergeb = QtSql.QSqlRelationalTableModel()
-        dataergeb.setTable("Ergebnis")
-        self.frm_ergeb.tbl_ergeb.setModel(dataergeb)
 
     def esc(self):
         # alles auf Start Einstellungen zurücksetzen
