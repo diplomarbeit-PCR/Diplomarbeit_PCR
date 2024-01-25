@@ -35,7 +35,7 @@ class Ui_zeitDef_Voraus(object):
         self.label.setGeometry(QRect(-2, 50, 491, 61))
         font = QFont()
         font.setFamilies([u"Tw Cen MT"])
-        font.setPointSize(30)
+        font.setPointSize(25)
         font.setBold(False)
         self.label.setFont(font)
         self.label.setAlignment(Qt.AlignCenter)
