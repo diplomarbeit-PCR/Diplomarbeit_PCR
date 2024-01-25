@@ -15,8 +15,9 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QLabel, QMainWindow, QMenuBar,
-    QPushButton, QSizePolicy, QStatusBar, QWidget)
+from PySide6.QtWidgets import (QApplication, QHeaderView, QLabel, QMainWindow,
+    QMenuBar, QPushButton, QSizePolicy, QStatusBar,
+    QTableView, QWidget)
 
 class Ui_Ergebnis(object):
     def setupUi(self, Ergebnis):
@@ -36,11 +37,14 @@ class Ui_Ergebnis(object):
         self.label.setAlignment(Qt.AlignCenter)
         self.btn_Ende = QPushButton(self.centralwidget)
         self.btn_Ende.setObjectName(u"btn_Ende")
-        self.btn_Ende.setGeometry(QRect(160, 610, 151, 51))
+        self.btn_Ende.setGeometry(QRect(170, 610, 151, 51))
         font1 = QFont()
         font1.setFamilies([u"Arial Narrow"])
         font1.setPointSize(20)
         self.btn_Ende.setFont(font1)
+        self.tbl_ergeb = QTableView(self.centralwidget)
+        self.tbl_ergeb.setObjectName(u"tbl_ergeb")
+        self.tbl_ergeb.setGeometry(QRect(5, 111, 481, 491))
         Ergebnis.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(Ergebnis)
         self.menubar.setObjectName(u"menubar")
