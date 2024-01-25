@@ -9,6 +9,7 @@ temp_address = 0x26
 detect_address = 0x27
 beweg_address = 0x028
 
+
 # Auf die unterschiedlichen WIndows zugreifen (QT Deklaration, die in Py umgewandelt wurden)
 from dipl_Einfuehrung.einfuehrung_v4 import Ui_StartWindow
 from dipl_Einfuehrung.Voraussetzung_v1 import Ui_Voraussetzung
