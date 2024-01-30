@@ -3,16 +3,16 @@ import pymysql
 # Verbindung zur Datenbank herstellen
 connection = pymysql.connect(
     host='localhost',     # Hostname oder IP-Adresse deiner MariaDB-Instanz
-    user='dein_benutzername',     # Benutzername für den Zugriff auf die Datenbank
-    password='dein_passwort',    # Passwort für den Benutzer
-    database='')    # Name der Datenbank, zu der du dich verbinden möchtest
+    user='root',     # Benutzername für den Zugriff auf die Datenbank
+    password='Rock4C+',    # Passwort für den Benutzer
+    database='eduPCR')    # Name der Datenbank, zu der du dich verbinden möchtest
 
 try:
     # Cursor-Objekt erstellen
     cursor = connection.cursor()
 
     # Datenbank erstellen
-    db_name = 'meine_datenbank'
+    db_name = 'eduPCR'
     cursor.execute("CREATE DATABASE IF NOT EXISTS {}".format(db_name))
     print("Datenbank erstellt: {}".format(db_name))
 
