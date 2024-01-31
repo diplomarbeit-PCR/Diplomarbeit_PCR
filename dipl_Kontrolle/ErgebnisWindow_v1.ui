@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>489</width>
+    <width>490</width>
     <height>733</height>
    </rect>
   </property>
@@ -56,13 +56,23 @@
      <string>Beenden</string>
     </property>
    </widget>
-   <widget class="QTableView" name="tbl_ergeb">
+   <widget class="QTableView" name="tbl_phasen">
     <property name="geometry">
      <rect>
-      <x>5</x>
-      <y>111</y>
-      <width>481</width>
-      <height>491</height>
+      <x>0</x>
+      <y>120</y>
+      <width>491</width>
+      <height>261</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QTableView" name="tbl_m">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>390</y>
+      <width>491</width>
+      <height>211</height>
      </rect>
     </property>
    </widget>
@@ -72,7 +82,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>489</width>
+     <width>490</width>
      <height>22</height>
     </rect>
    </property>
