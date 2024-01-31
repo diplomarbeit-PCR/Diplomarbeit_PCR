@@ -1,9 +1,9 @@
 from PySide6.QtWidgets import QMainWindow, QApplication, QTableWidgetItem, QTableWidget
 import pymysql
 
+from dipl_Kontrolle.ErgebnisWindow_v1 import Ui_Ergebnis
 
-
-class MainWindow(QMainWindow):
+class MainWindow(QMainWindow, Ui_Ergebnis):
     def __init__(self):
         super().__init__()
 
@@ -33,12 +33,35 @@ class MainWindow(QMainWindow):
 
         # Tabellenwidget für Messwerte erstellen
         self.tbl_messwerte = QTableWidget()
-        self.tbl_messwerte.setColumnCount(3)  # Drei Spalten
-        self.tbl_messwerte.setHorizontalHeaderLabels(["Kategorien", "Werte", "Einheit"])
+        self.tbl_messwerte.setColumnCount(2)  # Drei Spalten
+        self.tbl_messwerte.setHorizontalHeaderLabels(["Kategorien", "Wert"])
         self.setCentralWidget(self.tbl_messwerte)
 
         try:
             with connection.cursor() as cursor:
+                # Tabelle 'PhasenWerte' erstellen, falls nicht vorhanden
+                create_table_phasen = """
+                CREATE TABLE IF NOT EXISTS PhasenWerte (
+                    Kategorien VARCHAR(50),
+                    Denaturierung DECIMAL(5,2),
+                    Annealing DECIMAL(5,2),
+                    Elongation DECIMAL(5,2),
+                    Einheit VARCHAR(50)
+                )
+                """
+                cursor.execute(create_table_phasen)
+                print("Tabelle 'PhasenWerte' erstellt")
+
+                # Tabelle 'Messwerte' erstellen, falls nicht vorhanden
+                create_table_messwert = """
+                CREATE TABLE IF NOT EXISTS Messwerte (
+                    Kategorien VARCHAR(50),
+                    Wert DECIMAL(5,2)
+                )
+                """
+                cursor.execute(create_table_messwert)
+                print("Tabelle 'Messwerte' erstellt")
+
                 # INSERT INTO-Anweisung für PhasenWerte
                 insert_phasen = """
                 INSERT INTO PhasenWerte (Kategorien, Denaturierung, Annealing, Elongation, Einheit)
@@ -50,10 +73,10 @@ class MainWindow(QMainWindow):
 
                 # INSERT INTO-Anweisung für Messwerte
                 insert_messwerte = """
-                INSERT INTO Messwerte (Kategorien, Werte, Einheit)
+                INSERT INTO Messwerte (Kategorien, Wert)
                 VALUES 
-                ("Durchläufe", %s, ""),
-                ("Lichtstärke", %s, "lum")
+                ("Durchläufe", %s),
+                ("Lichtstärke", %s "lum")
                 """
                 cursor.execute(insert_messwerte, (DL_counter, value_light))
 
@@ -90,4 +113,4 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
     window = MainWindow()
     window.show()
-    sys.exit(app.exec_())
+    sys.exit(app.exec())
