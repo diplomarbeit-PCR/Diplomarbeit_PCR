@@ -27,10 +27,14 @@ class MainWindow(QMainWindow):
 
         # Tabellenwidget für PhasenWerte erstellen
         self.tbl_phasen = QTableWidget()
+        self.tbl_phasen.setColumnCount(5)  # Fünf Spalten
+        self.tbl_phasen.setHorizontalHeaderLabels(["Kategorien", "Denaturierung", "Annealing", "Elongation", "Einheit"])
         self.setCentralWidget(self.tbl_phasen)
 
         # Tabellenwidget für Messwerte erstellen
         self.tbl_messwerte = QTableWidget()
+        self.tbl_messwerte.setColumnCount(3)  # Drei Spalten
+        self.tbl_messwerte.setHorizontalHeaderLabels(["Kategorien", "Werte", "Einheit"])
         self.setCentralWidget(self.tbl_messwerte)
 
         try:
