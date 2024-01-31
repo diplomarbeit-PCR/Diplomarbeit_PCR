@@ -103,3 +103,6 @@ except pymysql.MySQLError as e:
 finally:
     # Verbindung schließen
     connection.close()
+
+app = QApplication()
+app.exec()
