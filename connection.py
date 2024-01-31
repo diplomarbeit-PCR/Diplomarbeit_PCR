@@ -1,4 +1,23 @@
 import pymysql
+from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
+    QMetaObject, QObject, QPoint, QRect,
+    QSize, QTime, QUrl, Qt)
+from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
+    QFont, QFontDatabase, QGradient, QIcon,
+    QImage, QKeySequence, QLinearGradient, QPainter,
+    QPalette, QPixmap, QRadialGradient, QTransform)
+from PySide6.QtWidgets import (QApplication, QHeaderView, QLabel, QMainWindow,
+    QMenuBar, QPushButton, QSizePolicy, QStatusBar,
+    QTableView, QWidget)
+
+centralwidget = QWidget()
+centralwidget.setObjectName(u"centralwidget")
+tbl_phasen = QTableView(centralwidget)
+tbl_phasen.setObjectName(u"tbl_phasen")
+tbl_phasen.setGeometry(QRect(0, 120, 491, 261))
+tbl_m = QTableView(centralwidget)
+tbl_m.setObjectName(u"tbl_m")
+tbl_m.setGeometry(QRect(0, 390, 491, 211))
 
 temp_denat = 95
 temp_aneal = 60
