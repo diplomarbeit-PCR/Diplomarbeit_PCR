@@ -1,5 +1,15 @@
 import pymysql
 
+temp_denat = 95
+temp_aneal = 60
+temp_elong = 70
+value_denat = 10
+value_aneal = 30
+value_elong = 20
+
+DL_counter = 10
+value_light = 24.90
+
 # Verbindung zur Datenbank herstellen
 connection = pymysql.connect(
     host='localhost',     # Hostname oder IP-Adresse deiner MariaDB-Instanz
