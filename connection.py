@@ -1,13 +1,5 @@
 import pymysql
 
-from dipl_Kontrolle.ErgebnisWindow_v1 import Ui_Ergebnis
-
-class Frm_ergeb(QMainWindow, Ui_Ergebnis):
-    def __init__(self):
-        super().__init__()
-        # Initialisierung der Benutzeroberfläche 
-        self.setupUi(self)
-
 temp_denat = 95
 temp_aneal = 60
 temp_elong = 70
