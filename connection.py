@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-from PySide6.QtWidgets import QMainWindow
-from dipl_Kontrolle.ErgebnisWindow_v1 import Ui_Ergebnis
-=======
->>>>>>> 5d698c133a4a59cd56ecdde3a28368b135946af6
+
 import pymysql
 
 from dipl_Kontrolle.ErgebnisWindow_v1 import Ui_Ergebnis
