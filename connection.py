@@ -56,31 +56,27 @@ try:
         cursor.execute(insert_table_phasen, (temp_denat, temp_aneal, temp_elong, value_denat, value_aneal, value_elong))
         print("In Tabelle 'PhasenWerte' eingefügt")
 
-        # Daten in Tabelle 'Messwerte' einfügen
-        insert_table_messwert = """
-        INSERT INTO Messwerte
-        VALUES
-        ("Durchläufe", %s, ""),
-        ("Lichtstärke", %s, "lum")
-        """
-        cursor.execute(insert_table_messwert, (DL_counter, value_light))
-        print("In Tabelle 'Messwerte' eingefügt")
-
-        # Daten aus Tabelle 'PhasenWerte' abrufen und ausgeben
+        # Daten aus Tabelle 'PhasenWerte' abrufen
         dae = "SELECT * FROM PhasenWerte"
         cursor.execute(dae)
-        result = cursor.fetchall()
-        for row in result:
-            print(row)
+        result_phasen = cursor.fetchall()
 
-        # Daten aus Tabelle 'Messwerte' abrufen und ausgeben
+        # Daten aus Tabelle 'Messwerte' abrufen
         mw = "SELECT * FROM Messwerte"
         cursor.execute(mw)
-        result = cursor.fetchall()
-        for row in result:
-            print(row)
+        result_messwerte = cursor.fetchall()
 
-        
+        # Ergebnisse in tbl_phasen einfügen
+        for row in result_phasen:
+            tbl_phasen.insertRow(tbl_phasen.rowCount())
+            for i, item in enumerate(row):
+                tbl_phasen.setItem(tbl_phasen.rowCount() - 1, i, QTableWidgetItem(str(item)))
+
+        # Ergebnisse in tbl_m einfügen
+        for row in result_messwerte:
+            tbl_m.insertRow(tbl_m.rowCount())
+            for i, item in enumerate(row):
+                tbl_m.setItem(tbl_m.rowCount() - 1, i, QTableWidgetItem(str(item)))
 
 except pymysql.MySQLError as e:
     print("MySQL-Fehler: {}".format(str(e)))
