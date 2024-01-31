@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QMainWindow
+from PySide6.QtWidgets import QMainWindow
 from dipl_Kontrolle.ErgebnisWindow_v1 import Ui_Ergebnis
 import pymysql
 
