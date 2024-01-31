@@ -10,6 +10,8 @@ from PySide6.QtWidgets import (QApplication, QHeaderView, QLabel, QMainWindow,
     QMenuBar, QPushButton, QSizePolicy, QStatusBar, QTableWidgetItem,
     QTableView, QWidget)
 
+app = QApplication()
+
 centralwidget = QWidget()
 centralwidget.setObjectName(u"centralwidget")
 tbl_phasen = QTableView(centralwidget)
@@ -104,5 +106,5 @@ finally:
     # Verbindung schließen
     connection.close()
 
-app = QApplication()
+
 app.exec()
