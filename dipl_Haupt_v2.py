@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import QMainWindow, QApplication, QTableWidgetItem
+from PySide6.QtWidgets import QMainWindow, QApplication, QTableWidgetItem, QTableWidget
 from PySide6.QtCore import QTimer
 import pymysql
 
@@ -292,6 +292,18 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.frm_kont.hide()
 
     def ergebnis(self):
+        # Tabellenwidget für PhasenWerte erstellen
+        self.tbl_phasen = QTableWidget()
+        self.tbl_phasen.setColumnCount(5)  # Fünf Spalten
+        self.tbl_phasen.setHorizontalHeaderLabels(["Kategorien", "Denaturierung", "Annealing", "Elongation", "Einheit"])
+        self.setCentralWidget(self.tbl_phasen)
+
+        # Tabellenwidget für Messwerte erstellen
+        self.tbl_messwerte = QTableWidget()
+        self.tbl_messwerte.setColumnCount(2)  # Drei Spalten
+        self.tbl_messwerte.setHorizontalHeaderLabels(["Kategorien", "Anzahl"])
+        self.setCentralWidget(self.tbl_messwerte)
+
         try:
             with self.connection.cursor() as cursor:
                 # Tabelle 'PhasenWerte' erstellen, falls nicht vorhanden
@@ -358,7 +370,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
 
         finally:
             # Verbindung schließen
-            connection.close()
+            self.connection.close()
 
 
         # phasen_Ablauf soll wiederholt werden
