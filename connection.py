@@ -1,4 +1,3 @@
-
 import pymysql
 
 from dipl_Kontrolle.ErgebnisWindow_v1 import Ui_Ergebnis
