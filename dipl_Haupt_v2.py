@@ -340,7 +340,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
 
                 # INSERT INTO-Anweisung für Messwerte
                 insert_messwerte = """
-                INSERT INTO Messwerte (Kategorien, Wert)
+                INSERT INTO Messwerte (Kategorien, Anzahl)
                 VALUES 
                 ("Durchläufe", %s),
                 ("Lichtstärke in Lumen", %s )
@@ -351,14 +351,14 @@ class Frm_main(QMainWindow, Ui_StartWindow):
                 cursor.execute("SELECT * FROM PhasenWerte")
                 result_phasen = cursor.fetchall()
 
-                # Daten aus Tabelle 'Messwerte' abrufen
-                cursor.execute("SELECT * FROM Messwerte")
-                result_messwerte = cursor.fetchall()
-
                 # Ergebnisse in tbl_phasen einfügen
                 for row_num, row_data in enumerate(result_phasen):
                     for col_num, col_data in enumerate(row_data):
                         self.frm_ergeb.tbl_phasen.setItem(row_num, col_num, QTableWidgetItem(str(col_data)))
+
+                # Daten aus Tabelle 'Messwerte' abrufen
+                cursor.execute("SELECT * FROM Messwerte")
+                result_messwerte = cursor.fetchall()
 
                 # Ergebnisse in tbl_messwerte einfügen
                 for row_num, row_data in enumerate(result_messwerte):
