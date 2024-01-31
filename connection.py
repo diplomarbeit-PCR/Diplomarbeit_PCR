@@ -34,7 +34,7 @@ class MainWindow(QMainWindow, Ui_Ergebnis):
         # Tabellenwidget für Messwerte erstellen
         self.tbl_messwerte = QTableWidget()
         self.tbl_messwerte.setColumnCount(2)  # Drei Spalten
-        self.tbl_messwerte.setHorizontalHeaderLabels(["Kategorien", "Wert"])
+        self.tbl_messwerte.setHorizontalHeaderLabels(["Kategorien", "Anzahl"])
         self.setCentralWidget(self.tbl_messwerte)
 
         try:
@@ -56,7 +56,7 @@ class MainWindow(QMainWindow, Ui_Ergebnis):
                 create_table_messwert = """
                 CREATE TABLE IF NOT EXISTS Messwerte (
                     Kategorien VARCHAR(50),
-                    Wert DECIMAL(5,2)
+                    Anzahl DECIMAL(5,2)
                 )
                 """
                 cursor.execute(create_table_messwert)
@@ -73,7 +73,7 @@ class MainWindow(QMainWindow, Ui_Ergebnis):
 
                 # INSERT INTO-Anweisung für Messwerte
                 insert_messwerte = """
-                INSERT INTO Messwerte (Kategorien, Wert)
+                INSERT INTO Messwerte (Kategorien, Anzahl)
                 VALUES 
                 ("Durchläufe", %s),
                 ("Lichtstärke in Lumen", %s )
