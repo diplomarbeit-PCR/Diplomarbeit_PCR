@@ -1,5 +1,6 @@
-from PySide6.QtWidgets import QApplication, QMainWindow
+from PySide6.QtWidgets import QMainWindow, QApplication, QTableWidgetItem
 from PySide6.QtCore import QTimer
+import pymysql
 
 # Auf die unterschiedlichen WIndows zugreifen (QT Deklaration, die in Py umgewandelt wurden)
 from dipl_Einfuehrung.einfuehrung_v4 import Ui_StartWindow
@@ -147,6 +148,19 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         # Initialisierung der Benutzeroberfläche 
         self.setupUi(self)
 
+        self.temp_denat = 95
+        self.temp_aneal = 60
+        self.temp_elong = 70
+        self.value_light = 24.90
+
+        # Verbindung zur Datenbank herstellen
+        connection = pymysql.connect(
+            host='localhost',
+            user='root',
+            password='Rock4C+',
+            database='eduPCR'
+        )
+
         self.timer_seconds = 0
         self.timer = QTimer()
         # mit einem Intervall von 
@@ -278,6 +292,46 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.frm_kont.hide()
 
     def ergebnis(self):
+        # INSERT INTO-Anweisung für PhasenWerte
+        insert_phasen = """
+        INSERT INTO PhasenWerte (Kategorien, Denaturierung, Annealing, Elongation, Einheit)
+        VALUES 
+        ("Temperatur", %s, %s, %s, "°C"),
+        ("Dauer", %s, %s, %s, "sek")
+        """
+        self.cursor.execute(insert_phasen, (self.temp_denat, self.temp_aneal, self.temp_elong, self.frm_zeitDef.value_denat, self.frm_zeitDef.value_aneal, self.frm_zeitDef.value_elong))
+
+        # INSERT INTO-Anweisung für Messwerte
+        insert_messwerte = """
+        INSERT INTO Messwerte (Kategorien, Wert)
+        VALUES 
+        ("Durchläufe", %s),
+        ("Lichtstärke in Lumen", %s )
+        """
+        self.cursor.execute(insert_messwerte, (self.DL_counter, self.value_light))
+
+        # Daten aus Tabelle 'PhasenWerte' abrufen
+        self.cursor.execute("SELECT * FROM PhasenWerte")
+        result_phasen = self.cursor.fetchall()
+
+        # Daten aus Tabelle 'Messwerte' abrufen
+        self.cursor.execute("SELECT * FROM Messwerte")
+        result_messwerte = self.cursor.fetchall()
+
+        # Ergebnisse in tbl_phasen einfügen
+        self.frm_ergeb.tbl_phasen.setRowCount(len(result_phasen))
+        for row_num, row_data in enumerate(result_phasen):
+            for col_num, col_data in enumerate(row_data):
+                self.frm_ergeb.tbl_phasen.setItem(row_num, col_num, QTableWidgetItem(str(col_data)))
+
+        # Ergebnisse in tbl_messwerte einfügen
+        self.frm_ergeb.tbl_messwerte.setRowCount(len(result_messwerte))
+        for row_num, row_data in enumerate(result_messwerte):
+            for col_num, col_data in enumerate(row_data):
+                self.frm_ergeb.tbl_messwerte.setItem(row_num, col_num, QTableWidgetItem(str(col_data)))
+
+
+
         # phasen_Ablauf soll wiederholt werden
         self.frm_ergeb.showFullScreen()
         self.frm_kont.hide()
