@@ -5,7 +5,7 @@ connection = pymysql.connect(
     host='localhost',     # Hostname oder IP-Adresse deiner MariaDB-Instanz
     user='root',     # Benutzername für den Zugriff auf die Datenbank
     password='Rock4C+',    # Passwort für den Benutzer
-    database='eduPCR')    # Name der Datenbank, zu der du dich verbinden möchtest
+    database='diplom')    # Name der Datenbank, zu der du dich verbinden möchtest
 
 temp_denat = 95
 temp_aneal = 60
@@ -22,7 +22,7 @@ try:
     cursor = connection.cursor()
 
     # Datenbank erstellen
-    db_name = 'eduPCR'
+    db_name = 'diplom'
     cursor.execute("CREATE DATABASE IF NOT EXISTS {}".format(db_name))
     print("Datenbank erstellt: {}".format(db_name))
 
@@ -59,7 +59,7 @@ try:
     ("Temperatur", temp_denat, temp_aneal, temp_elong, "°C"),
     ("Dauer", value_denat, value_aneal, value_elong, "sek");
     """
-    cursor.execute(create_table_phasen)
+    cursor.execute(insert_table_phasen)
     print("in Tabelle 'PhasenWerte' eingesetzt")
 
     # in Tabelle einsetzten
@@ -68,9 +68,8 @@ try:
     VALUES
     ("Durchläufe", DL_counter, ""),
     ("Lichtstärke", value_light, "lum");
-    SELECT * FROM Messwerte
     """
-    cursor.execute(create_table_messwert)
+    cursor.execute(insert_table_messwert)
     print("in Tabelle 'Messwerte' eingesetzt")
 
     with connection.cursor() as cursor:
