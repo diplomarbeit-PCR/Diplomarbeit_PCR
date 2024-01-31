@@ -76,7 +76,7 @@ class MainWindow(QMainWindow, Ui_Ergebnis):
                 INSERT INTO Messwerte (Kategorien, Wert)
                 VALUES 
                 ("Durchläufe", %s),
-                ("Lichtstärke", %s "lum")
+                ("Lichtstärke in Lumen", %s )
                 """
                 cursor.execute(insert_messwerte, (DL_counter, value_light))
 
