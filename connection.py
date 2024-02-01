@@ -25,8 +25,8 @@ class MainWindow(QMainWindow, Ui_Ergebnis):
             database='eduPCR'
         )
 
-        cursor = connection.cursor()
-        cur = connection.cursor()
+        cursor_mess = connection.cursor()
+        cursor_phasen = connection.cursor()
 
         # Tabellenwidget für PhasenWerte erstellen
         self.tbl_phasen = QTableWidget()
@@ -58,7 +58,7 @@ class MainWindow(QMainWindow, Ui_Ergebnis):
                 Einheit VARCHAR(50)
             )
             """
-            cur.execute(create_table_phasen)
+            cursor_phasen.execute(create_table_phasen)
             print("Tabelle 'PhasenWerte' erstellt")
 
             # Tabelle 'Messwerte' erstellen, falls nicht vorhanden
@@ -68,7 +68,7 @@ class MainWindow(QMainWindow, Ui_Ergebnis):
                 Anzahl DECIMAL(5,2)
             )
             """
-            cursor.execute(create_table_messwert)
+            cursor_mess.execute(create_table_messwert)
             print("Tabelle 'Messwerte' erstellt")
 
             # INSERT INTO-Anweisung für PhasenWerte
@@ -78,7 +78,7 @@ class MainWindow(QMainWindow, Ui_Ergebnis):
             ("Temperatur", %s, %s, %s, "°C"),
             ("Dauer", %s, %s, %s, "sek")
             """
-            cur.execute(insert_phasen, (temp_denat, temp_aneal, temp_elong, value_denat, value_aneal, value_elong))
+            cursor_phasen.execute(insert_phasen, (temp_denat, temp_aneal, temp_elong, value_denat, value_aneal, value_elong))
 
             # INSERT INTO-Anweisung für Messwerte
             insert_messwerte = """
@@ -87,15 +87,15 @@ class MainWindow(QMainWindow, Ui_Ergebnis):
             ("Durchläufe", %s),
             ("Lichtstärke in Lumen", %s )
             """
-            cursor.execute(insert_messwerte, (DL_counter, value_light))
+            cursor_mess.execute(insert_messwerte, (DL_counter, value_light))
 
             # Daten aus Tabelle 'PhasenWerte' abrufen
-            cur.execute("SELECT * FROM PhasenWerte")
-            result_phasen = cur.fetchall()
+            cursor_phasen.execute("SELECT * FROM PhasenWerte")
+            result_phasen = cursor_phasen.fetchall()
 
             # Daten aus Tabelle 'Messwerte' abrufen
-            cursor.execute("SELECT * FROM Messwerte")
-            result_messwerte = cursor.fetchall()
+            cursor_mess.execute("SELECT * FROM Messwerte")
+            result_messwerte = cursor_mess.fetchall()
 
             # Ergebnisse in tbl_phasen einfügen
             for row_num, row_data in enumerate(result_phasen):
