@@ -323,7 +323,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
                 Kategorien VARCHAR(50),
                 Denaturierung DECIMAL(5,2),
                 Annealing DECIMAL(5,2),
-                Elongation DECIMAL(5,2),
+                Elongation DECIMAL(5,2)
             )
             """
             self.cursor_phasen.execute(create_table_phasen)
