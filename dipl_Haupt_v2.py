@@ -161,6 +161,9 @@ class Frm_main(QMainWindow, Ui_StartWindow):
             database='eduPCR'
         )
 
+        self.cursor_mess = self.connection.cursor()
+        self.cursor_phasen = self.connection.cursor()
+
         self.timer_seconds = 0
         self.timer = QTimer()
         # mit einem Intervall von 
@@ -305,65 +308,67 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.setCentralWidget(self.tbl_messwerte)
 
         try:
-            with self.connection.cursor() as cursor:
-                # Tabelle 'PhasenWerte' erstellen, falls nicht vorhanden
-                create_table_phasen = """
-                CREATE TABLE IF NOT EXISTS PhasenWerte (
-                    Kategorien VARCHAR(50),
-                    Denaturierung DECIMAL(5,2),
-                    Annealing DECIMAL(5,2),
-                    Elongation DECIMAL(5,2),
-                    Einheit VARCHAR(50)
-                )
-                """
-                cursor.execute(create_table_phasen)
-                print("Tabelle 'PhasenWerte' erstellt")
+            # Tabelle 'PhasenWerte' erstellen, falls nicht vorhanden
+            create_table_phasen = """
+            CREATE TABLE IF NOT EXISTS PhasenWerte (
+                Kategorien VARCHAR(50),
+                Denaturierung DECIMAL(5,2),
+                Annealing DECIMAL(5,2),
+                Elongation DECIMAL(5,2),
+                Einheit VARCHAR(50)
+            )
+            """
+            self.cursor_phasen.execute(create_table_phasen)
+            print("Tabelle 'PhasenWerte' erstellt")
 
-                # Tabelle 'Messwerte' erstellen, falls nicht vorhanden
-                create_table_messwert = """
-                CREATE TABLE IF NOT EXISTS Messwerte (
-                    Kategorien VARCHAR(50),
-                    Anzahl DECIMAL(5,2)
-                )
-                """
-                cursor.execute(create_table_messwert)
-                print("Tabelle 'Messwerte' erstellt")
+            # Tabelle 'Messwerte' erstellen, falls nicht vorhanden
+            create_table_messwert = """
+            CREATE TABLE IF NOT EXISTS Messwerte (
+                Kategorien VARCHAR(50),
+                Anzahl DECIMAL(5,2)
+            )
+            """
+            self.cursor_mess.execute(create_table_messwert)
+            print("Tabelle 'Messwerte' erstellt")
 
-                # INSERT INTO-Anweisung für PhasenWerte
-                insert_phasen = """
-                INSERT INTO PhasenWerte (Kategorien, Denaturierung, Annealing, Elongation, Einheit)
-                VALUES 
-                ("Temperatur", %s, %s, %s, "°C"),
-                ("Dauer", %s, %s, %s, "sek")
-                """
-                cursor.execute(insert_phasen, (self.temp_denat, self.temp_aneal, self.temp_elong, self.frm_zeitDef.value_denat, self.frm_zeitDef.value_aneal, self.frm_zeitDef.value_elong))
+            # INSERT INTO-Anweisung für PhasenWerte
+            insert_phasen = """
+            INSERT INTO PhasenWerte (Kategorien, Denaturierung, Annealing, Elongation, Einheit)
+            VALUES 
+            ("Temperatur", %s, %s, %s, "°C"),
+            ("Dauer", %s, %s, %s, "sek")
+            """
+            self.cursor_phasen.execute(insert_phasen, (self.temp_denat, self.temp_aneal, self.temp_elong, self.frm_zeitDef.value_denat, self.frm_zeitDef.value_aneal, self.frm_zeitDef.value_elong))
 
-                # INSERT INTO-Anweisung für Messwerte
-                insert_messwerte = """
-                INSERT INTO Messwerte (Kategorien, Anzahl)
-                VALUES 
-                ("Durchläufe", %s),
-                ("Lichtstärke in Lumen", %s )
-                """
-                cursor.execute(insert_messwerte, (self.DL_counter, self.value_light))
+            # INSERT INTO-Anweisung für Messwerte
+            insert_messwerte = """
+            INSERT INTO Messwerte (Kategorien, Anzahl)
+            VALUES 
+            ("Durchläufe", %s),
+            ("Lichtstärke in Lumen", %s )
+            """
+            self.cursor_mess.execute(insert_messwerte, (self.DL_counter, self.value_light))
 
-                # Daten aus Tabelle 'PhasenWerte' abrufen
-                cursor.execute("SELECT * FROM PhasenWerte")
-                result_phasen = cursor.fetchall()
+            # Daten aus Tabelle 'PhasenWerte' abrufen
+            self.cursor_phasen.execute("SELECT * FROM PhasenWerte")
+            result_phasen = self.cursor_phasen.fetchall()
 
-                # Daten aus Tabelle 'Messwerte' abrufen
-                cursor.execute("SELECT * FROM Messwerte")
-                result_messwerte = cursor.fetchall()
+            # Daten aus Tabelle 'Messwerte' abrufen
+            self.cursor_mess.execute("SELECT * FROM Messwerte")
+            result_messwerte = self.cursor_mess.fetchall()
 
-                # Ergebnisse in tbl_phasen einfügen
-                for row_num, row_data in enumerate(result_phasen):
-                    for col_num, col_data in enumerate(row_data):
-                        self.frm_ergeb.tbl_phasen.setItem(row_num, col_num, QTableWidgetItem(str(col_data)))
+            # Ergebnisse in tbl_phasen einfügen
+            for row_num, row_data in enumerate(result_phasen):
+                self.tbl_phasen.insertRow(row_num)
+                for col_num, col_data in enumerate(row_data):
+                    self.tbl_phasen.setItem(row_num, col_num, QTableWidgetItem(str(col_data)))
 
-                # Ergebnisse in tbl_messwerte einfügen
-                for row_num, row_data in enumerate(result_messwerte):
-                    for col_num, col_data in enumerate(row_data):
-                        self.frm_ergeb.tbl_mess.setItem(row_num, col_num, QTableWidgetItem(str(col_data)))
+            # Ergebnisse in tbl_messwerte einfügen
+            for row_num, row_data in enumerate(result_messwerte):
+                self.tbl_messwerte.insertRow(row_num)
+                for col_num, col_data in enumerate(row_data):
+                    self.tbl_messwerte.setItem(row_num, col_num, QTableWidgetItem(str(col_data)))
+
 
         except pymysql.MySQLError as e:
             print("MySQL-Fehler: {}".format(str(e)))
@@ -371,7 +376,6 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         finally:
             # Verbindung schließen
             self.connection.close()
-
 
         # phasen_Ablauf soll wiederholt werden
         self.frm_ergeb.showFullScreen()
