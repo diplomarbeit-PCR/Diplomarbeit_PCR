@@ -16,7 +16,7 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QHeaderView, QLabel, QMainWindow,
-    QMenuBar, QPushButton, QSizePolicy, QStatusBar,
+    QMenuBar, QPushButton, QSizePolicy, QStatusBar, QTableWidget,
     QTableView, QWidget)
 
 class Ui_Ergebnis(object):
@@ -42,9 +42,11 @@ class Ui_Ergebnis(object):
         font1.setFamilies([u"Arial Narrow"])
         font1.setPointSize(20)
         self.btn_Ende.setFont(font1)
+        self.tbl_phasen = QTableWidget()
         self.tbl_phasen = QTableView(self.centralwidget)
         self.tbl_phasen.setObjectName(u"tbl_phasen")
         self.tbl_phasen.setGeometry(QRect(0, 120, 491, 261))
+        self.tbl_mess = QTableWidget()
         self.tbl_mess = QTableView(self.centralwidget)
         self.tbl_mess.setObjectName(u"tbl_mess")
         self.tbl_mess.setGeometry(QRect(0, 390, 491, 211))
