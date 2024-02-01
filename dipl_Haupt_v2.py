@@ -299,23 +299,13 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.frm_kont.hide()
 
     def ergebnis(self):
-        # Tabellenwidget für PhasenWerte erstellen
-        self.tbl_phasen = QTableWidget()
-        self.tbl_phasen.setColumnCount(4)  # Fünf Spalten
-        self.tbl_phasen.setHorizontalHeaderLabels(["Kategorien", "Denaturierung", "Annealing", "Elongation"])
-
-        # Tabellenwidget für Messwerte erstellen
-        self.tbl_messwerte = QTableWidget()
-        self.tbl_messwerte.setColumnCount(2)  # Zwei Spalten
-        self.tbl_messwerte.setHorizontalHeaderLabels(["Kategorien", "Anzahl"])
-
         print("temp_d", self.temp_denat)
         print("temp_a", self.temp_aneal)
         print("temp_e", self.temp_elong)
         print("dauer_d", self.frm_zeitDef.value_denat)
         print("dauer_a", self.frm_zeitDef.value_aneal_gesamt)
         print("dauer_e", self.frm_zeitDef.value_elong_gesamt)
-        print("dl", self.phaseCount)
+        print("dl", self.DL_zaehler_value)
         print("light", self.value_light)
 
 
@@ -371,15 +361,15 @@ class Frm_main(QMainWindow, Ui_StartWindow):
 
             # Ergebnisse in tbl_phasen einfügen
             for row_num, row_data in enumerate(result_phasen):
-                self.tbl_phasen.insertRow(row_num)
+                self.frm_ergeb.tbl_phasen.insertRow(row_num)
                 for col_num, col_data in enumerate(row_data):
-                    self.tbl_phasen.setItem(row_num, col_num, QTableWidgetItem(str(col_data)))
+                    self.frm_ergeb.tbl_phasen.setItem(row_num, col_num, QTableWidgetItem(str(col_data)))
 
             # Ergebnisse in tbl_messwerte einfügen
             for row_num, row_data in enumerate(result_messwerte):
-                self.tbl_messwerte.insertRow(row_num)
+                self.frm_ergeb.tbl_mess.insertRow(row_num)
                 for col_num, col_data in enumerate(row_data):
-                    self.tbl_messwerte.setItem(row_num, col_num, QTableWidgetItem(str(col_data)))
+                    self.frm_ergeb.tbl_mess.setItem(row_num, col_num, QTableWidgetItem(str(col_data)))
 
 
 
