@@ -96,10 +96,10 @@ class MainWindow(QMainWindow, Ui_Ergebnis):
                 result_messwerte = cursor.fetchall()
 
                 # Ergebnisse in tbl_phasen einfügen
-                self.tbl_phasen.insertRow(result_phasen)
+                self.tbl_phasen.executeDelayedItemsLayout(result_phasen)
 
                 # Ergebnisse in tbl_messwerte einfügen
-                self.tbl_messwerte.insertRow(result_messwerte)
+                self.tbl_messwerte.executeDelayedItemsLayout(result_messwerte)
 
         except pymysql.MySQLError as e:
             print("MySQL-Fehler: {}".format(str(e)))
