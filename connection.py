@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import QMainWindow, QApplication, QTableWidgetItem, QTableWidget
+from PySide6.QtWidgets import QMainWindow, QApplication, QTableWidgetItem, QTableWidget, QVBoxLayout, QWidget
 import pymysql
 
 from dipl_Kontrolle.ErgebnisWindow_v1 import Ui_Ergebnis
@@ -29,13 +29,20 @@ class MainWindow(QMainWindow, Ui_Ergebnis):
         self.tbl_phasen = QTableWidget()
         self.tbl_phasen.setColumnCount(5)  # Fünf Spalten
         self.tbl_phasen.setHorizontalHeaderLabels(["Kategorien", "Denaturierung", "Annealing", "Elongation", "Einheit"])
-        self.setCentralWidget(self.tbl_phasen)
 
         # Tabellenwidget für Messwerte erstellen
         self.tbl_messwerte = QTableWidget()
-        self.tbl_messwerte.setColumnCount(2)  # Drei Spalten
+        self.tbl_messwerte.setColumnCount(2)  # Zwei Spalten
         self.tbl_messwerte.setHorizontalHeaderLabels(["Kategorien", "Anzahl"])
-        self.setCentralWidget(self.tbl_messwerte)
+
+        # Ein zentrales Widget für die Hauptanzeige erstellen
+        central_widget = QWidget()
+        layout = QVBoxLayout(central_widget)
+        layout.addWidget(self.tbl_phasen)
+        layout.addWidget(self.tbl_messwerte)
+
+        # MainWindow mit dem zentralen Widget einrichten
+        self.setCentralWidget(central_widget)
 
         try:
             with connection.cursor() as cursor:
@@ -89,16 +96,10 @@ class MainWindow(QMainWindow, Ui_Ergebnis):
                 result_messwerte = cursor.fetchall()
 
                 # Ergebnisse in tbl_phasen einfügen
-                for row_num, row_data in enumerate(result_phasen):
-                    self.tbl_phasen.insertRow(row_num)
-                    for col_num, col_data in enumerate(row_data):
-                        self.tbl_phasen.setItem(row_num, col_num, QTableWidgetItem(str(col_data)))
+                self.tbl_phasen.insertRow(result_phasen)
 
                 # Ergebnisse in tbl_messwerte einfügen
-                for row_num, row_data in enumerate(result_messwerte):
-                    self.tbl_messwerte.insertRow(row_num)
-                    for col_num, col_data in enumerate(row_data):
-                        self.tbl_messwerte.setItem(row_num, col_num, QTableWidgetItem(str(col_data)))
+                self.tbl_messwerte.insertRow(result_messwerte)
 
         except pymysql.MySQLError as e:
             print("MySQL-Fehler: {}".format(str(e)))
