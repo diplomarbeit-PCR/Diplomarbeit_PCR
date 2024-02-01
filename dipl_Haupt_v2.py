@@ -295,16 +295,6 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.frm_kont.hide()
 
     def ergebnis(self):
-        # Tabellenwidget für PhasenWerte erstellen
-        self.frm_ergeb.tbl_phasen = QTableWidget()
-        self.frm_ergeb.tbl_phasen.setColumnCount(5)  # Fünf Spalten
-        self.setCentralWidget(self.frm_ergeb.tbl_phasen)
-
-        # Tabellenwidget für Messwerte erstellen
-        self.frm_ergeb.tbl_mess = QTableWidget()
-        self.frm_ergeb.tbl_mess.setColumnCount(2)  # Drei Spalten
-        self.setCentralWidget(self.frm_ergeb.tbl_mess)
-
         try:
             # Tabelle 'PhasenWerte' erstellen, falls nicht vorhanden
             create_table_phasen = """
