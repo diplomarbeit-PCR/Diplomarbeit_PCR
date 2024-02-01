@@ -298,12 +298,22 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         # Tabellenwidget für PhasenWerte erstellen
         self.tbl_phasen = QTableWidget()
         self.tbl_phasen.setColumnCount(5)  # Fünf Spalten
-        self.tbl_phasen.setHorizontalHeaderLabels(["Kategorien", "Denaturierung", "Annealing", "Elongation", "Einheit"])
+        self.tbl_phasen.setHorizontalHeaderLabels(["Kategorien", "Denaturierung", "Annealing", "Elongation"])
 
         # Tabellenwidget für Messwerte erstellen
         self.tbl_messwerte = QTableWidget()
         self.tbl_messwerte.setColumnCount(2)  # Zwei Spalten
         self.tbl_messwerte.setHorizontalHeaderLabels(["Kategorien", "Anzahl"])
+
+        print("temp_d", self.temp_denat)
+        print("temp_a", self.temp_aneal)
+        print("temp_e", self.temp_elong)
+        print("dauer_d", self.frm_zeitDef.value_denat)
+        print("dauer_a", self.frm_zeitDef.value_aneal)
+        print("dauer_e", self.frm_zeitDef.value_elong)
+        print("dl", self.DL_counter)
+        print("light", self.value_light)
+
 
         try:
             # Tabelle 'PhasenWerte' erstellen, falls nicht vorhanden
@@ -337,14 +347,6 @@ class Frm_main(QMainWindow, Ui_StartWindow):
             """
             self.cursor_phasen.execute(insert_phasen, (self.temp_denat, self.temp_aneal, self.temp_elong, self.frm_zeitDef.value_denat, self.frm_zeitDef.value_aneal, self.frm_zeitDef.value_elong))
 
-            
-            print("temp_d", self.temp_denat)
-            print("temp_a", self.temp_aneal)
-            print("temp_e", self.temp_elong)
-            print("dauer_d", self.frm_zeitDef.value_denat)
-            print("dauer_a", self.frm_zeitDef.value_aneal)
-            print("dauer_e", self.frm_zeitDef.value_elong)
-
             # INSERT INTO-Anweisung für Messwerte
             insert_messwerte = """
             INSERT INTO Messwerte (Kategorien, Anzahl)
@@ -353,9 +355,6 @@ class Frm_main(QMainWindow, Ui_StartWindow):
             ("Lichtstärke in Lumen", %s )
             """
             self.cursor_mess.execute(insert_messwerte, (self.DL_counter, self.value_light))
-
-            print("dl", self.DL_counter)
-            print("light", self.value_light)
 
             # Daten aus Tabelle 'PhasenWerte' abrufen
             self.cursor_phasen.execute("SELECT * FROM PhasenWerte")
@@ -380,6 +379,8 @@ class Frm_main(QMainWindow, Ui_StartWindow):
 
         except pymysql.MySQLError as e:
             print("MySQL-Fehler: {}".format(str(e)))
+            print(self.cursor_phasen.mogrify)
+            print(self.cursor_mess.mogrify)
 
         except OSError as o:
             print("Fehler: {}".format(str(o)))
