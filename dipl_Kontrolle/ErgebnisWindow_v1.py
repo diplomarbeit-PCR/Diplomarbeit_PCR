@@ -43,19 +43,11 @@ class Ui_Ergebnis(object):
         font1.setPointSize(20)
         self.btn_Ende.setFont(font1)
         # Tabellenwidget für PhasenWerte erstellen
-        self.tbl_phasen = QTableWidget()
-        self.tbl_phasen.setColumnCount(4)  # Fünf Spalten
-        self.tbl_phasen.setHorizontalHeaderLabels(["Kategorien", "Denaturierung", "Annealing", "Elongation"])
-        self.tbl_phasen = QTableWidget()
-        self.tbl_phasen = QTableView(self.centralwidget)
+        self.tbl_phasen = QTableWidget(self.centralwidget)
         self.tbl_phasen.setObjectName(u"tbl_phasen")
         self.tbl_phasen.setGeometry(QRect(0, 120, 491, 261))
         # Tabellenwidget für Messwerte erstellen
-        self.tbl_mess = QTableWidget()
-        self.tbl_mess.setColumnCount(2)  # Zwei Spalten
-        self.tbl_mess.setHorizontalHeaderLabels(["Kategorien", "Anzahl"])
-        self.tbl_mess = QTableWidget()
-        self.tbl_mess = QTableView(self.centralwidget)
+        self.tbl_mess = QTableWidget(self.centralwidget)
         self.tbl_mess.setObjectName(u"tbl_mess")
         self.tbl_mess.setGeometry(QRect(0, 390, 491, 211))
         Ergebnis.setCentralWidget(self.centralwidget)

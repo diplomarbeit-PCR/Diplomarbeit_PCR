@@ -299,6 +299,11 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.frm_kont.hide()
 
     def ergebnis(self):
+        self.frm_ergeb.tbl_phasen.setColumnCount(4)  # Fünf Spalten
+        self.frm_ergeb.tbl_phasen.setHorizontalHeaderLabels(["Kategorien", "Denaturierung", "Annealing", "Elongation"])
+        self.frm_ergeb.tbl_mess.setColumnCount(2)  # Zwei Spalten
+        self.frm_ergeb.tbl_mess.setHorizontalHeaderLabels(["Kategorien", "Anzahl"])#
+
         print("temp_d", self.temp_denat)
         print("temp_a", self.temp_aneal)
         print("temp_e", self.temp_elong)
