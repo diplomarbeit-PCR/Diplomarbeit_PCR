@@ -353,7 +353,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
             INSERT INTO Messwerte (Kategorien, Anzahl)
             VALUES 
             ("Durchläufe", %s),
-            ("Spannung in mV", %s)
+            ("Spannung in mV", %s),
             ("Lichtstärke in Lumen", %s )
             """
             self.cursor_mess.execute(insert_messwerte, (self.DL_zaehler_value, self.value_spg, self.value_light))
