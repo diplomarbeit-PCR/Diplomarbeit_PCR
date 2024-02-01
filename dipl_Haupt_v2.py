@@ -152,10 +152,11 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         # Initialisierung der Benutzeroberfläche 
         self.setupUi(self)
 
-        self.temp_denat = 95
-        self.temp_aneal = 60
-        self.temp_elong = 70
-        self.value_light = 24.90
+        self.temp_denat = 94
+        self.temp_aneal = 65
+        self.temp_elong = 67
+        self.value_spg = 40.1
+        self.value_light = 17.39
 
         # Verbindung zur Datenbank herstellen
         self.connection = pymysql.connect(
@@ -311,6 +312,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         print("dauer_a", self.frm_zeitDef.value_aneal_gesamt)
         print("dauer_e", self.frm_zeitDef.value_elong_gesamt)
         print("dl", self.DL_zaehler_value)
+        print("spg", self.value_spg)
         print("light", self.value_light)
 
 
@@ -342,19 +344,20 @@ class Frm_main(QMainWindow, Ui_StartWindow):
             insert_phasen = """
             INSERT INTO PhasenWerte (Kategorien, Denaturierung, Annealing, Elongation, Einheit)
             VALUES 
-            ("Temperatur", %s, %s, %s, "°C"),
-            ("Dauer", %s, %s, %s, "sek")
+            ("Temperatur in °C", %s, %s, %s),
+            ("Dauer in sek", %s, %s, %s)
             """
-            self.cursor_phasen.execute(insert_phasen, (self.temp_denat, self.temp_aneal, self.temp_elong, self.frm_zeitDef.value_denat, self.frm_zeitDef.value_aneal, self.frm_zeitDef.value_elong))
+            self.cursor_phasen.execute(insert_phasen, (self.temp_denat, self.temp_aneal, self.temp_elong, self.frm_zeitDef.value_denat, self.frm_zeitDef.value_aneal_gesamt, self.frm_zeitDef.value_elong_gesamt))
 
             # INSERT INTO-Anweisung für Messwerte
             insert_messwerte = """
             INSERT INTO Messwerte (Kategorien, Anzahl)
             VALUES 
             ("Durchläufe", %s),
+            ("Spannung in mV", %s)
             ("Lichtstärke in Lumen", %s )
             """
-            self.cursor_mess.execute(insert_messwerte, (self.DL_zaehler_value, self.value_light))
+            self.cursor_mess.execute(insert_messwerte, (self.DL_zaehler_value, self.value_spg, self.value_light))
 
             # Daten aus Tabelle 'PhasenWerte' abrufen
             self.cursor_phasen.execute("SELECT * FROM PhasenWerte")
