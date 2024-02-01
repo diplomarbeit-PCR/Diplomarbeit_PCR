@@ -36,6 +36,8 @@ class Frm_zeitDef(QMainWindow, Ui_zeitDef_Voraus):
         self.value_sens = 45 * (1/3) + self.value_aneal
         self.value_asens = 45 * (1/3) + self.value_sens
         self.value_elong = 40 + self.value_asens
+        self.value_aneal_gesamt = 45
+        self.value_elong_gesamt = 40
 
         # Ändert sich der Wert von wasserDauer_..., so wird die jeweilige Methode aufgerufen
         self.wasserDauer_denat.valueChanged.connect(self.Value_Denat_change)
@@ -51,6 +53,7 @@ class Frm_zeitDef(QMainWindow, Ui_zeitDef_Voraus):
     def Value_Aneal_change(self, value):
         # neuer Wert wird durch 3 geteilt und in den Instanz-Variablen gespeichert
         # Instanz-Variable wird mit dem jeweils vorherigen Wert addiert, um sicherzustellen, dass sie alle nach einander ablaufen
+        self.value_aneal_gesamt = self.wasserDauer_aneal.value()
         self.value_aneal = self.wasserDauer_aneal.value() * (1/3) + self.value_denat
         self.value_sens = self.wasserDauer_aneal.value() * (1/3) + self.value_aneal
         self.value_asens = self.wasserDauer_aneal.value() * (1/3) + self.value_sens
@@ -60,6 +63,7 @@ class Frm_zeitDef(QMainWindow, Ui_zeitDef_Voraus):
     def Value_Elong_change(self, value):
         # neuer Wert wird in der Instanz-Variable value_elong gespeichert
         # Instanz-Variable wird mit dem jeweils vorherigen Wert addiert, um sicherzustellen, dass sie alle nach einander ablaufen
+        self.value_elong_gesamt = self.wasserDauer_elong.value()
         self.value_elong = self.wasserDauer_elong.value() + self.value_asens
         # neuer Wert wird ausgegeben
         print(f"ElongWert: {value}")
@@ -297,7 +301,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
     def ergebnis(self):
         # Tabellenwidget für PhasenWerte erstellen
         self.tbl_phasen = QTableWidget()
-        self.tbl_phasen.setColumnCount(5)  # Fünf Spalten
+        self.tbl_phasen.setColumnCount(4)  # Fünf Spalten
         self.tbl_phasen.setHorizontalHeaderLabels(["Kategorien", "Denaturierung", "Annealing", "Elongation"])
 
         # Tabellenwidget für Messwerte erstellen
@@ -309,9 +313,9 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         print("temp_a", self.temp_aneal)
         print("temp_e", self.temp_elong)
         print("dauer_d", self.frm_zeitDef.value_denat)
-        print("dauer_a", self.frm_zeitDef.value_aneal)
-        print("dauer_e", self.frm_zeitDef.value_elong)
-        print("dl", self.DL_counter)
+        print("dauer_a", self.frm_zeitDef.value_aneal_gesamt)
+        print("dauer_e", self.frm_zeitDef.value_elong_gesamt)
+        print("dl", self.phaseCount)
         print("light", self.value_light)
 
 
@@ -323,6 +327,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
                 Denaturierung DECIMAL(5,2),
                 Annealing DECIMAL(5,2),
                 Elongation DECIMAL(5,2),
+                Einheit VARCHAR(50)
             )
             """
             self.cursor_phasen.execute(create_table_phasen)
@@ -340,10 +345,10 @@ class Frm_main(QMainWindow, Ui_StartWindow):
 
             # INSERT INTO-Anweisung für PhasenWerte
             insert_phasen = """
-            INSERT INTO PhasenWerte (Kategorien, Denaturierung, Annealing, Elongation)
+            INSERT INTO PhasenWerte (Kategorien, Denaturierung, Annealing, Elongation, Einheit)
             VALUES 
-            ("Temperatur in °C", %s, %s, %s),
-            ("Dauer in sek", %s, %s, %s)
+            ("Temperatur", %s, %s, %s, "°C"),
+            ("Dauer", %s, %s, %s, "sek")
             """
             self.cursor_phasen.execute(insert_phasen, (self.temp_denat, self.temp_aneal, self.temp_elong, self.frm_zeitDef.value_denat, self.frm_zeitDef.value_aneal, self.frm_zeitDef.value_elong))
 
@@ -354,7 +359,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
             ("Durchläufe", %s),
             ("Lichtstärke in Lumen", %s )
             """
-            self.cursor_mess.execute(insert_messwerte, (self.DL_counter, self.value_light))
+            self.cursor_mess.execute(insert_messwerte, (self.phaseCount, self.value_light))
 
             # Daten aus Tabelle 'PhasenWerte' abrufen
             self.cursor_phasen.execute("SELECT * FROM PhasenWerte")
@@ -366,21 +371,21 @@ class Frm_main(QMainWindow, Ui_StartWindow):
 
             # Ergebnisse in tbl_phasen einfügen
             for row_num, row_data in enumerate(result_phasen):
-                self.frm_ergeb.tbl_phasen.insertRow(row_num)
+                self.tbl_phasen.insertRow(row_num)
                 for col_num, col_data in enumerate(row_data):
-                    self.frm_ergeb.tbl_phasen.setItem(row_num, col_num, QTableWidgetItem(str(col_data)))
+                    self.tbl_phasen.setItem(row_num, col_num, QTableWidgetItem(str(col_data)))
 
             # Ergebnisse in tbl_messwerte einfügen
             for row_num, row_data in enumerate(result_messwerte):
-                self.frm_ergeb.tbl_mess.insertRow(row_num)
+                self.tbl_messwerte.insertRow(row_num)
                 for col_num, col_data in enumerate(row_data):
-                    self.frm_ergeb.tbl_mess.setItem(row_num, col_num, QTableWidgetItem(str(col_data)))
+                    self.tbl_messwerte.setItem(row_num, col_num, QTableWidgetItem(str(col_data)))
+
+
 
 
         except pymysql.MySQLError as e:
             print("MySQL-Fehler: {}".format(str(e)))
-            print(self.cursor_phasen.mogrify)
-            print(self.cursor_mess.mogrify)
 
         except OSError as o:
             print("Fehler: {}".format(str(o)))
