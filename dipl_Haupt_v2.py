@@ -324,7 +324,6 @@ class Frm_main(QMainWindow, Ui_StartWindow):
                 Denaturierung DECIMAL(5,2),
                 Annealing DECIMAL(5,2),
                 Elongation DECIMAL(5,2),
-                Einheit VARCHAR(50)
             )
             """
             self.cursor_phasen.execute(create_table_phasen)
@@ -342,7 +341,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
 
             # INSERT INTO-Anweisung für PhasenWerte
             insert_phasen = """
-            INSERT INTO PhasenWerte (Kategorien, Denaturierung, Annealing, Elongation, Einheit)
+            INSERT INTO PhasenWerte (Kategorien, Denaturierung, Annealing, Elongation)
             VALUES 
             ("Temperatur in °C", %s, %s, %s),
             ("Dauer in sek", %s, %s, %s)
