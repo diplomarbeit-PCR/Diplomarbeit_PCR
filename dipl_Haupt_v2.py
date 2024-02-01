@@ -354,7 +354,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
             ("Durchläufe", %s),
             ("Lichtstärke in Lumen", %s )
             """
-            self.cursor_mess.execute(insert_messwerte, (self.phaseCount, self.value_light))
+            self.cursor_mess.execute(insert_messwerte, (self.DL_zaehler_value, self.value_light))
 
             # Daten aus Tabelle 'PhasenWerte' abrufen
             self.cursor_phasen.execute("SELECT * FROM PhasenWerte")
