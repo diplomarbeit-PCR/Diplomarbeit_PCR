@@ -8,6 +8,7 @@ from dipl_Einfuehrung.Voraussetzungen_Vererbt_v1 import Frm_voraus
 from dipl_Einfuehrung.zeitDefinition_Vererbt_v1 import Frm_zeitDef
 from dipl_Phasenablauf.Phasenablauf_Vererbt_v1 import Frm_denat, Frm_aneal, Frm_sens, Frm_asens, Frm_elong
 from dipl_Kontrolle.KontrollErgebnis_Vererbt_v1 import Frm_kont, Frm_ergeb
+from connection import Frm_connect
         
 class Frm_main(QMainWindow, Ui_StartWindow):
 
@@ -21,17 +22,6 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.temp_elong = 67
         self.value_spg = 40.1
         self.value_light = 17.39
-
-        # Verbindung zur Datenbank herstellen
-        self.connection = pymysql.connect(
-            host='localhost',
-            user='root',
-            password='Rock4C+',
-            database='eduPCR'
-        )
-
-        self.cursor_mess = self.connection.cursor()
-        self.cursor_phasen = self.connection.cursor()
 
         self.timer_seconds = 0
         self.timer = QTimer()
@@ -50,6 +40,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.frm_elong = Frm_elong()
         self.frm_kont = Frm_kont()
         self.frm_ergeb = Frm_ergeb()
+        self.frm_connect = Frm_connect()
          
         # Verbindung des Start-Knopfes mit der Methode erlaubteDauer 
         self.btn_Start.clicked.connect(self.erlaubteDauer)
@@ -84,6 +75,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.timer.start()
 
         # Verbindung des Kontroll-Knopfes mit der Methode kontroll_Erklaerung 
+        # Dadurch, dass erst am Ende geprüft wird, ob phasen_running True oder False ist, springt es nicht mitten im Durchlauf zur Kontrolle
         self.frm_denat.btn_Kontrolle.clicked.connect(self.kontroll_Erklaerung)
         self.frm_aneal.btn_Kontrolle.clicked.connect(self.kontroll_Erklaerung)
         self.frm_sens.btn_Kontrolle.clicked.connect(self.kontroll_Erklaerung)
@@ -190,7 +182,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
                 Elongation DECIMAL(5,2)
             )
             """
-            self.cursor_phasen.execute(create_table_phasen)
+            self.frm_connect.cursor_phasen.execute(create_table_phasen)
             print("Tabelle 'PhasenWerte' erstellt")
 
             # Tabelle 'Messwerte' erstellen, falls nicht vorhanden
@@ -200,7 +192,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
                 Anzahl DECIMAL(5,2)
             )
             """
-            self.cursor_mess.execute(create_table_messwert)
+            self.frm_connect.cursor_mess.execute(create_table_messwert)
             print("Tabelle 'Messwerte' erstellt")
 
             # INSERT INTO-Anweisung für PhasenWerte
@@ -210,7 +202,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
             ("Temperatur in °C", %s, %s, %s),
             ("Dauer in sek", %s, %s, %s)
             """
-            self.cursor_phasen.execute(insert_phasen, (self.temp_denat, self.temp_aneal, self.temp_elong, self.frm_zeitDef.value_denat, self.frm_zeitDef.value_aneal_gesamt, self.frm_zeitDef.value_elong_gesamt))
+            self.frm_connect.cursor_phasen.execute(insert_phasen, (self.temp_denat, self.temp_aneal, self.temp_elong, self.frm_zeitDef.value_denat, self.frm_zeitDef.value_aneal_gesamt, self.frm_zeitDef.value_elong_gesamt))
 
             # INSERT INTO-Anweisung für Messwerte
             insert_messwerte = """
@@ -220,15 +212,15 @@ class Frm_main(QMainWindow, Ui_StartWindow):
             ("Spannung in mV", %s),
             ("Lichtstärke in Lumen", %s )
             """
-            self.cursor_mess.execute(insert_messwerte, (self.DL_zaehler_value, self.value_spg, self.value_light))
+            self.frm_connect.cursor_mess.execute(insert_messwerte, (self.DL_zaehler_value, self.value_spg, self.value_light))
 
             # Daten aus Tabelle 'PhasenWerte' abrufen
-            self.cursor_phasen.execute("SELECT * FROM PhasenWerte")
-            result_phasen = self.cursor_phasen.fetchall()
+            self.frm_connect.cursor_phasen.execute("SELECT * FROM PhasenWerte")
+            result_phasen = self.frm_connect.cursor_phasen.fetchall()
 
             # Daten aus Tabelle 'Messwerte' abrufen
-            self.cursor_mess.execute("SELECT * FROM Messwerte")
-            result_messwerte = self.cursor_mess.fetchall()
+            self.frm_connect.cursor_mess.execute("SELECT * FROM Messwerte")
+            result_messwerte = self.frm_connect.cursor_mess.fetchall()
 
             # Ergebnisse in tbl_phasen einfügen
             for row_num, row_data in enumerate(result_phasen):
@@ -250,7 +242,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
 
         finally:
             # Verbindung schließen
-            self.connection.close()
+            self.frm_connect.connection.close()
 
         # phasen_Ablauf soll wiederholt werden
         self.frm_ergeb.showFullScreen()
