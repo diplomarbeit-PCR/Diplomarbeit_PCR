@@ -378,9 +378,6 @@ class Frm_main(QMainWindow, Ui_StartWindow):
                 for col_num, col_data in enumerate(row_data):
                     self.frm_ergeb.tbl_mess.setItem(row_num, col_num, QTableWidgetItem(str(col_data)))
 
-
-
-
         except pymysql.MySQLError as e:
             print("MySQL-Fehler: {}".format(str(e)))
 
