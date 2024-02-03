@@ -147,6 +147,12 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         # Initialisierung der Benutzeroberfläche 
         self.setupUi(self)
 
+        self.temp_denat = 94
+        self.temp_aneal = 65
+        self.temp_elong = 67
+        self.value_spg = 40.1
+        self.value_light = 17.39
+
         self.timer_seconds = 0
         self.timer = QTimer()
         # mit einem Intervall von 
@@ -206,6 +212,9 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         
         if self.phasen_running == False:
             self.frm_kont.showFullScreen()
+            # Ausgabe von Spannung und Lichtintensität
+            self.frm_kont.Spg_detekt.display(self.value_spg)
+            self.frm_kont.Licht_detekt.display(self.value_light)
             self.timer.stop()
         
         else:
@@ -236,6 +245,13 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.frm_sens.Timer_zaehler.display(f"{hours:02d}:{minutes:02d}:{seconds:02d}")
         self.frm_asens.Timer_zaehler.display(f"{hours:02d}:{minutes:02d}:{seconds:02d}")
         self.frm_elong.Timer_zaehler.display(f"{hours:02d}:{minutes:02d}:{seconds:02d}")
+
+        # Temperatur ausgeben während Phasen Ablauf
+        self.frm_denat.temp_sensD.display(self.temp_denat)
+        self.frm_aneal.temp_sensA.display(self.temp_aneal)
+        self.frm_sens.temp_sensA.display(self.temp_aneal)
+        self.frm_asens.temp_sensA.display(self.temp_aneal)
+        self.frm_elong.temp_sensE.display(self.temp_elong)
         
         # Funktion - nimmt drei Parameter entgegen: phase, start und end
         # überprüft, dass self.phaseCount zwischen start und end (einschließlich start und ausschließlich end) liegt
