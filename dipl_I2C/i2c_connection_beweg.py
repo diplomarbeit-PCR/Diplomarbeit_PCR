@@ -14,6 +14,7 @@ value_elong_gesamt = 20
 def readFromBeweg():
     try:
         b = bus.read_byte(beweg_address)
+        print(b)
 
         values = [value_denat, value_aneal_gesamt, value_elong_gesamt]
         # fragt ab, ob in 0-Posi
