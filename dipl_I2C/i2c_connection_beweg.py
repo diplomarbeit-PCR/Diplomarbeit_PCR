@@ -38,6 +38,7 @@ while True:
 
     writeNumber(value)
     print("RPi sends: ", inp)
+    time.sleep(1)
     print ("RPi sends: ", value)
     time.sleep(1)
 
