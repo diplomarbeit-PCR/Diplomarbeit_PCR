@@ -24,17 +24,21 @@ while True:
 
     if inp == 1:
         value = value_denat
+        value = int(value)
 
         
     if inp == 2:
         value = value_aneal_gesamt
+        value = int(value)
 
         
     if inp == 3:
         value = value_elong_gesamt
+        value = int(value)
 
     else:
         value = 0 
+        value = int(value)
 
     writeNumber(value)
     print ("RPi sends: ", value)
