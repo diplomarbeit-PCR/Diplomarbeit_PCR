@@ -36,9 +36,10 @@ while True:
         value = value_elong_gesamt
         value = int(value)
 
-    writeNumber(value)
+    writeNumber(inp)
     print("RPi sends: ", inp)
     time.sleep(1)
+    writeNumber(value)
     print ("RPi sends: ", value)
     time.sleep(1)
 
