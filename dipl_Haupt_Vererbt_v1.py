@@ -88,12 +88,13 @@ class Frm_main(QMainWindow, Ui_StartWindow):
             # Ausgabe von Spannung und Lichtintensität
             self.frm_kont.Spg_detekt.display(self.value_spg)
             self.frm_kont.Licht_detekt.display(self.value_light)
-            
+
             self.timer.stop()
         
         else:
             self.run_phasen_Ablauf()
-            
+            # Es wurde Start/Fortführ Button gedrückt
+            # bus.write_byte(beweg_address, 5)
             self.phaseCount = 0
             
             self.DL_counter += 1 
@@ -159,6 +160,10 @@ class Frm_main(QMainWindow, Ui_StartWindow):
 
     def kontroll_Erklaerung(self):
         self.phasen_running = False  # Stoppe phasen_Ablauf
+        # Es wurde der Kontroll Button gedrückt
+        # bus.write_byte(beweg_address, 6)
+        # Kontrolle, ob in 0-Posi
+        # bus.read_byte
         self.DL_counter = 0
 
     def weiter(self):
@@ -173,6 +178,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.frm_ergeb.tbl_mess.setColumnCount(2)  # Zwei Spalten
         self.frm_ergeb.tbl_mess.setHorizontalHeaderLabels(["Kategorien", "Anzahl"])#
 
+        # Zur Kontrolle eine Ausgabe von all den Werten, die für die Datenbank relevant sind
         print("temp_d", self.temp_denat)
         print("temp_a", self.temp_aneal)
         print("temp_e", self.temp_elong)
@@ -246,9 +252,11 @@ class Frm_main(QMainWindow, Ui_StartWindow):
                 for col_num, col_data in enumerate(row_data):
                     self.frm_ergeb.tbl_mess.setItem(row_num, col_num, QTableWidgetItem(str(col_data)))
 
+        # Sollte ein MySQL Fehler auftreten, so soll eine konkrete Fehlermeldung ausgegeben werden
         except pymysql.MySQLError as e:
             print("MySQL-Fehler: {}".format(str(e)))
 
+        # Sollte ein MySQL unabhängiger Fehler auftreten, so soll eine konkrete Fehlermeldung ausgegeben werden
         except OSError as o:
             print("Fehler: {}".format(str(o)))
 
