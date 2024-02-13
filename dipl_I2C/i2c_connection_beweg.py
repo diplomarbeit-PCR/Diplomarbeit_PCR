@@ -21,8 +21,11 @@ def readFromBeweg():
             beweg_null = bus.read_byte(beweg_address)
 
             for i in range (2,4):
-                value = values[i]
-                bus.write_byte(beweg_address,i+1)
+                v = 1 
+                value = values[v]
+                print(f"Value: {value}")
+                print(f"I: {i}")
+                bus.write_byte(beweg_address,v+1)
                 bus.write_byte(beweg_address, value)
 
 # vermerkt in sipl_Haupt_Verebt_v1.py
