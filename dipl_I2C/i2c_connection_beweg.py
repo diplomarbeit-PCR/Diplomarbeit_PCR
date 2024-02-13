@@ -1,4 +1,5 @@
 import smbus
+import time
 
 # Verwenden von I2C Bus 7
 bus = smbus.SMBus(7)
@@ -10,43 +11,20 @@ value_aneal_gesamt = 30
 value_elong_gesamt = 20
 
 # Kommunikation mit Bewegmechanismus
-    
-def readFromBeweg():
-    try:
-        b = bus.read_byte(beweg_address)
-        print(b)
 
-        values = [value_denat, value_aneal_gesamt, value_elong_gesamt]
-        # fragt ab, ob in 0-Posi
-        if b == 1:
-            beweg_null = bus.read_byte(beweg_address)
+def writeNumber(value):
+    bus.write_byte(beweg_address, value)
+    return -1
 
-            for i in range (2,4):
-                v = 1 
-                value = values[v]
-                print(f"Value: {value}")
-                print(f"I: {i}")
-                bus.write_byte(beweg_address,v+1)
-                bus.write_byte(beweg_address, value)
+while True:
+    inp =  [value_denat, value_aneal_gesamt, value_elong_gesamt]
+    inp = int(inp)
+    if not inp:
+        continue
 
-# vermerkt in sipl_Haupt_Verebt_v1.py
-        # btn_Weiter gedrückt
-        bus.write_byte(beweg_address, 5)
-        # btn_Kontroll gedrückt
-        bus.write_byte(beweg_address, 6)
-        # btn_Fortführen gedrückt
-        bus.write_byte(beweg_address, 5)
-#
-        
-        # falls Notaus gedrückt -> Stop everything
-        if b == 9:
-            notaus = bus.read_byte(beweg_address)
+    writeNumber(inp)
+    print ("Rock sends: ", inp)
+    inp+1
+    time.sleep(1)
 
-        else:
-            print(f"No valid input")
-
-        return notaus, beweg_null
- 
-    except OSError as e:
-        print(f"Error reading from I2C device: {e}")
-        return None
+   
