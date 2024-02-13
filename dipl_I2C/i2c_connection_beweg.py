@@ -12,8 +12,8 @@ value_elong_gesamt = 20
 
 # Kommunikation mit Bewegmechanismus
 
-def writeNumber(value):
-    bus.write_byte(beweg_address, value)
+def writeNumber(val):
+    bus.write_byte(beweg_address, val)
     return -1
 
 while True:
@@ -38,7 +38,7 @@ while True:
 
     writeNumber(inp)
     print("RPi sends: ", inp)
-    time.sleep(1)
+    time.sleep(5)
     writeNumber(value)
     print ("RPi sends: ", value)
     time.sleep(1)
