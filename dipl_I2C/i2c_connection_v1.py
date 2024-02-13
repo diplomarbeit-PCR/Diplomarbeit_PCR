@@ -98,16 +98,16 @@ def writeTempE(t):
     
 def readFromBeweg():
     try:
-        b = bus.read_byte(temp_address)
+        b = bus.read_byte(beweg_address)
 
         values = [value_denat, value_aneal_gesamt, value_elong_gesamt]
         # fragt ab, ob in 0-Posi
         if b == 1:
             beweg_null = bus.read_byte(beweg_address)
 
-            for i in range (3):
+            for i in range (2,4):
                 value = values[i]
-                bus.write_byte(beweg_address,i+2)
+                bus.write_byte(beweg_address,i+1)
                 bus.write_byte(beweg_address, value)
 
 # vermerkt in sipl_Haupt_Verebt_v1.py
