@@ -3,7 +3,7 @@ import smbus
 # Verwenden von I2C Bus 7
 bus = smbus.SMBus(7)
 
-beweg_address = 0x028
+beweg_address = 0x28
 
 value_denat = 10
 value_aneal_gesamt = 30
