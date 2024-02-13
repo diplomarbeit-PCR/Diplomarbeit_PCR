@@ -14,12 +14,16 @@ value_elong_gesamt = 20
 
 def writeNumber(val):
     bus.write_byte(beweg_address, val)
+    return -1
 
 while True:
     inp = input("Number between 1 and 3: ")
     inp = int(inp)
     if not inp:
         continue
+
+    writeNumber(inp)
+    print("RPi sends: ", inp)
 
     if inp == 1:
         value = value_denat
@@ -35,9 +39,6 @@ while True:
         value = value_elong_gesamt
         value = int(value)
 
-    writeNumber(inp)
-    print("RPi sends: ", inp)
-    time.sleep(1)
     writeNumber(value)
     print ("RPi sends: ", value)
     time.sleep(1)
