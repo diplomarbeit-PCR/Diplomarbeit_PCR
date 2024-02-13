@@ -22,20 +22,20 @@ while True:
     if not inp:
         continue
 
-    writeNumber(inp)
-    print("RPi sends: ", inp)
-
     if inp == 1:
+        writeNumber(inp)
         value = value_denat
         value = int(value)
 
         
     if inp == 2:
+        writeNumber(inp)
         value = value_aneal_gesamt
         value = int(value)
 
         
     if inp == 3:
+        writeNumber(inp)
         value = value_elong_gesamt
         value = int(value)
 
