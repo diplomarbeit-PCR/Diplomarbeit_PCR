@@ -14,7 +14,6 @@ value_elong_gesamt = 20
 
 def writeNumber(val):
     bus.write_byte(beweg_address, val)
-    return -1
 
 while True:
     inp = input("Number between 1 and 3: ")
