@@ -99,7 +99,7 @@ class Ui_AblaufWindowDenat(object):
 "li.unchecked::marker { content: \"\\2610\"; }\n"
 "li.checked::marker { content: \"\\2612\"; }\n"
 "</style></head><body style=\" font-family:'Segoe UI'; font-size:9pt; font-weight:400; font-style:normal;\" bgcolor=\"#9cd4d6\">\n"
-"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Arial Narrow','sans-serif'; font-size:16pt;\">Denaturierung beschriebt grunds\u00e4tzlich die strukturelle Ver\u00e4nderung von Biopolymeren.</span></p>\n"
+"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Arial Narrow','sans-serif'; font-size:16pt;\">Denaturierung beschreibt grunds\u00e4tzlich die strukturelle Ver\u00e4nderung von Biopolymeren.</span></p>\n"
 "<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Arial Narrow','sans-serif'; font-size:16pt;\">"
                         "Es wird das Wasser im ersten Becken auf 95\u00b0C erhitzt. <br />Dies dient dazu das sich die Wasserstoffbr\u00fccken und somit Doppelhelix der DNA aufl\u00f6st dabei entstehen zwei Einzelstr\u00e4nge. </span></p>\n"
 "<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Arial Narrow','sans-serif'; font-size:16pt;\">Die Temperatur muss 10 Sekunden bis 1 Minute gehalten werden, um sicherzustelle das jede Doppelhelix zerst\u00f6rt wurde.</span><span style=\" font-family:'Arial Narrow'; font-size:16pt;\"> </span></p></body></html>", None))

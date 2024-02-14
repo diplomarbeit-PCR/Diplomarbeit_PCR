@@ -57,11 +57,9 @@ class Ui_zeitDef_Voraus(object):
         self.Dauer_line.setReadOnly(True)
         self.wasserDauer_elong = QSpinBox(self.centralwidget)
         self.wasserDauer_elong.setObjectName(u"wasserDauer_elong")
-        self.wasserDauer_elong.setRange(20, 60)    # Setze die Mindest- und Höchstwerte
-        self.wasserDauer_elong.setValue(40)    # Setze den Startwert
         self.wasserDauer_elong.setGeometry(QRect(270, 510, 161, 51))
         self.wasserDauer_elong.setAlignment(Qt.AlignCenter)
-        self.wasserDauer_elong.setReadOnly(False)
+        self.wasserDauer_elong.setReadOnly(True)
         self.Dauer_line_2 = QLineEdit(self.centralwidget)
         self.Dauer_line_2.setObjectName(u"Dauer_line_2")
         self.Dauer_line_2.setGeometry(QRect(80, 460, 151, 31))
@@ -70,11 +68,9 @@ class Ui_zeitDef_Voraus(object):
         self.Dauer_line_2.setReadOnly(True)
         self.wasserDauer_aneal = QSpinBox(self.centralwidget)
         self.wasserDauer_aneal.setObjectName(u"wasserDauer_aneal")
-        self.wasserDauer_aneal.setRange(30, 60)    # Setze die Mindest- und Höchstwerte
-        self.wasserDauer_aneal.setValue(45)    # Setze den Startwert
         self.wasserDauer_aneal.setGeometry(QRect(270, 450, 161, 51))
         self.wasserDauer_aneal.setAlignment(Qt.AlignCenter)
-        self.wasserDauer_aneal.setReadOnly(False)
+        self.wasserDauer_aneal.setReadOnly(True)
         self.Dauer_line_3 = QLineEdit(self.centralwidget)
         self.Dauer_line_3.setObjectName(u"Dauer_line_3")
         self.Dauer_line_3.setGeometry(QRect(80, 400, 151, 31))
@@ -83,11 +79,9 @@ class Ui_zeitDef_Voraus(object):
         self.Dauer_line_3.setReadOnly(True)
         self.wasserDauer_denat = QSpinBox(self.centralwidget)
         self.wasserDauer_denat.setObjectName(u"wasserDauer_denat")
-        self.wasserDauer_denat.setRange(10, 60)    # Setze die Mindest- und Höchstwerte
-        self.wasserDauer_denat.setValue(35)    # Setze den Startwert
         self.wasserDauer_denat.setGeometry(QRect(270, 390, 161, 51))
         self.wasserDauer_denat.setAlignment(Qt.AlignCenter)
-        self.wasserDauer_denat.setReadOnly(False)
+        self.wasserDauer_denat.setReadOnly(True)
         zeitDef_Voraus.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(zeitDef_Voraus)
         self.menubar.setObjectName(u"menubar")
@@ -113,13 +107,13 @@ class Ui_zeitDef_Voraus(object):
 "</style></head><body style=\" font-family:'Segoe UI'; font-size:9pt; font-weight:400; font-style:normal;\" bgcolor=\"#9cd4d6\">\n"
 "<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Arial','sans-serif'; font-size:16pt;\">Bitte definieren Sie je nach verwendetem Primer, wie lange die Probe in den einzelnen Phasen sein soll.<br />Nachdem Sie fertig sind, bet\u00e4tigen Sie bitte den WEITER Button. </span></p>\n"
 "<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\""
-                        "><span style=\" font-family:'Arial','sans-serif'; font-size:16pt;\">Denaturiernugsdauer: 10 Sek - 1 Min</span></p>\n"
+                        "><span style=\" font-family:'Arial','sans-serif'; font-size:16pt;\">Denaturierungsdauer: 10 Sek - 1 Min</span></p>\n"
 "<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Arial','sans-serif'; font-size:16pt;\">Annealingsdauer: 30 Sek - 1 Min</span></p>\n"
 "<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Arial','sans-serif'; font-size:16pt;\">Elongationsdauer: 20 Sek - 1 Min</span></p></body></html>", None))
         self.label.setText(QCoreApplication.translate("zeitDef_Voraus", u"Dauerbestimmung", None))
         self.btn_Weiter.setText(QCoreApplication.translate("zeitDef_Voraus", u"Weiter", None))
         self.Dauer_line.setText(QCoreApplication.translate("zeitDef_Voraus", u"Elongation:", None))
         self.Dauer_line_2.setText(QCoreApplication.translate("zeitDef_Voraus", u"Annealing:", None))
-        self.Dauer_line_3.setText(QCoreApplication.translate("zeitDef_Voraus", u"Danaturierung:", None))
+        self.Dauer_line_3.setText(QCoreApplication.translate("zeitDef_Voraus", u"Denaturierung:", None))
     # retranslateUi
 

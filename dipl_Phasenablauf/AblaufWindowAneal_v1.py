@@ -99,8 +99,8 @@ class Ui_AblaufWindowAneal(object):
 "li.unchecked::marker { content: \"\\2610\"; }\n"
 "li.checked::marker { content: \"\\2612\"; }\n"
 "</style></head><body style=\" font-family:'Segoe UI'; font-size:9pt; font-weight:400; font-style:normal;\" bgcolor=\"#9cd4d6\">\n"
-"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Arial Narrow','sans-serif'; font-size:16pt;\">Nachdem nur Einzelstr\u00e4nge vorhanden sind, bindet der Primer an diese. Dabei unterscheidet man die Str\u00e4nge in+ Sense -und Anti-sense. Daf\u00fcr gibt es Reversprimer. Der Primer klammert sich an die gew\u00fcnschte Sequenz und die dazwischenliegenden Sequenzen werden Amplikon benannt. Aufgrund des "
-                        "Primers betr\u00e4gt die Temperatur 60\u00b0C, da ansonsten der Primer zerst\u00f6rt werden k\u00f6nnte. Diese wird f\u00fcr 30 Sekunden bis 1 Minute gehalten. Ein Strang hat ein 3\u2018 und ein 5\u2018 Anfang. </span></p></body></html>", None))
+"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Arial Narrow','sans-serif'; font-size:16pt;\">Nachdem nur Einzelstr\u00e4nge vorhanden sind, bindet der Primer an diese. Dabei unterscheidet man die Str\u00e4nge in Sense -und Anti-Sense. Daf\u00fcr gibt es Reversprimer. Der Primer klammert sich an die gew\u00fcnschte Sequenz und die dazwischenliegenden Sequenzen werden Amplicon benannt. Aufgrund des P"
+                        "rimers betr\u00e4gt die Temperatur 60\u00b0C, da ansonsten der Primer zerst\u00f6rt werden k\u00f6nnte. Diese wird f\u00fcr 30 Sekunden bis 1 Minute gehalten. Ein Strang hat ein 3\u2018 und ein 5\u2018 Anfang. </span></p></body></html>", None))
         self.label.setText(QCoreApplication.translate("AblaufWindowAneal", u"Annealing", None))
         self.btn_Kontrolle.setText(QCoreApplication.translate("AblaufWindowAneal", u"Kontrolle", None))
         self.DL_line.setText(QCoreApplication.translate("AblaufWindowAneal", u"Durchlauf:", None))
