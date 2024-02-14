@@ -46,7 +46,6 @@ while True:
         writeNumber(inp)
         print ("RPi sends: ", inp)
 
-    time.sleep(2)
     writeNumber(value)
     print ("RPi sends: ", value)
     time.sleep(1)
