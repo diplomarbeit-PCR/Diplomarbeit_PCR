@@ -35,11 +35,9 @@ def readFromBeweg():
     except OSError as e:
         print(f"Error reading from I2C device: {e}")
         return None
-    
+
+b = readFromBeweg()  
 while True:
-    b = readFromBeweg()
-    if b == 0:
-        continue
 
     inp = input("Number between 1 and 3: ")
     inp = int(inp)
