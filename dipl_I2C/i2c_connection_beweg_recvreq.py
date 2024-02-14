@@ -21,7 +21,7 @@ def readFromBeweg():
         b = bus.read_byte(beweg_address)
 
         # fragt ab, ob in 0-Posi
-        if b == 1:
+        if b == 5:
             beweg_null = bus.read_byte(beweg_address)
         
         # falls Notaus gedrückt -> Stop everything
@@ -66,6 +66,9 @@ while True:
         value = int(value)
         writeNumber(inp)
         print ("RPi sends: ", inp)
+
+    else:
+        value = int(inp)
 
     time.sleep(2)
     writeNumber(value)
