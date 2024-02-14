@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Voraussetzung</class>
- <widget class="QMainWindow" name="Voraussetzung">
+ <class>WarteWindow</class>
+ <widget class="QMainWindow" name="WarteWindow">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Voraussetzungen</string>
+   <string>WarteWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QTextEdit" name="textEdit">
@@ -65,10 +65,10 @@ li.checked::marker { content: &quot;\2612&quot;; }
    <widget class="QLabel" name="lbl_loading">
     <property name="geometry">
      <rect>
-      <x>150</x>
-      <y>440</y>
-      <width>161</width>
-      <height>131</height>
+      <x>90</x>
+      <y>410</y>
+      <width>311</width>
+      <height>231</height>
      </rect>
     </property>
     <property name="text">

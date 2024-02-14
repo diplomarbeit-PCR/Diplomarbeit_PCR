@@ -18,12 +18,12 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
 from PySide6.QtWidgets import (QApplication, QLabel, QMainWindow, QMenuBar,
     QSizePolicy, QStatusBar, QTextEdit, QWidget)
 
-class Ui_Voraussetzung(object):
-    def setupUi(self, Voraussetzung):
-        if not Voraussetzung.objectName():
-            Voraussetzung.setObjectName(u"Voraussetzung")
-        Voraussetzung.resize(489, 733)
-        self.centralwidget = QWidget(Voraussetzung)
+class Ui_WarteWindow(object):
+    def setupUi(self, WarteWindow):
+        if not WarteWindow.objectName():
+            WarteWindow.setObjectName(u"WarteWindow")
+        WarteWindow.resize(489, 733)
+        self.centralwidget = QWidget(WarteWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.textEdit = QTextEdit(self.centralwidget)
         self.textEdit.setObjectName(u"textEdit")
@@ -40,24 +40,24 @@ class Ui_Voraussetzung(object):
         self.label.setAlignment(Qt.AlignCenter)
         self.lbl_loading = QLabel(self.centralwidget)
         self.lbl_loading.setObjectName(u"lbl_loading")
-        self.lbl_loading.setGeometry(QRect(150, 440, 161, 131))
-        Voraussetzung.setCentralWidget(self.centralwidget)
-        self.menubar = QMenuBar(Voraussetzung)
+        self.lbl_loading.setGeometry(QRect(90, 410, 311, 231))
+        WarteWindow.setCentralWidget(self.centralwidget)
+        self.menubar = QMenuBar(WarteWindow)
         self.menubar.setObjectName(u"menubar")
         self.menubar.setGeometry(QRect(0, 0, 489, 22))
-        Voraussetzung.setMenuBar(self.menubar)
-        self.statusbar = QStatusBar(Voraussetzung)
+        WarteWindow.setMenuBar(self.menubar)
+        self.statusbar = QStatusBar(WarteWindow)
         self.statusbar.setObjectName(u"statusbar")
-        Voraussetzung.setStatusBar(self.statusbar)
+        WarteWindow.setStatusBar(self.statusbar)
 
-        self.retranslateUi(Voraussetzung)
+        self.retranslateUi(WarteWindow)
 
-        QMetaObject.connectSlotsByName(Voraussetzung)
+        QMetaObject.connectSlotsByName(WarteWindow)
     # setupUi
 
-    def retranslateUi(self, Voraussetzung):
-        Voraussetzung.setWindowTitle(QCoreApplication.translate("Voraussetzung", u"Voraussetzungen", None))
-        self.textEdit.setHtml(QCoreApplication.translate("Voraussetzung", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+    def retranslateUi(self, WarteWindow):
+        WarteWindow.setWindowTitle(QCoreApplication.translate("WarteWindow", u"WarteWindow", None))
+        self.textEdit.setHtml(QCoreApplication.translate("WarteWindow", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "hr { height: 1px; border-width: 0; }\n"
@@ -68,7 +68,7 @@ class Ui_Voraussetzung(object):
 "<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Arial','sans-serif'; font-size:16pt;\">Es werden die personalisierten Daten "
                         "verarbeitet und \u00fcbermittelt.</span></p>\n"
 "<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Arial','sans-serif'; font-size:16pt;\">Bitte gehen Sie w\u00e4hrenddessen sicher, dass die Probe eingef\u00fchrt ist und, dass sich der Bewegmechanismus in seiner zgewiesenen Nullposition befindet.</span></p></body></html>", None))
-        self.label.setText(QCoreApplication.translate("Voraussetzung", u"Warte Window", None))
+        self.label.setText(QCoreApplication.translate("WarteWindow", u"Warte Window", None))
         self.lbl_loading.setText("")
     # retranslateUi
 
