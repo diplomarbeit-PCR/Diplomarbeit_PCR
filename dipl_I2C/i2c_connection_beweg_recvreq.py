@@ -38,6 +38,7 @@ def readFromBeweg():
     
 while True:
     b = readFromBeweg()
+    
     if b == 0:
         continue
 
