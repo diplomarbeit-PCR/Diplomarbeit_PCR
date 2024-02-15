@@ -40,7 +40,7 @@ class Ui_WarteWindow(object):
         self.label.setAlignment(Qt.AlignCenter)
         self.lbl_loading = QLabel(self.centralwidget)
         self.lbl_loading.setObjectName(u"lbl_loading")
-        self.lbl_loading.setGeometry(QRect(90, 410, 311, 231))
+        self.lbl_loading.setGeometry(QRect(40, 380, 411, 291))
         WarteWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(WarteWindow)
         self.menubar.setObjectName(u"menubar")
