@@ -18,28 +18,33 @@ beweg_address = 0x028
 def readFromDetekt():
     frm_kont = Frm_kont()
     try:
-        d = bus.read_byte(detect_address)
-        # fragt ab, ob <detektor in Nullposition ist und die Probe eingeführt ist
-        if d == 1:
-            frm_kont.detect_null = bus.read_byte(detect_address)
+        # Daten vom Slave anfordern
+        bus.request_from(detect_address)
+        if bus.available():
+            d = bus.read()
+            if d == 1:
+                # Nachricht erhalten, dass der Messwert 1 gesendet wird
+                print("Nachricht erhalten: Messwert 1 wird gesendet")
+                # Messwert 1 anfordern
+                bus.request_from(detect_address)
+                if bus.available():
+                    frm_kont.value_spg = bus.read()
+                    print("Messwert 1:", frm_kont.value_spg)
+            elif d == 2:
+                # Nachricht erhalten, dass der Messwert 2 gesendet wird
+                print("Nachricht erhalten: Messwert 2 wird gesendet")
+                # Messwert 2 anfordern
+                bus.request_from(detect_address)
+                if bus.available():
+                    frm_kont.value_light = bus.read()
+                    print("Messwert 2:", frm_kont.value_light)
+            else:
+                # Nachricht erhalten, dass die Bedingung nicht erfüllt ist
+                print("Bedingung nicht erfüllt")
 
-        if d == :
-            frm_kont.detect_null = bus.read_byte(detect_address)
-
-        # fragt nach Spg
-        if d == 2:
-            frm_kont.value_spg = bus.read_byte(detect_address)
-
-        # fragt nach Lichtintensität    
-        if d == 3:
-            frm_kont.value_light = bus.read_byte(detect_address)
-
-        else:
-            print(f"Noch nicht bereit")
-            print(f"Bitte kontrollieren Sie, ob die Probe beim Detektor ist")
-            print(f"Bitte kontrollieren Sie, ob der Detektor in Nullposition steht.")
-
-        return frm_kont.value_spg, frm_kont.value_light, frm_kont.detect_null
+            print(frm_kont.value_spg)    
+            print(frm_kont.value_light) 
+        return frm_kont.value_spg, frm_kont.value_light
  
     except OSError as e:
         print(f"Error reading from I2C device: {e}")
@@ -54,18 +59,25 @@ def readFromTemp():
 
     try:
         t = bus.read_byte(temp_address)
-        if t == 1:
-            frm_denat.temp_denat = bus.read_byte(temp_address)
+        if t_alt == 1:
+            frm_denat.temp_denat = t
+            t_alt = 0
 
-        if t == 2:
-            frm_aneal.temp_aneal = bus.read_byte(temp_address)
-    
-        if t == 3:
-            frm_elong.temp_elong = bus.read_byte(temp_address)
+        if t_alt == 2:
+            frm_aneal.temp_aneal = t
+            t_alt = 0
 
+        if t_alt == 3:
+            frm_elong.temp_elong = t
+            t_alt = 0
         else:
             print(f"No valid input")
 
+        t_alt = t
+
+        print(frm_denat.temp_denat) 
+        print(frm_aneal.temp_aneal) 
+        print(frm_elong.temp_elong) 
         return frm_denat.temp_denat, frm_aneal.temp_aneal, frm_elong.temp_elong
  
     except OSError as e:
@@ -91,6 +103,10 @@ def readFromBeweg():
             writeBeweg(frm_zeitDef.value_aneal_gesamt)
             writeBeweg(3)
             writeBeweg(frm_zeitDef.value_elong_gesamt)
+
+        if b == 7:
+            #noch nicht in 0-Posi
+            print("Warte")
 
         # falls Notaus gedrückt -> Stop everything
         if b == 9:
