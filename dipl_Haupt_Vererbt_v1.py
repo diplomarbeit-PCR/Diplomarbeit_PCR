@@ -96,6 +96,10 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.frm_wartewindow.showFullScreen()
 
         readFromDetekt() 
+
+        time.sleep(3)
+        self.phasen_running = False
+        self.phasen_Ablauf()
         
 
     def phasen_Ablauf(self):
