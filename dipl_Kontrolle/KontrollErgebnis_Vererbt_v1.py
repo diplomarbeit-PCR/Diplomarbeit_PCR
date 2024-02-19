@@ -9,6 +9,10 @@ class Frm_kont(QMainWindow, Ui_Kontrolle):
         # Initialisierung der Benutzeroberfläche 
         self.setupUi(self)
 
+    value_light = 0
+    value_spg = 0
+    detect_null = 0
+
 class Frm_ergeb(QMainWindow, Ui_Ergebnis):
     def __init__(self):
         super().__init__()

@@ -1,14 +1,25 @@
 from PySide6.QtWidgets import QMainWindow, QApplication, QTableWidgetItem, QTableWidget
 from PySide6.QtCore import QTimer
 import pymysql
+import smbus
+import time
 
 # Auf die unterschiedlichen WIndows zugreifen (QT Deklaration, die in Py umgewandelt wurden)
 from dipl_Einfuehrung.einfuehrung_v4 import Ui_StartWindow
 from dipl_Einfuehrung.Voraussetzungen_Vererbt_v1 import Frm_voraus
 from dipl_Einfuehrung.zeitDefinition_Vererbt_v1 import Frm_zeitDef
+from dipl_Einfuehrung.WarteWindow_Vererbt_v1 import Frm_WarteWindow
 from dipl_Phasenablauf.Phasenablauf_Vererbt_v1 import Frm_denat, Frm_aneal, Frm_sens, Frm_asens, Frm_elong
 from dipl_Kontrolle.KontrollErgebnis_Vererbt_v1 import Frm_kont, Frm_ergeb
 from connection import Frm_connect
+from dipl_I2C.i2c_connection_v1 import readFromBeweg, writeBeweg, readFromDetekt, readFromTemp
+
+# Verwenden von I2C Bus 7
+bus = smbus.SMBus(7)
+# Deklarieren der Adressen der Slaves
+temp_address = 0x26
+detect_address = 0x27
+beweg_address = 0x028
         
 class Frm_main(QMainWindow, Ui_StartWindow):
 
@@ -17,9 +28,6 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         # Initialisierung der Benutzeroberfläche 
         self.setupUi(self)
 
-        self.temp_denat = 94
-        self.temp_aneal = 65
-        self.temp_elong = 67
         self.value_spg = 40.1
         self.value_light = 17.39
 
@@ -41,12 +49,13 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.frm_kont = Frm_kont()
         self.frm_ergeb = Frm_ergeb()
         self.frm_connect = Frm_connect()
+        self.frm_wartewindow = Frm_WarteWindow()
          
         # Verbindung des Start-Knopfes mit der Methode erlaubteDauer 
         self.btn_Start.clicked.connect(self.erlaubteDauer)
 
         # Verbindung des Weiter-Knopfes mit der Methode phasen_Ablauf
-        self.frm_zeitDef.btn_Weiter.clicked.connect(self.phasen_Ablauf)
+        self.frm_zeitDef.btn_Weiter.clicked.connect(self.WarteStart)
 
         # Verbindung des Fortfuehren-Knopfes mit der Methode weiter
         self.frm_kont.btn_Fortfuehren.clicked.connect(self.weiter)
@@ -69,6 +78,25 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         
         QTimer.singleShot(10000, self.frm_zeitDef.showFullScreen)
         QTimer.singleShot(10000, self.frm_voraus.hide)
+
+    def WarteStart(self):
+        self.frm_wartewindow.showFullScreen()
+        self.frm_zeitDef.hide()
+
+        readFromBeweg()
+        readFromTemp()
+
+        # Startwert übermittelt
+        writeBeweg(4)
+
+        time.sleep(3)
+        self.phasen_Ablauf()
+
+    def WarteKont(self):
+        self.frm_wartewindow.showFullScreen()
+
+        readFromDetekt() 
+        
 
     def phasen_Ablauf(self):
         self.frm_zeitDef.hide()
@@ -121,12 +149,15 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.frm_asens.Timer_zaehler.display(f"{hours:02d}:{minutes:02d}:{seconds:02d}")
         self.frm_elong.Timer_zaehler.display(f"{hours:02d}:{minutes:02d}:{seconds:02d}")
 
+        # Die Temperatur wir abgeragt
+        readFromTemp()
+
         # Temperatur ausgeben während Phasen Ablauf
-        self.frm_denat.temp_sensD.display(self.temp_denat)
-        self.frm_aneal.temp_sensA.display(self.temp_aneal)
-        self.frm_sens.temp_sensA.display(self.temp_aneal)
-        self.frm_asens.temp_sensA.display(self.temp_aneal)
-        self.frm_elong.temp_sensE.display(self.temp_elong)
+        self.frm_denat.temp_sensD.display(self.frm_denat.temp_denat)
+        self.frm_aneal.temp_sensA.display(self.frm_aneal.temp_aneal)
+        self.frm_sens.temp_sensA.display(self.frm_aneal.temp_aneal)
+        self.frm_asens.temp_sensA.display(self.frm_aneal.temp_aneal)
+        self.frm_elong.temp_sensE.display(self.frm_elong.temp_elong)
         
         # Funktion - nimmt drei Parameter entgegen: phase, start und end
         # überprüft, dass self.phaseCount zwischen start und end (einschließlich start und ausschließlich end) liegt
@@ -165,6 +196,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         # Kontrolle, ob in 0-Posi
         # bus.read_byte
         self.DL_counter = 0
+        readFromDetekt()
 
     def weiter(self):
         # phasen_Ablauf soll wiederholt werden
@@ -179,9 +211,9 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.frm_ergeb.tbl_mess.setHorizontalHeaderLabels(["Kategorien", "Anzahl"])#
 
         # Zur Kontrolle eine Ausgabe von all den Werten, die für die Datenbank relevant sind
-        print("temp_d", self.temp_denat)
-        print("temp_a", self.temp_aneal)
-        print("temp_e", self.temp_elong)
+        print("temp_d", self.frm_denat.temp_denat)
+        print("temp_a", self.frm_aneal.temp_aneal)
+        print("temp_e", self.frm_elong.temp_elong)
         print("dauer_d", self.frm_zeitDef.value_denat)
         print("dauer_a", self.frm_zeitDef.value_aneal_gesamt)
         print("dauer_e", self.frm_zeitDef.value_elong_gesamt)

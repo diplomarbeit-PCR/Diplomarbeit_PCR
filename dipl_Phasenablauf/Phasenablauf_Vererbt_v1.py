@@ -19,6 +19,8 @@ class Frm_denat(QMainWindow, Ui_AblaufWindowDenat):
     def update_DL_zaehler(self, value):
         self.DL_zaehler.display(value)
 
+    temp_denat = 0
+
 class Frm_aneal(QMainWindow, Ui_AblaufWindowAneal):
     def __init__(self):
         super().__init__()
@@ -31,6 +33,8 @@ class Frm_aneal(QMainWindow, Ui_AblaufWindowAneal):
     # sorgt für updaten des Durchlaufzählers
     def update_DL_zaehler(self, value):
         self.DL_zaehler.display(value)
+        
+    temp_aneal = 0
 
 class Frm_sens(QMainWindow, Ui_AblaufWindowSens):
     def __init__(self):
@@ -70,3 +74,5 @@ class Frm_elong(QMainWindow, Ui_AblaufWindowElong):
     # sorgt für updaten des Durchlaufzählers
     def update_DL_zaehler(self, value):
         self.DL_zaehler.display(value)
+
+    temp_elong = 0

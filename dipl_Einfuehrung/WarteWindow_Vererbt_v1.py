@@ -5,7 +5,7 @@ import colorsys
 import math
 import sys
 
-from dipl_Einfuehrung.WarteWindow_v1 import Ui_WarteWindow
+from WarteWindow_v1 import Ui_WarteWindow
 
 class Animation(QGraphicsView):
     def __init__(self, parent=None):
@@ -51,7 +51,7 @@ class Animation(QGraphicsView):
         pen.setTransformOriginPoint(x, y)
         pen.setRotation(self.angle)
 
-class WarteWindow(QMainWindow, Ui_WarteWindow):
+class Frm_WarteWindow(QMainWindow, Ui_WarteWindow):
     def __init__(self):
         super().__init__()
         self.ui = Ui_WarteWindow()
@@ -62,8 +62,3 @@ class WarteWindow(QMainWindow, Ui_WarteWindow):
         self.lbl_loading.setGeometry(QRect(40, 380, 411, 291))
 
 
-if __name__ == "__main__":
-    app = QApplication(sys.argv)
-    mainWindow = WarteWindow()
-    mainWindow.show()
-    sys.exit(app.exec())
