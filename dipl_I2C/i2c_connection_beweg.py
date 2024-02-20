@@ -12,11 +12,22 @@ value_elong_gesamt = 20
 
 # Kommunikation mit Bewegmechanismus
 
+def readFromBeweg():
+    try:
+        print("in Lesefkt")
+        b = bus.read_byte(beweg_address)
+        print(b)
+
+    except OSError as e:
+        print(f"Error reading from I2C device: {e}")
+        return None
+
 def writeNumber(val):
     bus.write_byte(beweg_address, val)
     return -1
 
 while True:
+    
     inp = input("Number between 1 and 3: ")
     inp = int(inp)
     if not inp:
