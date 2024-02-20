@@ -1,32 +1,33 @@
 import smbus
+import time
 
 # Verwenden von I2C Bus 7
 bus = smbus.SMBus(7)
 # Adresse des Arduino-Slave
-arduino_address = 0x26
+temp_address = 0x26
 
-def read_int():
-    # Lesen von 2 Bytes für einen Int-Wert
-    byte1 = bus.read_byte(arduino_address)
-    byte2 = bus.read_byte(arduino_address)
-    # Kombinieren der Bytes zu einem Int-Wert
-    value = (byte2 << 8) | byte1
-    return value
+def readFromTemp():
+    try:
+        # Lesen des zweiten Messwerts (Licht)
+        value_denat = bus.read_byte(temp_address)
+        print("Empfangener Licht-Wert:", value_denat)
+
+        # Lesen des ersten Messwerts (SPG)
+        value_aneal = bus.read_byte(temp_address)
+        print("Empfangener SPG-Wert:", value_aneal)
+
+        # Lesen des ersten Messwerts (SPG)
+        value_elong = bus.read_byte(temp_address)
+        print("Empfangener SPG-Wert:", value_elong)
+
+        return value_denat, value_aneal, value_aneal
+
+    except OSError as e:
+        print(f"Fehler beim Lesen vom I2C-Gerät: {e}")
+        return None, None
 
 # Hauptprogramm
+# Hauptprogramm
 while True:
-    # Anfrage an den Arduino-Slave senden
-    bus.write_byte(arduino_address, 1)
-    
-    # Ersten Wert empfangen
-    value1 = read_int()
-    print("Empfangener Wert 1:", value1)
-    
-    # Zweiten Wert empfangen
-    value2 = read_int()
-    print("Empfangener Wert 2:", value2)
-    
-    # Dritten Wert empfangen
-    value3 = read_int()
-    print("Empfangener Wert 3:", value3)
-    #hallo
+    value_denat, value_aneal, value_elong = readFromTemp()
+    time.sleep(1)  # Führt die Messung alle Sekunde erneut durch
