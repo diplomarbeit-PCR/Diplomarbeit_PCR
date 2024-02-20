@@ -1,38 +1,31 @@
 import smbus
-import struct
-import time
 
 # Verwenden von I2C Bus 7
 bus = smbus.SMBus(7)
 # Adresse des Arduino-Slave
 arduino_address = 0x27
 
-# Funktion zum Lesen von Float-Werten
-def read_float():
-    bytes_array = []
-    for _ in range(4):  # 4 Bytes für einen Float-Wert
-        bytes_array.append(bus.read_byte(arduino_address))
-    float_value = struct.unpack('f', bytes(bytes_array))[0]
-    return float_value
+def read_int():
+    # Lesen von 2 Bytes für einen Int-Wert
+    byte1 = bus.read_byte(arduino_address)
+    byte2 = bus.read_byte(arduino_address)
+    # Kombinieren der Bytes zu einem Int-Wert
+    value = (byte2 << 8) | byte1
+    return value
 
 # Hauptprogramm
 while True:
     # Anfrage an den Arduino-Slave senden
     bus.write_byte(arduino_address, 1)
-    time.sleep(0.1)
     
-    # Ersten Wert (SPG) empfangen
-    spg = read_float()
-    print("Empfangener SPG-Wert:", spg)
+    # Ersten Wert empfangen
+    value1 = read_int()
+    print("Empfangener Wert 1:", value1)
     
-    # Zweiten Wert (Licht) empfangen
-    bus.write_byte(arduino_address, 2)
-    time.sleep(0.1)
-    light = read_float()
-    print("Empfangener Licht-Wert:", light)
-
+    # Zweiten Wert empfangen
+    value2 = read_int()
+    print("Empfangener Wert 2:", value2)
+    
     # Dritten Wert empfangen
-    bus.write_byte(arduino_address, 3)
-    time.sleep(0.1)
-    third_value = read_float()
-    print("Empfangener Dritter Wert:", third_value)
+    value3 = read_int()
+    print("Empfangener Wert 3:", value3)
