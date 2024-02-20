@@ -29,3 +29,4 @@ while True:
     # Dritten Wert empfangen
     value3 = read_int()
     print("Empfangener Wert 3:", value3)
+    #hallo
