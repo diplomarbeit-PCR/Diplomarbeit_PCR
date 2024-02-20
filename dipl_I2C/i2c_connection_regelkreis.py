@@ -1,38 +1,24 @@
 import smbus
-import time
-
+import struct
 
 # Verwenden von I2C Bus 7
 bus = smbus.SMBus(7)
-# Deklarieren der Adressen der Slaves
-temp_address = 0x26
+# Deklarieren der Adresse des Slaves
+detect_address = 0x27
 
-# Kommunikation mit Regelkreis
-def readFromTemp():
+# Funktion zum Lesen von Float-Werten
+def read_float():
+    bytes_array = []
+    for _ in range(4):  # 4 Bytes für einen Float-Wert
+        bytes_array.append(bus.read_byte(detect_address))
+    float_value = struct.unpack('f', bytes(bytes_array))[0]
+    return float_value
 
-    try:
-        t = bus.read_byte(temp_address)
-        if t_alt == 1:
-            temp_denat = t
-            t_alt = 0
-
-        if t_alt == 2:
-            temp_aneal = t
-            t_alt = 0
-
-        if t_alt == 3:
-            temp_elong = t
-            t_alt = 0
-        else:
-            print(f"No valid input")
-
-        t_alt = t
-
-        print(temp_denat) 
-        print(temp_aneal) 
-        print(temp_elong) 
-        return temp_denat, temp_aneal, temp_elong
- 
-    except OSError as e:
-        print(f"Error reading from I2C device: {e}")
-        return None
+# Hauptprogramm
+while True:
+    spg = read_float()
+    light = read_float()
+    third_value = read_float()
+    print("SPG-Wert:", spg)
+    print("Licht-Wert:", light)
+    print("Dritter Wert:", third_value)

@@ -8,16 +8,6 @@ detect_address = 0x27
 
 def readFromDetectorSL():
     try:
-        # Nachricht, dass der Messwert 1 gesendet wird
-       # bus.write_byte(detect_address, 1)
-        #time.sleep(0.1)  # Kurze Pause für die Kommunikation
-
-        
-
-        # Nachricht, dass der Messwert 2 gesendet wird
-        #bus.write_byte(detect_address, 2)
-        #time.sleep(0.1)  # Kurze Pause für die Kommunikation
-
         # Lesen des zweiten Messwerts (Licht)
         light = bus.read_byte(detect_address)
         print("Empfangener Licht-Wert:", light)
