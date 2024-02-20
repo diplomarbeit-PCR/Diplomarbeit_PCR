@@ -13,61 +13,53 @@ value_light = 0
 d = 0
 
 # Kommunikation mit Detektor
-def readFromDetekt():
+def readFromDetect():
     try:
-        # Daten vom Slave anfordern
         print("in Lesefkt")
-        d = bus.read_byte(detect_address)        
+        d = bus.read_byte(detect_address)
         print("gelesen: ", d)
+        
 
         # fragt ab, ob in 0-Posi
         if d == 5:
-            #beweg_null = bus.read_byte(beweg_address)
             print("Nullposi")
             
 
         # falls Notaus gedrückt -> Stop everything
         if d == 9:
-            #notaus = bus.read_byte(beweg_address)
             print("Notaus")
-
-        print(value_spg)    
-        print(value_light) 
-        return value_spg, value_light
- 
+        
     except OSError as e:
         print(f"Error reading from I2C device: {e}")
         return None
 
-d = readFromDetekt
+    return(d)
 
 while True:
 
+
     if d != 5:
-        d = readFromDetekt()  
+        d = readFromDetect()  
 
     if d == 7:
        print("Warten")
        time.sleep(2)
-       d = readFromDetekt()
+       d = readFromDetect()
 
     if d == 5:
         
-        w = bus.read_byte(detect_address)    
 
-        if w_alt == 1:
-            value_spg = bus.read_byte(detect_address)
-            value_spg = int(value_spg)
+        if d == 1:
+            value = readFromDetect()
+            value_spg = int(value)
             print ("RPi sends: ", value_spg)
-            w_alt = 0
 
-        if w_alt == 2:
-            value_light = bus.read_byte(detect_address)
-            value_light = int(value_light)
+        if d == 2:
+            value = readFromDetect
+            value_light = int(value)
             print ("RPi sends: ", value_light)
-            w_alt = 0
         
-        w_alt = w
+
 
 
    
