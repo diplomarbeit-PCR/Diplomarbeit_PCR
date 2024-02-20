@@ -39,9 +39,9 @@ def readFromDetekt():
         print(f"Error reading from I2C device: {e}")
         return None
 
+d = readFromDetekt
 
 while True:
-
 
     if d != 5:
         d = readFromDetekt()  
