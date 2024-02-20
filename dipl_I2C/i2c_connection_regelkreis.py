@@ -24,9 +24,8 @@ def readFromTemp():
 
     except OSError as e:
         print(f"Fehler beim Lesen vom I2C-Gerät: {e}")
-        return None, None
+        return None, None, None
 
-# Hauptprogramm
 # Hauptprogramm
 while True:
     value_denat, value_aneal, value_elong = readFromTemp()
