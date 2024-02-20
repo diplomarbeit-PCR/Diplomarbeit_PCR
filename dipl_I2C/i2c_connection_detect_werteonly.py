@@ -12,9 +12,7 @@ def readFromDetectorSL():
        # bus.write_byte(detect_address, 1)
         #time.sleep(0.1)  # Kurze Pause für die Kommunikation
 
-        # Lesen des ersten Messwerts (SPG)
-        spg = bus.read_byte(detect_address)
-        print("Empfangener SPG-Wert:", spg)
+        
 
         # Nachricht, dass der Messwert 2 gesendet wird
         #bus.write_byte(detect_address, 2)
@@ -23,6 +21,10 @@ def readFromDetectorSL():
         # Lesen des zweiten Messwerts (Licht)
         light = bus.read_byte(detect_address)
         print("Empfangener Licht-Wert:", light)
+
+        # Lesen des ersten Messwerts (SPG)
+        spg = bus.read_byte(detect_address)
+        print("Empfangener SPG-Wert:", spg)
 
         return spg, light
 
