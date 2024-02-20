@@ -11,6 +11,7 @@ detect_address = 0x27
 value_spg = 0
 value_light = 0
 d = 0
+d_alt = 0
 
 # Kommunikation mit Detektor
 def readFromDetect():
@@ -49,15 +50,19 @@ while True:
     if d == 5:
         
 
-        if d == 1:
+        if d_alt == 1:
             value = readFromDetect()
             value_spg = int(value)
             print ("RPi sends: ", value_spg)
+            d_alt = 0
 
-        if d == 2:
+        if d_alt == 2:
             value = readFromDetect
             value_light = int(value)
             print ("RPi sends: ", value_light)
+            d_alt = 0
+
+        d_alt = d
         
 
 
