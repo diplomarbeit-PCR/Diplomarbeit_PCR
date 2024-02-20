@@ -6,17 +6,31 @@ bus = smbus.SMBus(7)
 # Deklarieren der Adresse des Slaves
 detect_address = 0x27
 
-d = 0
-
 def readFromDetectorSL():
-    d = bus.read_byte(detect_address)
+    try:
+        # Nachricht, dass der Messwert 1 gesendet wird
+        bus.write_byte(detect_address, 1)
+        time.sleep(0.1)  # Kurze Pause für die Kommunikation
 
-    if d == 1:
+        # Lesen des ersten Messwerts (SPG)
         spg = bus.read_byte(detect_address)
-        spg = int(spg)
+        print("Empfangener SPG-Wert:", spg)
 
-    if d == 2:
+        # Nachricht, dass der Messwert 2 gesendet wird
+        bus.write_byte(detect_address, 2)
+        time.sleep(0.1)  # Kurze Pause für die Kommunikation
+
+        # Lesen des zweiten Messwerts (Licht)
         light = bus.read_byte(detect_address)
-        light = int(light)
+        print("Empfangener Licht-Wert:", light)
 
-    return spg, light
+        return spg, light
+
+    except OSError as e:
+        print(f"Fehler beim Lesen vom I2C-Gerät: {e}")
+        return None, None
+
+# Hauptprogramm
+while True:
+    spg, light = readFromDetectorSL()
+    time.sleep(1)  # Führt die Messung alle Sekunde erneut durch
