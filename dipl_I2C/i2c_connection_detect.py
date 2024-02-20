@@ -8,7 +8,6 @@ detect_address = 0x27
 
 value_spg = 0
 value_light = 0
-d_alt = 0
 
 # Kommunikation mit Detektor
 def readFromDetect():
@@ -27,13 +26,16 @@ while True:
     d = readFromDetect()
 
     if d == 5:
-        if d_alt == 1:
-            print("spgs Funktion")
-            value_spg = bus.read_byte(detect_address)
-            print("RPi sends spg:", value_spg)
-        elif d_alt == 2:
-            print("Licht funktion")
-            value_light = bus.read_byte(detect_address)
+        d_type = readFromDetect()  # Lesen des Typs des Wertes
+
+        if d_type == 1:
+            print("spg")
+            value_spg = readFromDetect()  # Lesen des SPG-Werts
+            print("RPi sends SPG:", value_spg)
+
+        elif d_type == 2:
+            print("licht")
+            value_light = readFromDetect()  # Lesen des Licht-Werts
             print("RPi sends light:", value_light)
 
     elif d == 7:
@@ -41,5 +43,3 @@ while True:
         time.sleep(2)
     elif d == 9:
         print("Notaus")
-
-    d_alt = d
