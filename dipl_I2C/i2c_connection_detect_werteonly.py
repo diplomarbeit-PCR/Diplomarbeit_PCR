@@ -24,7 +24,7 @@ def readFromDetectorSL():
         light = bus.read_byte(detect_address)
         print("Empfangener Licht-Wert:", light)
 
-        return spg, light
+        return spg, light, False
 
     except OSError as e:
         print(f"Fehler beim Lesen vom I2C-Gerät: {e}")
@@ -33,5 +33,4 @@ def readFromDetectorSL():
 # Hauptprogramm
 while True:
     spg, light = readFromDetectorSL()
-    time.sleep(1)  # Führt die Messung alle Sekunde erneut durch
-    False
+    time.sleep(1)  # Führt die Messung alle Sekunde erneut durch#
