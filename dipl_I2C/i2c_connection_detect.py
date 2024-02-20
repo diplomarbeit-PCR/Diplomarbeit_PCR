@@ -27,10 +27,6 @@ def readFromDetekt():
             #notaus = bus.read_byte(beweg_address)
             print("Notaus")
 
-        else:
-            # Nachricht erhalten, dass die Bedingung nicht erfüllt ist
-            print("Bedingung nicht erfüllt")
-
         print(value_spg)    
         print(value_light) 
         return value_spg, value_light
