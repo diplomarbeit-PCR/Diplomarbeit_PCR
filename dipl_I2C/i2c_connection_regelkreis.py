@@ -5,7 +5,7 @@ import time
 # Verwenden von I2C Bus 7
 bus = smbus.SMBus(7)
 # Adresse des Arduino-Slave
-arduino_address = 0x27
+arduino_address = 0x26
 
 # Funktion zum Lesen von Float-Werten
 def read_float():
