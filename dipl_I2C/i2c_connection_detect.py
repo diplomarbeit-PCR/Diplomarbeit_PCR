@@ -28,14 +28,13 @@ while True:
 
     if d == 5:
         if d_alt == 1:
+            print("spgs Funktion")
             value_spg = bus.read_byte(detect_address)
             print("RPi sends spg:", value_spg)
-            d_alt = 0
-
-        if d_alt == 2:
+        elif d_alt == 2:
+            print("Licht funktion")
             value_light = bus.read_byte(detect_address)
             print("RPi sends light:", value_light)
-            d_alt = 0
 
     elif d == 7:
         print("Warten")
