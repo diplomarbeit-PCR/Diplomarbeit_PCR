@@ -42,4 +42,8 @@ d = readFromDetectorSL
 while True:
     spg, light = readFromDetectorSL()
     time.sleep(1)  # Führt die Messung alle Sekunde erneut durch
+<<<<<<< HEAD
 >>>>>>> 57016fbcc7f5c6ee1a85d0256b22a6ff16fd2a39
+=======
+# hallo
+>>>>>>> 60dd8b55e7c86ca797111bafe3b5cfd8ae9ca16e
