@@ -24,7 +24,7 @@ def readFromDetectorSL():
         light = bus.read_byte(detect_address)
         print("Empfangener Licht-Wert:", light)
 
-        return spg, light, False
+        return spg, light
 
     except OSError as e:
         print(f"Fehler beim Lesen vom I2C-Gerät: {e}")
