@@ -8,6 +8,10 @@ bus = smbus.SMBus(7)
 
 detect_address = 0x27
 
+value_spg = 0
+value_light = 0
+d = 0
+
 # Kommunikation mit Detektor
 def readFromDetekt():
     try:
@@ -52,14 +56,14 @@ while True:
         w = bus.read_byte(detect_address)    
 
         if w_alt == 1:
-            value = bus.read_byte(detect_address)
-            value_spg = int(value)
+            value_spg = bus.read_byte(detect_address)
+            value_spg = int(value_spg)
             print ("RPi sends: ", value_spg)
             w_alt = 0
 
         if w_alt == 2:
-            value = bus.read_byte(detect_address)
-            value_light = int(value)
+            value_light = bus.read_byte(detect_address)
+            value_light = int(value_light)
             print ("RPi sends: ", value_light)
             w_alt = 0
         
