@@ -19,4 +19,9 @@ def readFromDetectorSL():
         light = bus.read_byte(detect_address)
         light = int(light)
 
+    else: 
+        print("warte")
+
     return spg, light
+
+d = readFromDetectorSL
