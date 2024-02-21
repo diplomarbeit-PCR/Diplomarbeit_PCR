@@ -138,4 +138,3 @@ class Frm_WarteWindow(QMainWindow, Ui_WarteWindow):
 
 
 
-

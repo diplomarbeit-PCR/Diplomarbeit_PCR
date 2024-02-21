@@ -83,10 +83,20 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         QTimer.singleShot(10000, self.frm_voraus.hide)
 
     def WarteStart(self):
+        self.frm_ww.startTimer
         self.frm_ww.showFullScreen()
         self.frm_zeitDef.hide()
 
         QTimer.singleShot(10000, self.phasen_Ablauf)
+        
+
+    def WarteKont(self):
+        
+        self.frm_ww.startTimer
+        self.frm_ww.showFullScreen()
+        self.timer.stop()
+
+        QTimer.singleShot(10000, self.frm_kont.showFullScreen())
 
     def phasen_Ablauf(self):
         self.frm_ww.hide()
@@ -100,11 +110,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.frm_elong.btn_Kontrolle.clicked.connect(self.kontroll_Erklaerung)
         
         if self.phasen_running == False:
-            self.frm_ww.showFullScreen()
-            self.timer.stop()
-
-            QTimer.singleShot(10000, self.frm_kont.showFullScreen())
-            QTimer.singleShot(10000, self.frm_ww.hide)
+            self.WarteKont()
         
         else:
             self.run_phasen_Ablauf()
