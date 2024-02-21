@@ -46,7 +46,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.frm_kont = Frm_kont()
         self.frm_ergeb = Frm_ergeb()
         self.frm_connect = Frm_connect()
-        self.frm_ww= Frm_WarteWindow()
+        #self.frm_ww= Frm_WarteWindow()
          
         # Verbindung des Start-Knopfes mit der Methode erlaubteDauer 
         self.btn_Start.clicked.connect(self.erlaubteDauer)
@@ -72,12 +72,9 @@ class Frm_main(QMainWindow, Ui_StartWindow):
     def erlaubteDauer(self):
         self.frm_voraus.showFullScreen()
         self.hide()
-
-        QTimer.singleShot(10000, self.frm_ww.showFullScreen)
-        QTimer.singleShot(10000, self.frm_voraus.hide)
         
         QTimer.singleShot(10000, self.frm_zeitDef.showFullScreen)
-        QTimer.singleShot(10000, self.frm_ww.hide)
+        QTimer.singleShot(10000, self.frm_voraus.hide)
 
     #def WarteStart(self):
     #    self.frm_ww.showFullScreen()
