@@ -82,8 +82,8 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         QTimer.singleShot(20000, self.frm_zeitDef.showFullScreen)
         QTimer.singleShot(20000, self.frm_voraus.hide)
 
-    def erlaubteDauer(self):
-        self.frm_wws.showFullScreen()
+    def WarteStart(self):
+        self.frm_ww.showFullScreen()
         self.hide()
 
         QTimer.singleShot(10000, self.phasen_Ablauf)
