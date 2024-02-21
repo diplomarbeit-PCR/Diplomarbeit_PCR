@@ -30,6 +30,7 @@ def readFromDetect():
         return None
     
 
+<<<<<<< HEAD
 def readFromDetector():
     try:
         # Lesen des zweiten Messwerts (Licht)
@@ -57,3 +58,5 @@ while True:
 
 
     
+=======
+>>>>>>> 41ffe04b22e7c202495ad098cf6090aad58504ba
