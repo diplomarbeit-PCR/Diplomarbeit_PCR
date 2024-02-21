@@ -83,8 +83,8 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         QTimer.singleShot(10000, self.frm_ww.showFullScreen)
         QTimer.singleShot(10000, self.frm_voraus.hide)
         
-        QTimer.singleShot(10000, self.frm_zeitDef.showFullScreen)
-        QTimer.singleShot(10000, self.frm_ww.hide)
+        QTimer.singleShot(20000, self.frm_zeitDef.showFullScreen)
+        QTimer.singleShot(20000, self.frm_ww.hide)
 
     def phasen_Ablauf(self):
         self.frm_zeitDef.hide()
