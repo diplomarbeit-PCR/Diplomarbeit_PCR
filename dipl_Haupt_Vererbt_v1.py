@@ -12,10 +12,6 @@ from dipl_Einfuehrung.WarteWindow_Vererbt_v1 import Frm_WarteWindow
 from dipl_Phasenablauf.Phasenablauf_Vererbt_v1 import Frm_denat, Frm_aneal, Frm_sens, Frm_asens, Frm_elong
 from dipl_Kontrolle.KontrollErgebnis_Vererbt_v1 import Frm_kont, Frm_ergeb
 from connection import Frm_connect
-from dipl_I2C.i2c_connection_detect import readFromDetect
-from dipl_I2C.i2c_connection_detect_werteonly import readFromDetectorSL
-from dipl_I2C.i2c_connection_regelkreis import readFromTemp
-from dipl_I2C.i2c_connection_beweg import readFromBeweg, writeBeweg
 
 
 # Verwenden von I2C Bus 7
@@ -84,24 +80,12 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.frm_wartewindow.showFullScreen()
         self.frm_zeitDef.hide()
 
-        readFromBeweg()
-        readFromTemp()
-        readFromDetect()
-    
-
-        # Startwert übermittelt
-        writeBeweg(4)
-
-        time.sleep(3)
+        time.sleep(10)
         self.phasen_Ablauf()
 
     def WarteKont(self):
         self.frm_wartewindow.showFullScreen()
-        b = readFromBeweg()
-        if b == 5:
-            time.sleep(3)
-            self.phasen_running = False
-            self.phasen_Ablauf()
+        time.sleep(10)
         
 
     def phasen_Ablauf(self):
@@ -155,8 +139,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.frm_asens.Timer_zaehler.display(f"{hours:02d}:{minutes:02d}:{seconds:02d}")
         self.frm_elong.Timer_zaehler.display(f"{hours:02d}:{minutes:02d}:{seconds:02d}")
 
-        # Die Temperatur wir abgeragt
-        self.frm_denat.temp_denat, self.frm_aneal.temp_aneal, self.frm_elong.temp_elong = readFromTemp()
+
         time.sleep(1)  # Führt die Messung alle Sekunde erneut durch
 
         # Temperatur ausgeben während Phasen Ablauf
@@ -203,8 +186,6 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         # Kontrolle, ob in 0-Posi
         # bus.read_byte
         self.DL_counter = 0
-        writeBeweg(5)
-        self.frm_kont.value_spg, self.frm_kont.value_light = readFromDetectorSL()
         time.sleep(1)  # Führt die Messung alle Sekunde erneut durch
         self.WarteKont()
 
