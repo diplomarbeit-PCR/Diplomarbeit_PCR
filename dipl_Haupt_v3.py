@@ -3,6 +3,8 @@ from PySide6.QtCore import QTimer, QRect
 from PySide6.QtGui import QColor
 import pymysql
 
+import math
+
 # Auf die unterschiedlichen WIndows zugreifen (QT Deklaration, die in Py umgewandelt wurden)
 from dipl_Einfuehrung.einfuehrung_v4 import Ui_StartWindow
 from dipl_Einfuehrung.Voraussetzung_v1 import Ui_Voraussetzung
@@ -149,6 +151,7 @@ class Frm_ergeb(QMainWindow, Ui_Ergebnis):
 
 
 
+
 class Animation(QGraphicsView):
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -193,7 +196,7 @@ class Animation(QGraphicsView):
         pen.setTransformOriginPoint(x, y)
         pen.setRotation(self.angle)
 
-class Frm_WarteWindow(QMainWindow, Ui_WarteWindow):
+class WarteWindow(QMainWindow, Ui_WarteWindow):
     def __init__(self):
         super().__init__()
         self.ui = Ui_WarteWindow()
@@ -244,7 +247,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.frm_elong = Frm_elong()
         self.frm_kont = Frm_kont()
         self.frm_ergeb = Frm_ergeb()
-        self.frm_ww = Frm_WarteWindow()
+        self.frm_ww = WarteWindow()
          
         # Verbindung des Start-Knopfes mit der Methode erlaubteDauer 
         self.btn_Start.clicked.connect(self.erlaubteDauer)
