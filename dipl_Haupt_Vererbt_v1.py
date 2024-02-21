@@ -52,7 +52,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.btn_Start.clicked.connect(self.erlaubteDauer)
 
         # Verbindung des Weiter-Knopfes mit der Methode phasen_Ablauf
-        self.frm_zeitDef.btn_Weiter.clicked.connect(self.WarteStart)
+        self.frm_zeitDef.btn_Weiter.clicked.connect(self.phasen_Ablauf)
 
         # Verbindung des Fortfuehren-Knopfes mit der Methode weiter
         self.frm_kont.btn_Fortfuehren.clicked.connect(self.weiter)
@@ -72,25 +72,28 @@ class Frm_main(QMainWindow, Ui_StartWindow):
     def erlaubteDauer(self):
         self.frm_voraus.showFullScreen()
         self.hide()
+
+        QTimer.singleShot(10000, self.frm_ww.showFullScreen)
+        QTimer.singleShot(10000, self.frm_voraus.hide)
         
         QTimer.singleShot(10000, self.frm_zeitDef.showFullScreen)
-        QTimer.singleShot(10000, self.frm_voraus.hide)
+        QTimer.singleShot(10000, self.frm_ww.hide)
 
-    def WarteStart(self):
-        self.frm_ww.showFullScreen()
-        self.frm_zeitDef.hide()
+    #def WarteStart(self):
+    #    self.frm_ww.showFullScreen()
+    #    self.frm_zeitDef.hide()
 
-        time.sleep(10)
-        self.phasen_Ablauf()
+    #    time.sleep(10)
+    #    self.phasen_Ablauf()
 
-    def WarteKont(self):
-        self.frm_ww.showFullScreen()
-        time.sleep(10)
-        self.phasen_Ablauf()
+    #def WarteKont(self):
+    #    self.frm_ww.showFullScreen()
+    #    time.sleep(10)
+    #    self.phasen_Ablauf()
         
 
     def phasen_Ablauf(self):
-        self.frm_zeitDef.hide()
+        self.frm_ww.hide()
         self.timer.start()
 
         # Verbindung des Kontroll-Knopfes mit der Methode kontroll_Erklaerung 
@@ -188,7 +191,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         # bus.read_byte
         self.DL_counter = 0
         time.sleep(1)  # Führt die Messung alle Sekunde erneut durch
-        self.WarteKont()
+        #self.WarteKont()
 
     def weiter(self):
         # phasen_Ablauf soll wiederholt werden
