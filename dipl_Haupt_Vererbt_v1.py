@@ -104,6 +104,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
             self.timer.stop()
 
             QTimer.singleShot(10000, self.frm_kont.showFullScreen())
+            QTimer.singleShot(10000, self.frm_ww.hide)
         
         else:
             self.run_phasen_Ablauf()
