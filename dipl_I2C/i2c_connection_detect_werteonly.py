@@ -1,28 +1,26 @@
 import smbus
 import time
 
+from dipl_Kontrolle.KontrollErgebnis_Vererbt_v1 import Frm_kont
+
 # Verwenden von I2C Bus 7
 bus = smbus.SMBus(7)
 # Deklarieren der Adresse des Slaves
 detect_address = 0x27
 
 def readFromDetectorSL():
+    frm_kont = Frm_kont()
     try:
         # Lesen des zweiten Messwerts (Licht)
-        light = bus.read_byte(detect_address)
-        print("Empfangener Licht-Wert:", light)
+        frm_kont.value_light = bus.read_byte(detect_address)
+        print("Empfangener Licht-Wert:", frm_kont.value_light)
 
         # Lesen des ersten Messwerts (SPG)
-        spg = bus.read_byte(detect_address)
-        print("Empfangener SPG-Wert:", spg)
+        frm_kont.value_spg = bus.read_byte(detect_address)
+        print("Empfangener SPG-Wert:", frm_kont.value_spg)
 
-        return spg, light
+        return frm_kont.value_spg, frm_kont.value_light
 
     except OSError as e:
         print(f"Fehler beim Lesen vom I2C-Gerät: {e}")
         return None, None
-
-# Hauptprogramm
-while True:
-    spg, light = readFromDetectorSL()
-    time.sleep(1)  # Führt die Messung alle Sekunde erneut durch

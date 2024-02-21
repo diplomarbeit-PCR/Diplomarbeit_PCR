@@ -1,6 +1,8 @@
 import smbus
 import time
 
+from dipl_Einfuehrung.zeitDefinition_Vererbt_v1 import Frm_zeitDef
+
 # Verwenden von I2C Bus 7
 bus = smbus.SMBus(7)
 
@@ -11,54 +13,35 @@ value_aneal_gesamt = 30
 value_elong_gesamt = 20
 
 # Kommunikation mit Bewegmechanismus
+def writeBeweg(val):
+    bus.write_byte(beweg_address, val)
+    return -1
 
 def readFromBeweg():
+    frm_zeitDef = Frm_zeitDef()
     try:
-        print("in Lesefkt")
         b = bus.read_byte(beweg_address)
-        print(b)
 
+        # fragt ab, ob in 0-Posi
+        if b == 5:
+            print("Nullposi")
+            writeBeweg(1)
+            writeBeweg(frm_zeitDef.value_denat)
+            writeBeweg(2)
+            writeBeweg(frm_zeitDef.value_aneal_gesamt)
+            writeBeweg(3)
+            writeBeweg(frm_zeitDef.value_elong_gesamt)
+
+        if b == 7:
+            #noch nicht in 0-Posi
+            print("Warte")
+
+        # falls Notaus gedrückt -> Stop everything
+        if b == 9:
+            #notaus = bus.read_byte(beweg_address)
+            print("Notaus")
+        
     except OSError as e:
         print(f"Error reading from I2C device: {e}")
         return None
 
-def writeNumber(val):
-    bus.write_byte(beweg_address, val)
-    return -1
-
-while True:
-    
-    inp = input("Number between 1 and 3: ")
-    inp = int(inp)
-    if not inp:
-        continue
-
-    if inp == 1:
-        #writeNumber(inp)
-        value = value_denat
-        value = int(value)
-        writeNumber(inp)
-        print ("RPi sends: ", inp)
-
-
-        
-    if inp == 2:
-        #writeNumber(inp)
-        value = value_aneal_gesamt
-        value = int(value)
-        writeNumber(inp)
-        print ("RPi sends: ", inp)
-
-
-        
-    if inp == 3:
-        value = value_elong_gesamt
-        value = int(value)
-        writeNumber(inp)
-        print ("RPi sends: ", inp)
-
-    writeNumber(value)
-    print ("RPi sends: ", value)
-    time.sleep(1)
-
-   

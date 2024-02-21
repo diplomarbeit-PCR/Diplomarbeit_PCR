@@ -12,7 +12,11 @@ from dipl_Einfuehrung.WarteWindow_Vererbt_v1 import Frm_WarteWindow
 from dipl_Phasenablauf.Phasenablauf_Vererbt_v1 import Frm_denat, Frm_aneal, Frm_sens, Frm_asens, Frm_elong
 from dipl_Kontrolle.KontrollErgebnis_Vererbt_v1 import Frm_kont, Frm_ergeb
 from connection import Frm_connect
-from dipl_I2C.i2c_connection_v1 import readFromBeweg, writeBeweg, readFromDetekt, readFromTemp
+from dipl_I2C.i2c_connection_detect import readFromDetect
+from dipl_I2C.i2c_connection_detect_werteonly import readFromDetectorSL
+from dipl_I2C.i2c_connection_regelkreis import readFromTemp
+from dipl_I2C.i2c_connection_beweg import readFromBeweg, writeBeweg
+
 
 # Verwenden von I2C Bus 7
 bus = smbus.SMBus(7)
@@ -27,9 +31,6 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         super().__init__()
         # Initialisierung der Benutzeroberfläche 
         self.setupUi(self)
-
-        self.value_spg = 40.1
-        self.value_light = 17.39
 
         self.timer_seconds = 0
         self.timer = QTimer()
@@ -85,6 +86,8 @@ class Frm_main(QMainWindow, Ui_StartWindow):
 
         readFromBeweg()
         readFromTemp()
+        readFromDetect()
+    
 
         # Startwert übermittelt
         writeBeweg(4)
@@ -94,8 +97,6 @@ class Frm_main(QMainWindow, Ui_StartWindow):
 
     def WarteKont(self):
         self.frm_wartewindow.showFullScreen()
-
-        readFromDetekt() 
 
         time.sleep(3)
         self.phasen_running = False
@@ -118,8 +119,8 @@ class Frm_main(QMainWindow, Ui_StartWindow):
             self.frm_kont.showFullScreen()
             
             # Ausgabe von Spannung und Lichtintensität
-            self.frm_kont.Spg_detekt.display(self.value_spg)
-            self.frm_kont.Licht_detekt.display(self.value_light)
+            self.frm_kont.Spg_detekt.display(self.frm_kont.value_spg)
+            self.frm_kont.Licht_detekt.display(self.frm_kont.value_light)
 
             self.timer.stop()
         
@@ -154,7 +155,8 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.frm_elong.Timer_zaehler.display(f"{hours:02d}:{minutes:02d}:{seconds:02d}")
 
         # Die Temperatur wir abgeragt
-        readFromTemp()
+        self.frm_denat.temp_denat, self.frm_aneal.temp_aneal, self.frm_elong.temp_elong = readFromTemp()
+        time.sleep(1)  # Führt die Messung alle Sekunde erneut durch
 
         # Temperatur ausgeben während Phasen Ablauf
         self.frm_denat.temp_sensD.display(self.frm_denat.temp_denat)
@@ -200,7 +202,10 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         # Kontrolle, ob in 0-Posi
         # bus.read_byte
         self.DL_counter = 0
-        readFromDetekt()
+        writeBeweg(5)
+        self.frm_kont.value_spg, self.frm_kont.value_light = readFromDetectorSL()
+        time.sleep(1)  # Führt die Messung alle Sekunde erneut durch
+        self.WarteKont()
 
     def weiter(self):
         # phasen_Ablauf soll wiederholt werden
@@ -222,8 +227,8 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         print("dauer_a", self.frm_zeitDef.value_aneal_gesamt)
         print("dauer_e", self.frm_zeitDef.value_elong_gesamt)
         print("dl", self.DL_zaehler_value)
-        print("spg", self.value_spg)
-        print("light", self.value_light)
+        print("spg", self.frm_kont.value_spg)
+        print("light", self.frm_kont.value_light)
 
 
         try:
