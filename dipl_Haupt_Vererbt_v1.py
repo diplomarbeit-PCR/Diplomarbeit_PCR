@@ -17,12 +17,6 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         # Initialisierung der Benutzeroberfläche 
         self.setupUi(self)
 
-        self.frm_denat.temp_denat = 94
-        self.frm_aneal.temp_aneal = 65
-        self.frm_elong.temp_elong = 67
-        self.frm_kont.value_spg = 40.1
-        self.frm_kont.value_light = 17.39
-
         # Verbindung zur Datenbank herstellen
         self.connection = pymysql.connect(
             host='localhost',
@@ -52,6 +46,13 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.frm_elong = Frm_elong()
         self.frm_kont = Frm_kont()
         self.frm_ergeb = Frm_ergeb()
+
+        
+        self.frm_denat.temp_denat = 94
+        self.frm_aneal.temp_aneal = 65
+        self.frm_elong.temp_elong = 67
+        self.frm_kont.value_spg = 40.1
+        self.frm_kont.value_light = 17.39
          
         # Verbindung des Start-Knopfes mit der Methode erlaubteDauer 
         self.btn_Start.clicked.connect(self.erlaubteDauer)
