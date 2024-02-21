@@ -10,8 +10,6 @@ from dipl_Einfuehrung.WarteWindow_Vererbt_v1 import Frm_WarteWindow
 from dipl_Phasenablauf.Phasenablauf_Vererbt_v1 import Frm_denat, Frm_aneal, Frm_sens, Frm_asens, Frm_elong
 from dipl_Kontrolle.KontrollErgebnis_Vererbt_v1 import Frm_kont, Frm_ergeb
 
-
-        
 class Frm_main(QMainWindow, Ui_StartWindow):
 
     def __init__(self):
