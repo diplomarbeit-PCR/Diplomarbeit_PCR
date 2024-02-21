@@ -90,7 +90,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         
 
     def phasen_Ablauf(self):
-        self.frm_ww.hide()
+        #self.frm_ww.hide()
         self.timer.start()
 
         # Verbindung des Kontroll-Knopfes mit der Methode kontroll_Erklaerung 
