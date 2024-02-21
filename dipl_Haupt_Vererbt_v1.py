@@ -90,9 +90,8 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         
 
     def WarteKont(self):
-        self.frm_ww.showFullScreen()
-
         QTimer.singleShot(10000, self.frm_kont.showFullScreen())
+        QTimer.singleShot(10000, self.frm_ww.hide())
 
     def phasen_Ablauf(self):
         self.frm_ww.hide()
@@ -106,6 +105,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.frm_elong.btn_Kontrolle.clicked.connect(self.kontroll_Erklaerung)
         
         if self.phasen_running == False:
+            self.frm_ww.showFullScreen()
             self.timer.stop()
             self.WarteKont()
         
