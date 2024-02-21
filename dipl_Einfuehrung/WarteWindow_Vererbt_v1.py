@@ -5,7 +5,7 @@ import colorsys
 import math
 import sys
 
-from WarteWindow_v1 import Ui_WarteWindow
+from dipl_Einfuehrung.WarteWindow_v1 import Ui_WarteWindow
 
 class Animation(QGraphicsView):
     def __init__(self, parent=None):
