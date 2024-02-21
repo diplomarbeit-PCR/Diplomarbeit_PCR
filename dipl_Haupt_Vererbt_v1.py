@@ -58,7 +58,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.btn_Start.clicked.connect(self.erlaubteDauer)
 
         # Verbindung des Weiter-Knopfes mit der Methode phasen_Ablauf
-        self.frm_zeitDef.btn_Weiter.clicked.connect(self.phasen_Ablauf)
+        self.frm_zeitDef.btn_Weiter.clicked.connect(self.WarteStart)
 
         # Verbindung des Fortfuehren-Knopfes mit der Methode weiter
         self.frm_kont.btn_Fortfuehren.clicked.connect(self.weiter)
@@ -78,16 +78,18 @@ class Frm_main(QMainWindow, Ui_StartWindow):
     def erlaubteDauer(self):
         self.frm_voraus.showFullScreen()
         self.hide()
-
-        
-        QTimer.singleShot(10000, self.frm_ww.showFullScreen)
-        QTimer.singleShot(10000, self.frm_voraus.hide)
         
         QTimer.singleShot(20000, self.frm_zeitDef.showFullScreen)
-        QTimer.singleShot(20000, self.frm_ww.hide)
+        QTimer.singleShot(20000, self.frm_voraus.hide)
+
+    def erlaubteDauer(self):
+        self.frm_wws.showFullScreen()
+        self.hide()
+
+        QTimer.singleShot(10000, self.phasen_Ablauf)
 
     def phasen_Ablauf(self):
-        self.frm_zeitDef.hide()
+        self.frm_ww.hide()
         self.timer.start()
 
         # Verbindung des Kontroll-Knopfes mit der Methode kontroll_Erklaerung 
