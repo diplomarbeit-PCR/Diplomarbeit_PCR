@@ -97,10 +97,11 @@ class Frm_main(QMainWindow, Ui_StartWindow):
 
     def WarteKont(self):
         self.frm_wartewindow.showFullScreen()
-
-        time.sleep(3)
-        self.phasen_running = False
-        self.phasen_Ablauf()
+        b = readFromBeweg()
+        if b == 5:
+            time.sleep(3)
+            self.phasen_running = False
+            self.phasen_Ablauf()
         
 
     def phasen_Ablauf(self):
