@@ -28,24 +28,6 @@ def readFromDetect():
     except OSError as e:
         print(f"Error reading from I2C device: {e}")
         return None
-    
-
-<<<<<<< HEAD
-def readFromDetector():
-    try:
-        # Lesen des zweiten Messwerts (Licht)
-        light = bus.read_byte(detect_address)
-        print("Empfangener Licht-Wert:", light)
-
-        # Lesen des ersten Messwerts (SPG)
-        spg = bus.read_byte(detect_address)
-        print("Empfangener SPG-Wert:", spg)
-
-        return spg, light
-
-    except OSError as e:
-        print(f"Fehler beim Lesen vom I2C-Gerät: {e}")
-        return None, None
 
 d = readFromDetect()
 while True:
@@ -53,10 +35,7 @@ while True:
         d = readFromDetect()
         
     if d == 5:
-        spg, light = readFromDetector()
         time.sleep(1)  # Führt die Messung alle Sekunde erneut durch
 
 
     
-=======
->>>>>>> 41ffe04b22e7c202495ad098cf6090aad58504ba
