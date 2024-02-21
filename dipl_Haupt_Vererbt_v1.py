@@ -88,12 +88,6 @@ class Frm_main(QMainWindow, Ui_StartWindow):
 
         QTimer.singleShot(10000, self.phasen_Ablauf)
 
-    def WarteKont(self):
-        self.frm_ww.showFullScreen()
-        self.timer.stop()
-
-        QTimer.singleShot(10000, self.frm_kont.showFullScreen())
-
     def phasen_Ablauf(self):
         self.frm_ww.hide()
         self.timer.start()
@@ -106,7 +100,10 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.frm_elong.btn_Kontrolle.clicked.connect(self.kontroll_Erklaerung)
         
         if self.phasen_running == False:
-            self.WarteKont()
+            self.frm_ww.showFullScreen()
+            self.timer.stop()
+
+            QTimer.singleShot(10000, self.frm_kont.showFullScreen())
         
         else:
             self.run_phasen_Ablauf()
@@ -183,15 +180,15 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.frm_ergeb.tbl_mess.setColumnCount(2)  # Zwei Spalten
         self.frm_ergeb.tbl_mess.setHorizontalHeaderLabels(["Kategorien", "Anzahl"])#
 
-        print("temp_d", self.temp_denat)
-        print("temp_a", self.temp_aneal)
-        print("temp_e", self.temp_elong)
+        print("temp_d", self.frm_denat.temp_denat)
+        print("temp_a", self.frm_aneal.temp_aneal)
+        print("temp_e", self.frm_elong.temp_elong)
         print("dauer_d", self.frm_zeitDef.value_denat)
         print("dauer_a", self.frm_zeitDef.value_aneal_gesamt)
         print("dauer_e", self.frm_zeitDef.value_elong_gesamt)
         print("dl", self.DL_zaehler_value)
-        print("spg", self.value_spg)
-        print("light", self.value_light)
+        print("spg", self.frm_kont.value_spg)
+        print("light", self.frm_kont.value_light)
 
 
         try:
@@ -224,7 +221,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
             ("Temperatur in °C", %s, %s, %s),
             ("Dauer in sek", %s, %s, %s)
             """
-            self.cursor_phasen.execute(insert_phasen, (self.temp_denat, self.temp_aneal, self.temp_elong, self.frm_zeitDef.value_denat, self.frm_zeitDef.value_aneal_gesamt, self.frm_zeitDef.value_elong_gesamt))
+            self.cursor_phasen.execute(insert_phasen, (self.frm_denat.temp_denat, self.frm_aneal.temp_aneal, self.frm_elong.temp_elong, self.frm_zeitDef.value_denat, self.frm_zeitDef.value_aneal_gesamt, self.frm_zeitDef.value_elong_gesamt))
 
             # INSERT INTO-Anweisung für Messwerte
             insert_messwerte = """
@@ -234,7 +231,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
             ("Spannung in mV", %s),
             ("Lichtstärke in Lumen", %s )
             """
-            self.cursor_mess.execute(insert_messwerte, (self.DL_zaehler_value, self.value_spg, self.value_light))
+            self.cursor_mess.execute(insert_messwerte, (self.DL_zaehler_value, self.frm_kont.value_spg, self.frm_kont.value_light))
 
             # Daten aus Tabelle 'PhasenWerte' abrufen
             self.cursor_phasen.execute("SELECT * FROM PhasenWerte")
