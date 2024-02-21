@@ -19,6 +19,7 @@ def readFromDetect():
         elif d == 7:
             print("Warten")
             time.sleep(2)
+
         elif d == 9:
             print("Notaus")
 
@@ -47,8 +48,12 @@ def readFromDetector():
 
 d = readFromDetect()
 while True:
-    spg, light = readFromDetector()
-    time.sleep(1)  # Führt die Messung alle Sekunde erneut durch
+    if d == 7:
+        d = readFromDetect()
+        
+    if d == 5:
+        spg, light = readFromDetector()
+        time.sleep(1)  # Führt die Messung alle Sekunde erneut durch
 
 
     
