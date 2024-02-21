@@ -6,6 +6,7 @@ import pymysql
 from dipl_Einfuehrung.einfuehrung_v4 import Ui_StartWindow
 from dipl_Einfuehrung.Voraussetzungen_Vererbt_v1 import Frm_voraus
 from dipl_Einfuehrung.zeitDefinition_Vererbt_v1 import Frm_zeitDef
+from dipl_Einfuehrung.WarteWindow_Vererbt_v1 import Frm_WarteWindow
 from dipl_Phasenablauf.Phasenablauf_Vererbt_v1 import Frm_denat, Frm_aneal, Frm_sens, Frm_asens, Frm_elong
 from dipl_Kontrolle.KontrollErgebnis_Vererbt_v1 import Frm_kont, Frm_ergeb
 
@@ -18,11 +19,11 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         # Initialisierung der Benutzeroberfläche 
         self.setupUi(self)
 
-        self.temp_denat = 94
-        self.temp_aneal = 65
-        self.temp_elong = 67
-        self.value_spg = 40.1
-        self.value_light = 17.39
+        self.frm_denat.temp_denat = 94
+        self.frm_aneal.temp_aneal = 65
+        self.frm_elong.temp_elong = 67
+        self.frm_kont.value_spg = 40.1
+        self.frm_kont.value_light = 17.39
 
         # Verbindung zur Datenbank herstellen
         self.connection = pymysql.connect(
@@ -45,6 +46,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
 
         self.frm_voraus = Frm_voraus()
         self.frm_zeitDef = Frm_zeitDef()
+        self.frm_ww = Frm_WarteWindow()
         self.frm_denat = Frm_denat()
         self.frm_aneal = Frm_aneal()
         self.frm_sens = Frm_sens()
@@ -77,9 +79,13 @@ class Frm_main(QMainWindow, Ui_StartWindow):
     def erlaubteDauer(self):
         self.frm_voraus.showFullScreen()
         self.hide()
+
+        
+        QTimer.singleShot(10000, self.frm_ww.showFullScreen)
+        QTimer.singleShot(10000, self.frm_voraus.hide)
         
         QTimer.singleShot(10000, self.frm_zeitDef.showFullScreen)
-        QTimer.singleShot(10000, self.frm_voraus.hide)
+        QTimer.singleShot(10000, self.frm_ww.hide)
 
     def phasen_Ablauf(self):
         self.frm_zeitDef.hide()
