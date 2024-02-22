@@ -2,6 +2,7 @@ from PySide6.QtWidgets import QMainWindow, QApplication, QTableWidgetItem, QTabl
 from PySide6.QtCore import QTimer
 import pymysql
 import smbus
+import time
 # Auf die unterschiedlichen WIndows zugreifen (QT Deklaration, die in Py umgewandelt wurden)
 from dipl_Einfuehrung.einfuehrung_v4 import Ui_StartWindow
 from dipl_Einfuehrung.Voraussetzungen_Vererbt_v1 import Frm_voraus
@@ -9,8 +10,7 @@ from dipl_Einfuehrung.zeitDefinition_Vererbt_v1 import Frm_zeitDef
 from dipl_Einfuehrung.WarteWindow_Vererbt_v1 import Frm_WarteWindow
 from dipl_Phasenablauf.Phasenablauf_Vererbt_v1 import Frm_denat, Frm_aneal, Frm_sens, Frm_asens, Frm_elong
 from dipl_Kontrolle.KontrollErgebnis_Vererbt_v1 import Frm_kont, Frm_ergeb
-from dipl_I2C.i2c_connection_beweg import go_beweg
-
+from dipl_I2C.i2c_connection_beweg import readFromBeweg, writeNumber
 
 # Verwenden von I2C Bus 7
 bus = smbus.SMBus(7)
@@ -26,8 +26,10 @@ class Frm_main(QMainWindow, Ui_StartWindow):
 
         self.timer_seconds = 0
         self.timer = QTimer()
+        self.go_Beweg = False
         # mit einem Intervall von 
         self.timer.setInterval(1000)
+        bus.close
         
         # Verbindung zur Datenbank herstellen
         self.connection = pymysql.connect(
@@ -90,10 +92,49 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         QTimer.singleShot(10000, self.frm_voraus.hide)
 
     def WarteStart(self):
+        self.go_beweg = True
+        bus.open
+        b = 0
+        print ("show WW")
         self.frm_ww.showFullScreen()
+        print ("hide Zeit")
         self.frm_zeitDef.hide()
 
-        go_beweg()
+        while self.go_beweg == True:
+            self.frm_ww.showFullScreen()
+            if b != 5:
+                b = readFromBeweg()  
+                print ("neuer")
+
+            if b == 7:
+                print("Warten")
+                time.sleep(2)
+                b = readFromBeweg()
+
+            if b == 5:
+                writeNumber(1)
+                writeNumber(self.frm_zeitDef.value_denat)
+                print ("RPi sends: ", self.frm_zeitDef.value_denat)
+                time.sleep(2)
+
+                writeNumber(2)
+                writeNumber(self.frm_zeitDef.value_aneal_gesamt)
+                print ("RPi sends: ", self.frm_zeitDef.value_aneal_gesamt)
+                time.sleep(2)
+        
+                writeNumber(3)
+                writeNumber(self.frm_zeitDef.value_elong_gesamt)
+                print ("RPi sends: ", self.frm_zeitDef.value_elong_gesamt)
+                time.sleep(2)
+
+                # Start Wert
+                writeNumber(4)
+                time.sleep(2)
+
+                self.go_beweg = False
+                bus.close
+
+        self.phasen_Ablauf()
 
     def WarteKont(self):
         self.frm_ww.showFullScreen()
@@ -176,7 +217,10 @@ class Frm_main(QMainWindow, Ui_StartWindow):
             self.phasen_Ablauf()
 
     def kontroll_Erklaerung(self):
+        bus.open
         self.phasen_running = False  # Stoppe phasen_Ablauf
+        writeNumber(5)
+        bus.close
         self.DL_counter = 0
 
     def weiter(self):

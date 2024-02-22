@@ -169,3 +169,5 @@ class Frm_zeitDef(QMainWindow, Ui_zeitDef_Voraus):
         self.value_elong = self.wasserDauer_elong.value() + self.value_asens
         # neuer Wert wird ausgegeben
         print(f"ElongWert: {value}")
+
+  
