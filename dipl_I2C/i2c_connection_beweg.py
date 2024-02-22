@@ -1,6 +1,9 @@
 import smbus
 import time
 
+import sys
+sys.path.insert(0, '../dipl_Einführung')
+
 from dipl_Einfuehrung.zeitDefinition_Vererbt_v1 import Frm_zeitDef
 
 # Verwenden von I2C Bus 7
