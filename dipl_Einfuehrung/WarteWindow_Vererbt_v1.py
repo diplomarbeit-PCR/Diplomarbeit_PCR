@@ -87,7 +87,7 @@ class Frm_WarteWindow(QMainWindow, Ui_WarteWindow):
         self.ui.setupUi(self)
 
         self.lbl_loading = QLabel(self)
-        self.lbl_loading.setGeometry(125, 380, 411, 291)
+        self.lbl_loading.setGeometry(100, 380, 411, 291)
         self.lbl_loading.setStyleSheet("font-size: 250px;")
 
         self.timer = QTimer(self)
