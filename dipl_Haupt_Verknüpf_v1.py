@@ -2,8 +2,6 @@ from PySide6.QtWidgets import QMainWindow, QApplication, QTableWidgetItem, QTabl
 from PySide6.QtCore import QTimer
 import pymysql
 import smbus
-import time
-
 # Auf die unterschiedlichen WIndows zugreifen (QT Deklaration, die in Py umgewandelt wurden)
 from dipl_Einfuehrung.einfuehrung_v4 import Ui_StartWindow
 from dipl_Einfuehrung.Voraussetzungen_Vererbt_v1 import Frm_voraus
@@ -11,20 +9,14 @@ from dipl_Einfuehrung.zeitDefinition_Vererbt_v1 import Frm_zeitDef
 from dipl_Einfuehrung.WarteWindow_Vererbt_v1 import Frm_WarteWindow
 from dipl_Phasenablauf.Phasenablauf_Vererbt_v1 import Frm_denat, Frm_aneal, Frm_sens, Frm_asens, Frm_elong
 from dipl_Kontrolle.KontrollErgebnis_Vererbt_v1 import Frm_kont, Frm_ergeb
-from connection import Frm_connect
-from dipl_I2C.i2c_connection_detect import readFromDetect
-from dipl_I2C.i2c_connection_detect_werteonly import readFromDetectorSL
-from dipl_I2C.i2c_connection_regelkreis import readFromTemp
-from dipl_I2C.i2c_connection_beweg import readFromBeweg, writeBeweg
+from dipl_I2C.i2c_connection_beweg import go_beweg
 
 
 # Verwenden von I2C Bus 7
 bus = smbus.SMBus(7)
-# Deklarieren der Adressen der Slaves
-temp_address = 0x26
-detect_address = 0x27
-beweg_address = 0x028
-        
+
+beweg_address = 0x28
+
 class Frm_main(QMainWindow, Ui_StartWindow):
 
     def __init__(self):
@@ -36,12 +28,24 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.timer = QTimer()
         # mit einem Intervall von 
         self.timer.setInterval(1000)
+        
+        # Verbindung zur Datenbank herstellen
+        self.connection = pymysql.connect(
+            host='localhost',
+            user='root',
+            password='Rock4C+',
+            database='eduPCR'
+        )
+
+        self.cursor_mess = self.connection.cursor()
+        self.cursor_phasen = self.connection.cursor()
 
         self.DL_zaehler_value = 0
         self.DL_counter = 0
 
         self.frm_voraus = Frm_voraus()
         self.frm_zeitDef = Frm_zeitDef()
+        self.frm_ww = Frm_WarteWindow()
         self.frm_denat = Frm_denat()
         self.frm_aneal = Frm_aneal()
         self.frm_sens = Frm_sens()
@@ -49,8 +53,13 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.frm_elong = Frm_elong()
         self.frm_kont = Frm_kont()
         self.frm_ergeb = Frm_ergeb()
-        self.frm_connect = Frm_connect()
-        self.frm_wartewindow = Frm_WarteWindow()
+
+        
+        self.frm_denat.temp_denat = 94
+        self.frm_aneal.temp_aneal = 65
+        self.frm_elong.temp_elong = 67
+        self.frm_kont.value_spg = 40.1
+        self.frm_kont.value_light = 17.39
          
         # Verbindung des Start-Knopfes mit der Methode erlaubteDauer 
         self.btn_Start.clicked.connect(self.erlaubteDauer)
@@ -81,35 +90,22 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         QTimer.singleShot(10000, self.frm_voraus.hide)
 
     def WarteStart(self):
-        self.frm_wartewindow.showFullScreen()
+        self.frm_ww.showFullScreen()
         self.frm_zeitDef.hide()
 
-        b = readFromBeweg()
-        readFromTemp()
-        readFromDetect()
-    
-        if b == 5:
-            # Startwert übermittelt
-            writeBeweg(4)
-
-        time.sleep(3)
-        self.phasen_Ablauf()
+        go_beweg()
 
     def WarteKont(self):
-        self.frm_wartewindow.showFullScreen()
-        b = readFromBeweg()
-        if b == 5:
-            time.sleep(3)
-            self.phasen_running = False
-            self.phasen_Ablauf()
-        
+        self.frm_ww.showFullScreen()
+
+        QTimer.singleShot(10000, self.frm_kont.showFullScreen)
+        QTimer.singleShot(10000, self.frm_ww.hide)
 
     def phasen_Ablauf(self):
-        self.frm_zeitDef.hide()
+        self.frm_ww.hide()
         self.timer.start()
 
         # Verbindung des Kontroll-Knopfes mit der Methode kontroll_Erklaerung 
-        # Dadurch, dass erst am Ende geprüft wird, ob phasen_running True oder False ist, springt es nicht mitten im Durchlauf zur Kontrolle
         self.frm_denat.btn_Kontrolle.clicked.connect(self.kontroll_Erklaerung)
         self.frm_aneal.btn_Kontrolle.clicked.connect(self.kontroll_Erklaerung)
         self.frm_sens.btn_Kontrolle.clicked.connect(self.kontroll_Erklaerung)
@@ -117,18 +113,12 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.frm_elong.btn_Kontrolle.clicked.connect(self.kontroll_Erklaerung)
         
         if self.phasen_running == False:
-            self.frm_kont.showFullScreen()
-            
-            # Ausgabe von Spannung und Lichtintensität
-            self.frm_kont.Spg_detekt.display(self.frm_kont.value_spg)
-            self.frm_kont.Licht_detekt.display(self.frm_kont.value_light)
-
             self.timer.stop()
+            self.WarteKont()
         
         else:
             self.run_phasen_Ablauf()
-            # Es wurde Start/Fortführ Button gedrückt
-            # bus.write_byte(beweg_address, 5)
+            
             self.phaseCount = 0
             
             self.DL_counter += 1 
@@ -154,17 +144,6 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.frm_sens.Timer_zaehler.display(f"{hours:02d}:{minutes:02d}:{seconds:02d}")
         self.frm_asens.Timer_zaehler.display(f"{hours:02d}:{minutes:02d}:{seconds:02d}")
         self.frm_elong.Timer_zaehler.display(f"{hours:02d}:{minutes:02d}:{seconds:02d}")
-
-        # Die Temperatur wir abgeragt
-        self.frm_denat.temp_denat, self.frm_aneal.temp_aneal, self.frm_elong.temp_elong = readFromTemp()
-        time.sleep(1)  # Führt die Messung alle Sekunde erneut durch
-
-        # Temperatur ausgeben während Phasen Ablauf
-        self.frm_denat.temp_sensD.display(self.frm_denat.temp_denat)
-        self.frm_aneal.temp_sensA.display(self.frm_aneal.temp_aneal)
-        self.frm_sens.temp_sensA.display(self.frm_aneal.temp_aneal)
-        self.frm_asens.temp_sensA.display(self.frm_aneal.temp_aneal)
-        self.frm_elong.temp_sensE.display(self.frm_elong.temp_elong)
         
         # Funktion - nimmt drei Parameter entgegen: phase, start und end
         # überprüft, dass self.phaseCount zwischen start und end (einschließlich start und ausschließlich end) liegt
@@ -198,15 +177,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
 
     def kontroll_Erklaerung(self):
         self.phasen_running = False  # Stoppe phasen_Ablauf
-        # Es wurde der Kontroll Button gedrückt
-        # bus.write_byte(beweg_address, 6)
-        # Kontrolle, ob in 0-Posi
-        # bus.read_byte
         self.DL_counter = 0
-        writeBeweg(5)
-        self.frm_kont.value_spg, self.frm_kont.value_light = readFromDetectorSL()
-        time.sleep(1)  # Führt die Messung alle Sekunde erneut durch
-        self.WarteKont()
 
     def weiter(self):
         # phasen_Ablauf soll wiederholt werden
@@ -220,7 +191,6 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.frm_ergeb.tbl_mess.setColumnCount(2)  # Zwei Spalten
         self.frm_ergeb.tbl_mess.setHorizontalHeaderLabels(["Kategorien", "Anzahl"])#
 
-        # Zur Kontrolle eine Ausgabe von all den Werten, die für die Datenbank relevant sind
         print("temp_d", self.frm_denat.temp_denat)
         print("temp_a", self.frm_aneal.temp_aneal)
         print("temp_e", self.frm_elong.temp_elong)
@@ -242,7 +212,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
                 Elongation DECIMAL(5,2)
             )
             """
-            self.frm_connect.cursor_phasen.execute(create_table_phasen)
+            self.cursor_phasen.execute(create_table_phasen)
             print("Tabelle 'PhasenWerte' erstellt")
 
             # Tabelle 'Messwerte' erstellen, falls nicht vorhanden
@@ -252,7 +222,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
                 Anzahl DECIMAL(5,2)
             )
             """
-            self.frm_connect.cursor_mess.execute(create_table_messwert)
+            self.cursor_mess.execute(create_table_messwert)
             print("Tabelle 'Messwerte' erstellt")
 
             # INSERT INTO-Anweisung für PhasenWerte
@@ -262,7 +232,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
             ("Temperatur in °C", %s, %s, %s),
             ("Dauer in sek", %s, %s, %s)
             """
-            self.frm_connect.cursor_phasen.execute(insert_phasen, (self.temp_denat, self.temp_aneal, self.temp_elong, self.frm_zeitDef.value_denat, self.frm_zeitDef.value_aneal_gesamt, self.frm_zeitDef.value_elong_gesamt))
+            self.cursor_phasen.execute(insert_phasen, (self.frm_denat.temp_denat, self.frm_aneal.temp_aneal, self.frm_elong.temp_elong, self.frm_zeitDef.value_denat, self.frm_zeitDef.value_aneal_gesamt, self.frm_zeitDef.value_elong_gesamt))
 
             # INSERT INTO-Anweisung für Messwerte
             insert_messwerte = """
@@ -272,15 +242,15 @@ class Frm_main(QMainWindow, Ui_StartWindow):
             ("Spannung in mV", %s),
             ("Lichtstärke in Lumen", %s )
             """
-            self.frm_connect.cursor_mess.execute(insert_messwerte, (self.DL_zaehler_value, self.value_spg, self.value_light))
+            self.cursor_mess.execute(insert_messwerte, (self.DL_zaehler_value, self.frm_kont.value_spg, self.frm_kont.value_light))
 
             # Daten aus Tabelle 'PhasenWerte' abrufen
-            self.frm_connect.cursor_phasen.execute("SELECT * FROM PhasenWerte")
-            result_phasen = self.frm_connect.cursor_phasen.fetchall()
+            self.cursor_phasen.execute("SELECT * FROM PhasenWerte")
+            result_phasen = self.cursor_phasen.fetchall()
 
             # Daten aus Tabelle 'Messwerte' abrufen
-            self.frm_connect.cursor_mess.execute("SELECT * FROM Messwerte")
-            result_messwerte = self.frm_connect.cursor_mess.fetchall()
+            self.cursor_mess.execute("SELECT * FROM Messwerte")
+            result_messwerte = self.cursor_mess.fetchall()
 
             # Ergebnisse in tbl_phasen einfügen
             for row_num, row_data in enumerate(result_phasen):
@@ -294,17 +264,15 @@ class Frm_main(QMainWindow, Ui_StartWindow):
                 for col_num, col_data in enumerate(row_data):
                     self.frm_ergeb.tbl_mess.setItem(row_num, col_num, QTableWidgetItem(str(col_data)))
 
-        # Sollte ein MySQL Fehler auftreten, so soll eine konkrete Fehlermeldung ausgegeben werden
         except pymysql.MySQLError as e:
             print("MySQL-Fehler: {}".format(str(e)))
 
-        # Sollte ein MySQL unabhängiger Fehler auftreten, so soll eine konkrete Fehlermeldung ausgegeben werden
         except OSError as o:
             print("Fehler: {}".format(str(o)))
 
         finally:
             # Verbindung schließen
-            self.frm_connect.connection.close()
+            self.connection.close()
 
         # phasen_Ablauf soll wiederholt werden
         self.frm_ergeb.showFullScreen()
