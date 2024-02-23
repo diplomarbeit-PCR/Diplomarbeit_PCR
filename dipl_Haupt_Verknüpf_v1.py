@@ -29,7 +29,6 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.go_Beweg = False
         # mit einem Intervall von 
         self.timer.setInterval(1000)
-        bus.close
         
         # Verbindung zur Datenbank herstellen
         self.connection = pymysql.connect(
@@ -93,7 +92,6 @@ class Frm_main(QMainWindow, Ui_StartWindow):
 
     def WarteStart(self):
         self.go_beweg = True
-        bus.open
         b = 0
         print ("show WW")
         self.frm_ww.showFullScreen()
@@ -103,6 +101,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         while self.go_beweg == True:
             self.frm_ww.showFullScreen()
             if b != 5:
+                print ("nicht 5 oder 7")
                 b = readFromBeweg()  
                 print ("neuer")
 
@@ -130,9 +129,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
                 # Start Wert
                 writeNumber(4)
                 time.sleep(2)
-
                 self.go_beweg = False
-                bus.close
 
         self.phasen_Ablauf()
 
@@ -217,10 +214,8 @@ class Frm_main(QMainWindow, Ui_StartWindow):
             self.phasen_Ablauf()
 
     def kontroll_Erklaerung(self):
-        bus.open
         self.phasen_running = False  # Stoppe phasen_Ablauf
         writeNumber(5)
-        bus.close
         self.DL_counter = 0
 
     def weiter(self):
