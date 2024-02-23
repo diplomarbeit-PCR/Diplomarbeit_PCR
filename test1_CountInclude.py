@@ -1,6 +1,6 @@
 # https://commons.wikimedia.org/w/index.php?search=Loading+animations&title=Special:MediaSearch&type=image
 
-# https://prod.liveshare.vsengsaas.visualstudio.com/join?A8A30C45399B67793C7C489967D379206946
+# https://prod.liveshare.vsengsaas.visualstudio.com/join?682BAC6E36B5C0119F9065998ED1172CB089
 from PySide6.QtCore import QTimer
 from PySide6.QtWidgets import QMainWindow, QApplication, QWidget, QLabel
 from PySide6.QtCore import Qt
