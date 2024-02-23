@@ -79,7 +79,6 @@ class Ui_WarteWindow(object):
     # retranslateUi
 
 
-
 class Frm_WarteWindow(QMainWindow, Ui_WarteWindow):
     def __init__(self):
         super().__init__()
