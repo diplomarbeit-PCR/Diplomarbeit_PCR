@@ -2,13 +2,14 @@ import sys
 from PySide6.QtWidgets import QApplication, QMainWindow, QLabel
 from PySide6.QtCore import QTimer, Signal
 import smbus
-
-# https://prod.liveshare.vsengsaas.visualstudio.com/join?682BAC6E36B5C0119F9065998ED1172CB089
 from PySide6.QtCore import QTimer
 from PySide6.QtWidgets import QMainWindow, QApplication, QWidget, QLabel
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QMovie
 from dipl_Einfuehrung.WarteWindow_v1 import Ui_WarteWindow  
+
+
+# https://prod.liveshare.vsengsaas.visualstudio.com/join?9114D6BA32B67BF196A77FBC3085C8FD0FFC
 
 # Definition der I2C-Kommunikationsklasse
 class I2CController(QObject):
