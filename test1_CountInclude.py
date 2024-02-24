@@ -8,8 +8,8 @@ from PySide6.QtCore import Qt
 from PySide6.QtGui import QMovie
 from dipl_Einfuehrung.WarteWindow_v1 import Ui_WarteWindow 
 
+#https://prod.liveshare.vsengsaas.visualstudio.com/join?BA71A01B8621EFECDA53B8DD3180B5E33BAC
 
-# https://prod.liveshare.vsengsaas.visualstudio.com/join?AE8556A7AC90DA600003BD5B75C7ABBCC585
 # Definition der I2C-Kommunikationsklasse
 class I2CController(QObject):
     i2c_operation_requested = Signal(int)
@@ -46,63 +46,16 @@ class Frm_WarteWindow(QMainWindow, Ui_WarteWindow):
         self.ui = Ui_WarteWindow()
         self.ui.setupUi(self)
 
-        self.i = 0
         self.i2c_controller = I2CController()  # I2C-Controller erstellen
-        self.data_sent = False  # Hält den Zustand, ob die Daten gesendet wurden
         self.lbl_loading = QLabel(self)
         self.lbl_loading.setGeometry(90, 380, 411, 291)
         self.lbl_loading.setStyleSheet("font-size: 250px;")
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.update_loading_animation)
-        self.timer.start(500)  # Update every 500 milliseconds
         self.counter = 0
-        self.stopped_reading = False  # Hält den Zustand, ob der Leseprozess gestoppt wurde
-
+           
     def update_loading_animation(self):
         self.counter = (self.counter + 1) % 5
         loading_text = "." * self.counter
         self.lbl_loading.setText(loading_text)
         
-        if not self.stopped_reading:
-            print("lese Fkt")
-            self.read_data_from_slave()
-
-
-    def send_data_to_slave(self):
-        # Hier wird die Methode zum Senden von Daten an den Slave aufgerufen
-        self.i2c_controller.write_to_slave(1)
-
-    def read_data_from_slave(self):
-    # Nur Daten vom Slave lesen, wenn der Leseprozess nicht gestoppt wurde
-        if not self.stopped_reading:
-            try:
-                data = self.i2c_controller.read_from_slave()
-                if data is None:             
-                    data = self.i2c_controller.read_from_slave()
-
-                if data == 7:
-                    print("7")
-                    data = self.i2c_controller.read_from_slave()
-                    
-                if data == 0:
-                    print("0")
-                    data = self.i2c_controller.read_from_slave()
-
-                if data == 5 and not self.data_sent:
-                    self.data_sent = True
-                    print("5 erhalten")
-                    self.i += 1
-                    print(self.i)
-                    # Hier könnten Sie die gewünschten Daten an den Slave senden
-                    self.i2c_controller.write_to_slave(1)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
-                    self.i2c_controller.write_to_slave(10)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
-                    self.i2c_controller.write_to_slave(2)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
-                    self.i2c_controller.write_to_slave(10)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
-                    self.i2c_controller.write_to_slave(3)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
-                    self.i2c_controller.write_to_slave(10)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
-                    self.stopped_reading = True  # Leseprozess stoppen
-                    self.close()
-            except Exception as e:
-                print(f"Fehler beim Lesen von Daten vom Slave: {str(e)}")
-
-

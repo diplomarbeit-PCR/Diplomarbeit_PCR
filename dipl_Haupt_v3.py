@@ -2,6 +2,7 @@ from PySide6.QtWidgets import QMainWindow, QApplication, QTableWidgetItem, QTabl
 from PySide6.QtCore import QTimer, Signal
 import pymysql
 import smbus
+import i2cdevice
 import time
 # Auf die unterschiedlichen Windows zugreifen (QT Deklaration, die in Py umgewandelt wurden)
 from dipl_Einfuehrung.einfuehrung_v4 import Ui_StartWindow
@@ -11,10 +12,6 @@ from test1_CountInclude import Frm_WarteWindow
 from dipl_Phasenablauf.Phasenablauf_Vererbt_v1 import Frm_denat, Frm_aneal, Frm_sens, Frm_asens, Frm_elong
 from dipl_Kontrolle.KontrollErgebnis_Vererbt_v1 import Frm_kont, Frm_ergeb
 
-# Verwenden von I2C Bus 7
-bus = smbus.SMBus(7)
-
-#beweg_address = 0x28
 
 class Frm_main(QMainWindow, Ui_StartWindow):
 
@@ -80,6 +77,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.timer.timeout.connect(self.run_phasen_Ablauf)  # Verbinde den Timer mit der Methode
         
         self.phaseCount = 0
+        self.stopped_reading = True
         
         
     def erlaubteDauer(self):
@@ -90,16 +88,115 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         QTimer.singleShot(10000, self.frm_voraus.hide)
 
     def WarteStart(self):
+        self.i2c_operation_requested = Signal(int)
+        # Öffne den I2C-Bus 7
+        self.bus = smbus.SMBus(7)
+        d = i2cdevice.I2CDevice.get_addresses()
+        print(d)
+        # Adresse des Slave-Geräts
+        self.address = 0x04
+        
+        self.data_sent = False  # Hält den Zustand, ob die Daten gesendet wurden
+        self.stopped_reading = False  # Hält den Zustand, ob der Leseprozess gestoppt wurde
+        self.i = 0
+
+        self.frm_ww.timer.start(500)
         print ("show WW")
         self.frm_ww.showFullScreen()
         print ("hide Zeit")
         self.frm_zeitDef.hide()
+            
+        if not self.stopped_reading:
+            self.frm_ww.showFullScreen()
+            print("lese Fkt")
+            print(self.read_data_from_slave())
+            self.read_data_from_slave()
 
-        print("in Phasenablauf")
-        self.phasen_Ablauf
+        else:
+            print("error")
 
+        if self.stopped_reading:
+            self.timer.stop()  # Stoppen Sie den Timer, da der Leseprozess gestoppt wurde
+            self.phasen_Ablauf()
+
+    def read_data_from_slave(self):
+    # Nur Daten vom Slave lesen, wenn der Leseprozess nicht gestoppt wurde
+        if not self.stopped_reading:
+            try:
+                if self.i == 0:
+                    data = self.read_from_slave()
+                    if data is None:             
+                        data = self.read_from_slave()
+
+                    if data == 7:
+                        print("7")
+                        data = self.read_from_slave()
+                        
+                    if data == 0:
+                        print("0")
+                        data = self.read_from_slave()
+
+                    # if data == 5 and not self.data_sent:
+                    #     self.data_sent = True
+                    #     print("5 erhalten")
+                    #     self.i += 1
+                    #     print(self.i)
+                    #     # Hier könnten Sie die gewünschten Daten an den Slave senden
+                    #     self.write_to_slave(1)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
+                    #     self.write_to_slave(self.frm_zeitDef.value_denat)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
+                    #     self.write_to_slave(2)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
+                    #     self.write_to_slave(self.frm_zeitDef.value_aneal_gesamt)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
+                    #     self.write_to_slave(3)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
+                    #     self.write_to_slave(self.frm_zeitDef.value_elong_gesamt)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
+                    #     self.stopped_reading = True  # Leseprozess stoppen
+                        
+                    start_time = time.time()  # Record the starting time
+                    print(data)
+
+                    if data == 5 and not self.data_sent:
+                        elapsed_time = time.time()-start_time
+                        while True:
+                            if elapsed_time >=5:print('timeout reading')
+                            else: 
+                                self.data_sent = True
+                                print("5 erhalten")
+                                self.i += 1
+                                print(self.i)
+                                # Hier könnten Sie die gewünschten Daten an den Slave senden
+                                self.write_to_slave(1)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
+                                self.write_to_slave(self.frm_zeitDef.value_denat)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
+                                self.write_to_slave(2)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
+                                self.write_to_slave(self.frm_zeitDef.value_aneal_gesamt)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
+                                self.write_to_slave(3)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
+                                self.write_to_slave(self.frm_zeitDef.value_elong_gesamt)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
+                                self.stopped_reading = True  # Leseprozess stoppen
+                    else:
+                        print("error reading data")
+                        
+            except Exception as e:
+                print(f"Fehler beim Lesen von Daten vom Slave: {str(e)}")
+
+    def write_to_slave(self, data):
+        try:
+            # Schreibe Daten an den Slave
+            self.bus.write_byte(self.address, data)
+            print(f"Daten {data} erfolgreich an Slave gesendet.")
+        except Exception as e:
+            print(f"Fehler beim Senden von Daten an den Slave: {str(e)}")
+
+    def read_from_slave(self):
+        try:
+            # Lese Daten vom Slave
+            data = self.bus.read_byte(self.address)
+            print(f"Daten vom Slave gelesen: {data}")
+            return data
+        except Exception as e:
+            print(f"Fehler")
+
+    
     def WarteKont(self):
         self.frm_ww.showFullScreen()
+        self.write_to_slave(5)
 
         QTimer.singleShot(10000, self.frm_kont.showFullScreen)
         QTimer.singleShot(10000, self.frm_ww.hide)
