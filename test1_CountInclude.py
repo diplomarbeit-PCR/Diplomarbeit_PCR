@@ -4,7 +4,7 @@ from PySide6.QtCore import QTimer, Signal
 import smbus
 
 from dipl_Einfuehrung.WarteWindow_v1 import Ui_WarteWindow
-
+# https://prod.liveshare.vsengsaas.visualstudio.com/join?9114D6BA32B67BF196A77FBC3085C8FD0FFC
 
 # Definition der I2C-Kommunikationsklasse
 class I2CController:
