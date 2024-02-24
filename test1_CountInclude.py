@@ -1,12 +1,12 @@
 import sys
 from PySide6.QtWidgets import QApplication, QMainWindow, QLabel
-from PySide6.QtCore import QTimer, Signal
+from PySide6.QtCore import QTimer, Signal, QObject
 import smbus
 from PySide6.QtCore import QTimer
 from PySide6.QtWidgets import QMainWindow, QApplication, QWidget, QLabel
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QMovie
-from dipl_Einfuehrung.WarteWindow_v1 import Ui_WarteWindow  
+from dipl_Einfuehrung.WarteWindow_v1 import Ui_WarteWindow 
 
 
 # https://prod.liveshare.vsengsaas.visualstudio.com/join?9114D6BA32B67BF196A77FBC3085C8FD0FFC
@@ -95,6 +95,11 @@ class Frm_WarteWindow(QMainWindow, Ui_WarteWindow):
                     self.i += 1
                     print(self.i)
                     # Hier könnten Sie die gewünschten Daten an den Slave senden
+                    self.i2c_controller.write_to_slave(1)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
+                    self.i2c_controller.write_to_slave(10)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
+                    self.i2c_controller.write_to_slave(2)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
+                    self.i2c_controller.write_to_slave(10)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
+                    self.i2c_controller.write_to_slave(3)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
                     self.i2c_controller.write_to_slave(10)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
                     self.stopped_reading = True  # Leseprozess stoppen
                     self.close()

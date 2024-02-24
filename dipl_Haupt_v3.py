@@ -14,7 +14,7 @@ from dipl_Kontrolle.KontrollErgebnis_Vererbt_v1 import Frm_kont, Frm_ergeb
 # Verwenden von I2C Bus 7
 bus = smbus.SMBus(7)
 
-beweg_address = 0x28
+#beweg_address = 0x28
 
 class Frm_main(QMainWindow, Ui_StartWindow):
 
@@ -95,9 +95,8 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         print ("hide Zeit")
         self.frm_zeitDef.hide()
 
-        if self.frm_ww.i == 1:
-            print("Schliessen")
-            self.phasen_Ablauf()  # Methode phasen_Ablauf aufrufen
+        print("in Phasenablauf")
+        self.phasen_Ablauf
 
     def WarteKont(self):
         self.frm_ww.showFullScreen()
