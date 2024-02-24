@@ -3,7 +3,6 @@ from PySide6.QtWidgets import QApplication, QMainWindow, QLabel
 from PySide6.QtCore import QTimer, Signal
 import smbus
 
-<<<<<<< HEAD
 # https://prod.liveshare.vsengsaas.visualstudio.com/join?682BAC6E36B5C0119F9065998ED1172CB089
 from PySide6.QtCore import QTimer
 from PySide6.QtWidgets import QMainWindow, QApplication, QWidget, QLabel
@@ -15,13 +14,6 @@ from dipl_Einfuehrung.WarteWindow_v1 import Ui_WarteWindow
 class I2CController(QObject):
     i2c_operation_requested = Signal(int)
 
-=======
-from dipl_Einfuehrung.WarteWindow_v1 import Ui_WarteWindow
-# https://prod.liveshare.vsengsaas.visualstudio.com/join?9114D6BA32B67BF196A77FBC3085C8FD0FFC
-
-# Definition der I2C-Kommunikationsklasse
-class I2CController:
->>>>>>> bcb7fe2849652a972df68d7493ab313a49e0277d
     def __init__(self):
         # Öffne den I2C-Bus 7
         self.bus = smbus.SMBus(7)
