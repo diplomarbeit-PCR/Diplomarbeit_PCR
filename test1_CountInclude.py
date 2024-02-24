@@ -4,18 +4,16 @@ from PySide6.QtCore import Signal, QObject
 import smbus
 import time
 
-<<<<<<< HEAD
 # https://prod.liveshare.vsengsaas.visualstudio.com/join?682BAC6E36B5C0119F9065998ED1172CB089
 from PySide6.QtCore import QTimer
 from PySide6.QtWidgets import QMainWindow, QApplication, QWidget, QLabel
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QMovie
 from dipl_Einfuehrung.WarteWindow_v1 import Ui_WarteWindow  
-=======
+
 # Definition der I2C-Kommunikationsklasse
 class I2CController(QObject):
     i2c_operation_requested = Signal(int)
->>>>>>> c5da854765701e2da57b35983fa6d749621f286b
 
     def __init__(self):
         super().__init__()
