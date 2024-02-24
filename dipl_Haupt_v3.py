@@ -1,12 +1,20 @@
 from PySide6.QtWidgets import QMainWindow, QApplication, QTableWidgetItem, QTableWidget
-from PySide6.QtCore import QTimer
-# Auf die unterschiedlichen WIndows zugreifen (QT Deklaration, die in Py umgewandelt wurden)
+from PySide6.QtCore import QTimer, Signal
+import pymysql
+import smbus
+import time
+# Auf die unterschiedlichen Windows zugreifen (QT Deklaration, die in Py umgewandelt wurden)
 from dipl_Einfuehrung.einfuehrung_v4 import Ui_StartWindow
 from dipl_Einfuehrung.Voraussetzungen_Vererbt_v1 import Frm_voraus
 from dipl_Einfuehrung.zeitDefinition_Vererbt_v1 import Frm_zeitDef
-from dipl_Einfuehrung.WarteWindow_Vererbt_v1 import Frm_WarteWindow
+from test1_CountInclude import Frm_WarteWindow
 from dipl_Phasenablauf.Phasenablauf_Vererbt_v1 import Frm_denat, Frm_aneal, Frm_sens, Frm_asens, Frm_elong
 from dipl_Kontrolle.KontrollErgebnis_Vererbt_v1 import Frm_kont, Frm_ergeb
+
+# Verwenden von I2C Bus 7
+bus = smbus.SMBus(7)
+
+beweg_address = 0x28
 
 class Frm_main(QMainWindow, Ui_StartWindow):
 
@@ -17,8 +25,20 @@ class Frm_main(QMainWindow, Ui_StartWindow):
 
         self.timer_seconds = 0
         self.timer = QTimer()
+        self.go_Beweg = False
         # mit einem Intervall von 
         self.timer.setInterval(1000)
+        
+        # Verbindung zur Datenbank herstellen
+        self.connection = pymysql.connect(
+            host='localhost',
+            user='root',
+            password='Rock4C+',
+            database='eduPCR'
+        )
+
+        self.cursor_mess = self.connection.cursor()
+        self.cursor_phasen = self.connection.cursor()
 
         self.DL_zaehler_value = 0
         self.DL_counter = 0
@@ -70,10 +90,14 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         QTimer.singleShot(10000, self.frm_voraus.hide)
 
     def WarteStart(self):
+        print ("show WW")
         self.frm_ww.showFullScreen()
+        print ("hide Zeit")
         self.frm_zeitDef.hide()
 
-        QTimer.singleShot(10000, self.phasen_Ablauf)
+        if self.frm_ww.i == 1:
+            print("Schliessen")
+            self.phasen_Ablauf()  # Methode phasen_Ablauf aufrufen
 
     def WarteKont(self):
         self.frm_ww.showFullScreen()
@@ -166,7 +190,94 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.frm_kont.hide()
 
     def ergebnis(self):
-        
+        self.frm_ergeb.tbl_phasen.setColumnCount(4)  # Fünf Spalten
+        self.frm_ergeb.tbl_phasen.setHorizontalHeaderLabels(["Kategorien", "Denaturierung", "Annealing", "Elongation"])
+        self.frm_ergeb.tbl_mess.setColumnCount(2)  # Zwei Spalten
+        self.frm_ergeb.tbl_mess.setHorizontalHeaderLabels(["Kategorien", "Anzahl"])#
+
+        print("temp_d", self.frm_denat.temp_denat)
+        print("temp_a", self.frm_aneal.temp_aneal)
+        print("temp_e", self.frm_elong.temp_elong)
+        print("dauer_d", self.frm_zeitDef.value_denat)
+        print("dauer_a", self.frm_zeitDef.value_aneal_gesamt)
+        print("dauer_e", self.frm_zeitDef.value_elong_gesamt)
+        print("dl", self.DL_zaehler_value)
+        print("spg", self.frm_kont.value_spg)
+        print("light", self.frm_kont.value_light)
+
+
+        try:
+            # Tabelle 'PhasenWerte' erstellen, falls nicht vorhanden
+            create_table_phasen = """
+            CREATE TABLE IF NOT EXISTS PhasenWerte (
+                Kategorien VARCHAR(50),
+                Denaturierung DECIMAL(5,2),
+                Annealing DECIMAL(5,2),
+                Elongation DECIMAL(5,2)
+            )
+            """
+            self.cursor_phasen.execute(create_table_phasen)
+            print("Tabelle 'PhasenWerte' erstellt")
+
+            # Tabelle 'Messwerte' erstellen, falls nicht vorhanden
+            create_table_messwert = """
+            CREATE TABLE IF NOT EXISTS Messwerte (
+                Kategorien VARCHAR(50),
+                Anzahl DECIMAL(5,2)
+            )
+            """
+            self.cursor_mess.execute(create_table_messwert)
+            print("Tabelle 'Messwerte' erstellt")
+
+            # INSERT INTO-Anweisung für PhasenWerte
+            insert_phasen = """
+            INSERT INTO PhasenWerte (Kategorien, Denaturierung, Annealing, Elongation)
+            VALUES 
+            ("Temperatur in °C", %s, %s, %s),
+            ("Dauer in sek", %s, %s, %s)
+            """
+            self.cursor_phasen.execute(insert_phasen, (self.frm_denat.temp_denat, self.frm_aneal.temp_aneal, self.frm_elong.temp_elong, self.frm_zeitDef.value_denat, self.frm_zeitDef.value_aneal_gesamt, self.frm_zeitDef.value_elong_gesamt))
+
+            # INSERT INTO-Anweisung für Messwerte
+            insert_messwerte = """
+            INSERT INTO Messwerte (Kategorien, Anzahl)
+            VALUES 
+            ("Durchläufe", %s),
+            ("Spannung in mV", %s),
+            ("Lichtstärke in Lumen", %s )
+            """
+            self.cursor_mess.execute(insert_messwerte, (self.DL_zaehler_value, self.frm_kont.value_spg, self.frm_kont.value_light))
+
+            # Daten aus Tabelle 'PhasenWerte' abrufen
+            self.cursor_phasen.execute("SELECT * FROM PhasenWerte")
+            result_phasen = self.cursor_phasen.fetchall()
+
+            # Daten aus Tabelle 'Messwerte' abrufen
+            self.cursor_mess.execute("SELECT * FROM Messwerte")
+            result_messwerte = self.cursor_mess.fetchall()
+
+            # Ergebnisse in tbl_phasen einfügen
+            for row_num, row_data in enumerate(result_phasen):
+                self.frm_ergeb.tbl_phasen.insertRow(row_num)
+                for col_num, col_data in enumerate(row_data):
+                    self.frm_ergeb.tbl_phasen.setItem(row_num, col_num, QTableWidgetItem(str(col_data)))
+
+            # Ergebnisse in tbl_messwerte einfügen
+            for row_num, row_data in enumerate(result_messwerte):
+                self.frm_ergeb.tbl_mess.insertRow(row_num)
+                for col_num, col_data in enumerate(row_data):
+                    self.frm_ergeb.tbl_mess.setItem(row_num, col_num, QTableWidgetItem(str(col_data)))
+
+        except pymysql.MySQLError as e:
+            print("MySQL-Fehler: {}".format(str(e)))
+
+        except OSError as o:
+            print("Fehler: {}".format(str(o)))
+
+        finally:
+            # Verbindung schließen
+            self.connection.close()
+
         # phasen_Ablauf soll wiederholt werden
         self.frm_ergeb.showFullScreen()
         self.frm_kont.hide()
