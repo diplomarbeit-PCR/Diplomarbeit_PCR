@@ -2,7 +2,6 @@ from PySide6.QtWidgets import QMainWindow, QApplication, QTableWidgetItem, QTabl
 from PySide6.QtCore import QTimer, Signal
 import pymysql
 import smbus
-import i2cdevice
 import time
 # Auf die unterschiedlichen Windows zugreifen (QT Deklaration, die in Py umgewandelt wurden)
 from dipl_Einfuehrung.einfuehrung_v4 import Ui_StartWindow
@@ -91,8 +90,6 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.i2c_operation_requested = Signal(int)
         # Öffne den I2C-Bus 7
         self.bus = smbus.SMBus(7)
-        d = i2cdevice.I2CDevice.get_addresses()
-        print(d)
         # Adresse des Slave-Geräts
         self.address = 0x04
         
@@ -106,14 +103,11 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         print ("hide Zeit")
         self.frm_zeitDef.hide()
             
-        if not self.stopped_reading:
+        while not self.stopped_reading:
             self.frm_ww.showFullScreen()
             print("lese Fkt")
             print(self.read_data_from_slave())
             self.read_data_from_slave()
-
-        else:
-            print("error")
 
         if self.stopped_reading:
             self.timer.stop()  # Stoppen Sie den Timer, da der Leseprozess gestoppt wurde
@@ -136,42 +130,20 @@ class Frm_main(QMainWindow, Ui_StartWindow):
                         print("0")
                         data = self.read_from_slave()
 
-                    # if data == 5 and not self.data_sent:
-                    #     self.data_sent = True
-                    #     print("5 erhalten")
-                    #     self.i += 1
-                    #     print(self.i)
-                    #     # Hier könnten Sie die gewünschten Daten an den Slave senden
-                    #     self.write_to_slave(1)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
-                    #     self.write_to_slave(self.frm_zeitDef.value_denat)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
-                    #     self.write_to_slave(2)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
-                    #     self.write_to_slave(self.frm_zeitDef.value_aneal_gesamt)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
-                    #     self.write_to_slave(3)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
-                    #     self.write_to_slave(self.frm_zeitDef.value_elong_gesamt)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
-                    #     self.stopped_reading = True  # Leseprozess stoppen
-                        
-                    start_time = time.time()  # Record the starting time
-                    print(data)
-
                     if data == 5 and not self.data_sent:
-                        elapsed_time = time.time()-start_time
-                        while True:
-                            if elapsed_time >=5:print('timeout reading')
-                            else: 
-                                self.data_sent = True
-                                print("5 erhalten")
-                                self.i += 1
-                                print(self.i)
-                                # Hier könnten Sie die gewünschten Daten an den Slave senden
-                                self.write_to_slave(1)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
-                                self.write_to_slave(self.frm_zeitDef.value_denat)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
-                                self.write_to_slave(2)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
-                                self.write_to_slave(self.frm_zeitDef.value_aneal_gesamt)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
-                                self.write_to_slave(3)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
-                                self.write_to_slave(self.frm_zeitDef.value_elong_gesamt)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
-                                self.stopped_reading = True  # Leseprozess stoppen
-                    else:
-                        print("error reading data")
+                        self.data_sent = True
+                        print("5 erhalten")
+                        self.i += 1
+                        print(self.i)
+                        # Hier könnten Sie die gewünschten Daten an den Slave senden
+                        self.write_to_slave(1)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
+                        self.write_to_slave(self.frm_zeitDef.value_denat)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
+                        self.write_to_slave(2)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
+                        self.write_to_slave(self.frm_zeitDef.value_aneal_gesamt)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
+                        self.write_to_slave(3)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
+                        self.write_to_slave(self.frm_zeitDef.value_elong_gesamt)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
+                        self.stopped_reading = True  # Leseprozess stoppen
+                    
                         
             except Exception as e:
                 print(f"Fehler beim Lesen von Daten vom Slave: {str(e)}")
