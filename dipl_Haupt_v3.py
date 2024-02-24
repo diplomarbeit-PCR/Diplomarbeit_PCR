@@ -99,13 +99,14 @@ class Frm_main(QMainWindow, Ui_StartWindow):
 
         self.frm_ww.timer.start(500)
         print ("show WW")
+        print("Senden der Daten ...")
         self.frm_ww.showFullScreen()
         print ("hide Zeit")
         self.frm_zeitDef.hide()
             
         while not self.stopped_reading:
             self.frm_ww.showFullScreen()
-            print("lese Fkt")
+            print("Senden der Daten ... ")
             print(self.read_data_from_slave())
             self.read_data_from_slave()
 
@@ -123,11 +124,9 @@ class Frm_main(QMainWindow, Ui_StartWindow):
                         data = self.read_from_slave()
 
                     if data == 7:
-                        print("7")
                         data = self.read_from_slave()
                         
                     if data == 0:
-                        print("0")
                         data = self.read_from_slave()
 
                     if data == 5 and not self.data_sent:
@@ -142,6 +141,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
                         self.write_to_slave(self.frm_zeitDef.value_aneal_gesamt)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
                         self.write_to_slave(3)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
                         self.write_to_slave(self.frm_zeitDef.value_elong_gesamt)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
+                        self.write_to_slave(4)
                         self.stopped_reading = True  # Leseprozess stoppen
                     
                         
@@ -160,7 +160,6 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         try:
             # Lese Daten vom Slave
             data = self.bus.read_byte(self.address)
-            print(f"Daten vom Slave gelesen: {data}")
             return data
         except Exception as e:
             print(f"Fehler")
