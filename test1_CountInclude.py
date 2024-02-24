@@ -9,8 +9,7 @@ from PySide6.QtGui import QMovie
 from dipl_Einfuehrung.WarteWindow_v1 import Ui_WarteWindow 
 
 
-# https://prod.liveshare.vsengsaas.visualstudio.com/join?9114D6BA32B67BF196A77FBC3085C8FD0FFC
-
+# https://prod.liveshare.vsengsaas.visualstudio.com/join?AE8556A7AC90DA600003BD5B75C7ABBCC585
 # Definition der I2C-Kommunikationsklasse
 class I2CController(QObject):
     i2c_operation_requested = Signal(int)
