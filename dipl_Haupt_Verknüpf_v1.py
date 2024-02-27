@@ -1,21 +1,16 @@
 from PySide6.QtWidgets import QMainWindow, QApplication, QTableWidgetItem, QTableWidget
-from PySide6.QtCore import QTimer, SIgnal, QObject
+from PySide6.QtCore import QTimer, Signal
 import pymysql
 import smbus
 import time
-# Auf die unterschiedlichen WIndows zugreifen (QT Deklaration, die in Py umgewandelt wurden)
+# Auf die unterschiedlichen Windows zugreifen (QT Deklaration, die in Py umgewandelt wurden)
 from dipl_Einfuehrung.einfuehrung_v4 import Ui_StartWindow
 from dipl_Einfuehrung.Voraussetzungen_Vererbt_v1 import Frm_voraus
 from dipl_Einfuehrung.zeitDefinition_Vererbt_v1 import Frm_zeitDef
-from dipl_Einfuehrung.WarteWindow_Vererbt_v1 import Frm_WarteWindow
+from test1_CountInclude import Frm_WarteWindow
 from dipl_Phasenablauf.Phasenablauf_Vererbt_v1 import Frm_denat, Frm_aneal, Frm_sens, Frm_asens, Frm_elong
 from dipl_Kontrolle.KontrollErgebnis_Vererbt_v1 import Frm_kont, Frm_ergeb
-from dipl_I2C.i2c_connection_beweg import readFromBeweg, writeNumber
 
-# Verwenden von I2C Bus 7
-bus = smbus.SMBus(7)
-
-beweg_address = 0x28
 
 class Frm_main(QMainWindow, Ui_StartWindow):
 
@@ -81,6 +76,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.timer.timeout.connect(self.run_phasen_Ablauf)  # Verbinde den Timer mit der Methode
         
         self.phaseCount = 0
+        self.stopped_reading = True
         
         
     def erlaubteDauer(self):
@@ -91,50 +87,87 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         QTimer.singleShot(10000, self.frm_voraus.hide)
 
     def WarteStart(self):
-        self.go_beweg = True
-        b = 0
+        self.i2c_operation_requested = Signal(int)
+        # Öffne den I2C-Bus 7
+        self.bus = smbus.SMBus(7)
+        # Adresse des Slave-Geräts
+        self.address = 0x04
+        
+        self.data_sent = False  # Hält den Zustand, ob die Daten gesendet wurden
+        self.stopped_reading = False  # Hält den Zustand, ob der Leseprozess gestoppt wurde
+        self.i = 0
+
+        self.frm_ww.timer.start(500)
         print ("show WW")
+        print("Senden der Daten ...")
         self.frm_ww.showFullScreen()
         print ("hide Zeit")
         self.frm_zeitDef.hide()
-
-        while self.go_beweg == True:
+            
+        while not self.stopped_reading:
             self.frm_ww.showFullScreen()
-            if b != 5:
-                print ("nicht 5 oder 7")
-                b = readFromBeweg()  
-                print ("neuer")
+            print("Senden der Daten ... ")
+            print(self.read_data_from_slave())
+            self.read_data_from_slave()
 
-            if b == 7:
-                print("Warten")
-                time.sleep(2)
-                b = readFromBeweg()
+        if self.stopped_reading:
+            self.timer.stop()  # Stoppen Sie den Timer, da der Leseprozess gestoppt wurde
+            self.phasen_Ablauf()
 
-            if b == 5:
-                writeNumber(1)
-                writeNumber(self.frm_zeitDef.value_denat)
-                print ("RPi sends: ", self.frm_zeitDef.value_denat)
-                time.sleep(2)
+    def read_data_from_slave(self):
+    # Nur Daten vom Slave lesen, wenn der Leseprozess nicht gestoppt wurde
+        if not self.stopped_reading:
+            try:
+                if self.i == 0:
+                    data = self.read_from_slave()
+                    if data is None:             
+                        data = self.read_from_slave()
 
-                writeNumber(2)
-                writeNumber(self.frm_zeitDef.value_aneal_gesamt)
-                print ("RPi sends: ", self.frm_zeitDef.value_aneal_gesamt)
-                time.sleep(2)
-        
-                writeNumber(3)
-                writeNumber(self.frm_zeitDef.value_elong_gesamt)
-                print ("RPi sends: ", self.frm_zeitDef.value_elong_gesamt)
-                time.sleep(2)
+                    if data == 7:
+                        data = self.read_from_slave()
+                        
+                    if data == 0:
+                        data = self.read_from_slave()
 
-                # Start Wert
-                writeNumber(4)
-                time.sleep(2)
-                self.go_beweg = False
+                    if data == 5 and not self.data_sent:
+                        self.data_sent = True
+                        print("5 erhalten")
+                        self.i += 1
+                        print(self.i)
+                        # Hier könnten Sie die gewünschten Daten an den Slave senden
+                        self.write_to_slave(1)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
+                        self.write_to_slave(self.frm_zeitDef.value_denat)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
+                        self.write_to_slave(2)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
+                        self.write_to_slave(self.frm_zeitDef.value_aneal_gesamt)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
+                        self.write_to_slave(3)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
+                        self.write_to_slave(self.frm_zeitDef.value_elong_gesamt)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
+                        self.write_to_slave(4)
+                        self.stopped_reading = True  # Leseprozess stoppen
+                    
+                        
+            except Exception as e:
+                print(f"Fehler beim Lesen von Daten vom Slave: {str(e)}")
 
-        self.phasen_Ablauf()
+    def write_to_slave(self, data):
+        try:
+            # Schreibe Daten an den Slave
+            self.bus.write_byte(self.address, data)
+            print(f"Daten {data} erfolgreich an Slave gesendet.")
+        except Exception as e:
+            print(f"Fehler beim Senden von Daten an den Slave: {str(e)}")
 
+    def read_from_slave(self):
+        try:
+            # Lese Daten vom Slave
+            data = self.bus.read_byte(self.address)
+            return data
+        except Exception as e:
+            print(f"Fehler")
+
+    
     def WarteKont(self):
         self.frm_ww.showFullScreen()
+        self.write_to_slave(5)
 
         QTimer.singleShot(10000, self.frm_kont.showFullScreen)
         QTimer.singleShot(10000, self.frm_ww.hide)
@@ -215,7 +248,6 @@ class Frm_main(QMainWindow, Ui_StartWindow):
 
     def kontroll_Erklaerung(self):
         self.phasen_running = False  # Stoppe phasen_Ablauf
-        writeNumber(5)
         self.DL_counter = 0
 
     def weiter(self):
