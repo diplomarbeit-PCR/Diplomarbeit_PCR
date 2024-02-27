@@ -31,7 +31,7 @@ class Ui_Voraussetzung(object):
         self.Voraus_lbl = QLabel(self.centralwidget)
         self.Voraus_lbl.setObjectName(u"Voraus_lbl")
         self.Voraus_lbl.setGeometry(QRect(20, 370, 451, 301))
-        self.Voraus_lbl.setPixmap(QPixmap(r"C:\Daten_Amelie\DA\App\GitHub\Diplomarbeit_PCR\dipl_Einfuehrung\pcrGrundprinzip.png"))
+        self.Voraus_lbl.setPixmap(QPixmap(r"/home/arog/Diplomarbeit_PCR/dipl_Einfuehrung/pcrGrundprinzip.png"))
         self.Voraus_lbl.setScaledContents(True)
         Voraussetzung.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(Voraussetzung)
