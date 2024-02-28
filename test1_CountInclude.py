@@ -8,7 +8,7 @@ from PySide6.QtCore import Qt
 from PySide6.QtGui import QMovie
 from dipl_Einfuehrung.WarteWindow_v1 import Ui_WarteWindow 
 
-#https://prod.liveshare.vsengsaas.visualstudio.com/join?39DB2380EB387F96000A5715546ABC1EA08F
+# https://prod.liveshare.vsengsaas.visualstudio.com/join?31FC76570F4708D5644412F5BE43DF2DDEF7
 
 # Definition der I2C-Kommunikationsklasse
 class I2CController(QObject):

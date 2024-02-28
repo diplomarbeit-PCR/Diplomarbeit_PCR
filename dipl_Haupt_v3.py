@@ -141,7 +141,6 @@ class Frm_main(QMainWindow, Ui_StartWindow):
                         self.write_to_slave(self.frm_zeitDef.value_aneal_gesamt)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
                         self.write_to_slave(3)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
                         self.write_to_slave(self.frm_zeitDef.value_elong_gesamt)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
-                        self.write_to_slave(4)
                         self.stopped_reading = True  # Leseprozess stoppen
                     
                         
@@ -188,6 +187,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
             self.WarteKont()
         
         else:
+            self.write_to_slave(4)
             self.run_phasen_Ablauf()
             
             self.phaseCount = 0
