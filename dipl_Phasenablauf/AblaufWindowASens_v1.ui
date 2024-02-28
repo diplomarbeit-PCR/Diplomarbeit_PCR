@@ -151,12 +151,12 @@ li.checked::marker { content: &quot;\2612&quot;; }
      <bool>true</bool>
     </property>
    </widget>
-   <widget class="QLCDNumber" name="temp_sensA">
+   <widget class="QLCDNumber" name="temp_sensAS">
     <property name="geometry">
      <rect>
-      <x>190</x>
+      <x>180</x>
       <y>520</y>
-      <width>111</width>
+      <width>131</width>
       <height>51</height>
      </rect>
     </property>
@@ -164,9 +164,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
    <widget class="QLineEdit" name="Temp_line">
     <property name="geometry">
      <rect>
-      <x>190</x>
+      <x>180</x>
       <y>480</y>
-      <width>111</width>
+      <width>131</width>
       <height>31</height>
      </rect>
     </property>
@@ -177,7 +177,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
      </font>
     </property>
     <property name="text">
-     <string>Temperatur:</string>
+     <string>Temperatur (°C):</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
