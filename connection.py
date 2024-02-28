@@ -19,13 +19,14 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         # Initialisierung der Benutzeroberfläche 
         self.setupUi(self)
 
-        
         # Öffne den I2C-Bus 7
         self.bus = smbus.SMBus(7)
         # Adresse des Slave-Geräts
         self.beweg_address = 0x04
         # Adresse des Arduino-Slave
-        self.temp_address = 0x26
+        self.temp_address = 0x05
+        # Adresse des Arduino-Slave
+        self.detect_address = 0x06
 
         self.timer_seconds = 0
         self.timer = QTimer()
@@ -99,6 +100,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         
         self.data_sent = False  # Hält den Zustand, ob die Daten gesendet wurden
         self.stopped_reading = False  # Hält den Zustand, ob der Leseprozess gestoppt wurde
+        self.stopped_detect = False  # Hält den Zustand, ob der Leseprozess gestoppt wurde
         self.i = 0
 
         self.frm_ww.timer.start(500)
@@ -108,14 +110,16 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         print ("hide Zeit")
         self.frm_zeitDef.hide()
         
-        
-        while not self.stopped_reading:
+        # not self.stopped_reading or
+        while  not self.stopped_detect:
             self.frm_ww.showFullScreen()
             print("Senden der Daten ... ")
-            print(self.read_data_from_beweg())
-            self.read_data_from_beweg()
+            #print(self.read_data_from_beweg())
+            #self.read_data_from_beweg()
+            self.read_data_from_detect()
 
-        if self.stopped_reading:
+        # self.stopped_reading and
+        if  self.stopped_detect:
             self.timer.stop()  # Stoppen Sie den Timer, da der Leseprozess gestoppt wurde
             self.phasen_Ablauf()
 
@@ -168,9 +172,62 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         except Exception as e:
             print(f"Fehler")
 
+    def read_data_from_detect(self):
+    # Nur Daten vom Slave lesen, wenn der Leseprozess nicht gestoppt wurde
+        if not self.stopped_reading:
+            try:
+                if self.i == 0:
+                    data = self.read_from_detect()
+                    if data is None:             
+                        data = self.read_from_detect()
+
+                    if data == 7:
+                        data = self.read_from_detect()
+                        
+                    if data == 0:
+                        data = self.read_from_detect()
+
+                    if data == 5 and not self.data_sent:
+                        self.data_sent = True
+                        print("5 erhalten")
+                        self.stopped_detect = True  # Leseprozess stoppen
+                    
+                        
+            except Exception as e:
+                print(f"Fehler beim Lesen von Daten vom Slave: {str(e)}")
+
+    def read_from_detect(self):
+        try:
+            # Lese Daten vom Slave
+            data = self.bus.read_byte(self.detect_address)
+            return data
+        except Exception as e:
+            print(f"Fehler")
+    
+    def write_to_detect(self, data):
+        try:
+            # Schreibe Daten an den Slave
+            self.bus.write_byte(self.detect_address, data)
+            print(f"Daten {data} erfolgreich an Slave gesendet.")
+        except Exception as e:
+            print(f"Fehler beim Senden von Daten an den Slave: {str(e)}")
+
+    # Funktion zum Lesen von Daten vom Arduino
+    def read_detect(self):
+        self.mess = []
+        for _ in range(2):  # Wir erwarten 3 Datenpunkte (temp_denat, temp_aneal, temp_elong)
+            self.mess.append(self.bus.read_byte(self.detect_address))
+        return self.mess
+
+    def read_from_temp(self):
+        self.data = []
+        for _ in range(3):  # Wir erwarten 3 Datenpunkte (temp_denat, temp_aneal, temp_elong)
+            self.data.append(self.bus.read_byte(self.temp_address))
+        return self.data
     
     def WarteKont(self):
         self.frm_ww.showFullScreen()
+        self.write_to_detect(4)
 
         QTimer.singleShot(10000, self.frm_kont.showFullScreen)
         QTimer.singleShot(10000, self.frm_ww.hide)
@@ -189,7 +246,16 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         if self.phasen_running == False:
             self.timer.stop()
             self.WarteKont()
-        
+
+            # Daten vom Arduino lesen
+            data_received = self.read_detect()
+
+            self.frm_kont.value_spg = data_received[0] 
+            self.frm_kont.value_light = data_received[1] 
+
+            self.frm_kont.value_spg.display(self.frm_kont.value_spg)
+            self.frm_kont.value_light.display(self.frm_kont.value_light)
+            
         else:
             self.write_to_beweg(4)
             self.run_phasen_Ablauf()
@@ -220,6 +286,13 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.frm_asens.Timer_zaehler.display(f"{hours:02d}:{minutes:02d}:{seconds:02d}")
         self.frm_elong.Timer_zaehler.display(f"{hours:02d}:{minutes:02d}:{seconds:02d}")
 
+        
+        # Daten vom Arduino lesen
+        #temp_received = self.read_from_temp()
+
+        #self.frm_denat.temp_denat = temp_received[0] 
+        #self.frm_aneal.temp_aneal = temp_received[1] 
+        #self.frm_elong.temp_elong = temp_received[2] 
         
         self.frm_denat.temp_sensD.display(self.frm_denat.temp_denat)
         self.frm_aneal.temp_sensA.display(self.frm_aneal.temp_aneal)

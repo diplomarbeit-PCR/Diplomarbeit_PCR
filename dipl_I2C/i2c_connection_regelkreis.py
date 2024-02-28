@@ -1,35 +1,28 @@
 import smbus
 import time
 
-from dipl_Phasenablauf.Phasenablauf_Vererbt_v1 import Frm_denat, Frm_aneal, Frm_elong
+# Definieren Sie die Adresse des Arduinos auf dem I2C-Bus
+temp_address = 0x12  # Beispieladresse, ersetzen Sie sie durch die tatsächliche Slave-Adresse
 
-# Verwenden von I2C Bus 7
-bus = smbus.SMBus(7)
-# Adresse des Arduino-Slave
-temp_address = 0x26
+# Öffnen Sie den I2C-Bus (abhängig von Ihrem System kann die Busnummer variieren)
+bus = smbus.SMBus(7)  # Bus 1 öffnen, Sie können die richtige Busnummer je nach Ihrem Setup anpassen
 
-def readFromTemp():
-    frm_denat = Frm_denat()
-    frm_aneal = Frm_aneal()
-    frm_elong = Frm_elong()
+# Funktion zum Lesen von Daten vom Arduino
+def read_data():
+    data = []
+    for _ in range(3):  # Wir erwarten 3 Datenpunkte (temp_denat, temp_aneal, temp_elong)
+        data.append(bus.read_byte(temp_address))
+    return data
 
-    try:
-        # Lesen der Daten als Block von 6 Bytes (2 Bytes pro Integer-Wert)
-        data = bus.read_i2c_block_data(temp_address, 0, 6)
+# Daten vom Arduino lesen
+data_received = read_data()
 
-        # Interpretiere die empfangenen Daten als Integer-Werte
-        frm_denat.temp_denat = int.from_bytes(data[0:2], byteorder='little', signed=True)
-        frm_aneal.temp_aneal = int.from_bytes(data[2:4], byteorder='little', signed=True)
-        frm_elong.temp_elong = int.from_bytes(data[4:6], byteorder='little', signed=True)
+temp_denat = data_received[0] 
+temp_aneal = data_received[1] 
+temp_elong = data_received[2] 
 
-        print("Empfangener Denat-Wert:", frm_denat.temp_denat)
-        print("Empfangener Aneal-Wert:", frm_aneal.temp_aneal)
-        print("Empfangener Elong-Wert:", frm_elong.temp_elong)
-
-        return frm_denat.temp_denat, frm_aneal.temp_aneal, frm_elong.temp_elong
-
-    except OSError as e:
-        print(f"Fehler beim Lesen vom I2C-Gerät: {e}")
-        return None, None, None
-
-
+# Die erhaltenen Daten anzeigen
+print("Temperaturen")
+print("Temperature (Denat):", temp_denat)
+print("Temperature (Aneal):", temp_aneal)
+print("Temperature (Elong):", temp_elong)

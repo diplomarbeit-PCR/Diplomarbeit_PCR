@@ -19,13 +19,12 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         # Initialisierung der Benutzeroberfläche 
         self.setupUi(self)
 
-        
         # Öffne den I2C-Bus 7
         self.bus = smbus.SMBus(7)
         # Adresse des Slave-Geräts
         self.beweg_address = 0x04
         # Adresse des Arduino-Slave
-        self.temp_address = 0x26
+        self.temp_address = 0x05
 
         self.timer_seconds = 0
         self.timer = QTimer()
@@ -108,6 +107,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         print ("hide Zeit")
         self.frm_zeitDef.hide()
         
+        
         while not self.stopped_reading:
             self.frm_ww.showFullScreen()
             print("Senden der Daten ... ")
@@ -167,6 +167,11 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         except Exception as e:
             print(f"Fehler")
 
+    def read_from_temp(self):
+        self.data = []
+        for _ in range(3):  # Wir erwarten 3 Datenpunkte (temp_denat, temp_aneal, temp_elong)
+            self.data.append(self.bus.read_byte(self.temp_address))
+        return self.data
     
     def WarteKont(self):
         self.frm_ww.showFullScreen()
@@ -218,6 +223,20 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.frm_sens.Timer_zaehler.display(f"{hours:02d}:{minutes:02d}:{seconds:02d}")
         self.frm_asens.Timer_zaehler.display(f"{hours:02d}:{minutes:02d}:{seconds:02d}")
         self.frm_elong.Timer_zaehler.display(f"{hours:02d}:{minutes:02d}:{seconds:02d}")
+
+        
+        # Daten vom Arduino lesen
+        temp_received = self.read_from_temp()
+
+        self.frm_denat.temp_denat = temp_received[0] 
+        self.frm_aneal.temp_aneal = temp_received[1] 
+        self.frm_elong.temp_elong = temp_received[2] 
+        
+        self.frm_denat.temp_sensD.display(self.frm_denat.temp_denat)
+        self.frm_aneal.temp_sensA.display(self.frm_aneal.temp_aneal)
+        self.frm_sens.temp_sensA.display(self.frm_aneal.temp_aneal)
+        self.frm_asens.temp_sensA.display(self.frm_aneal.temp_aneal)
+        self.frm_elong.temp_sensE.display(self.frm_elong.temp_elong)
         
         # Funktion - nimmt drei Parameter entgegen: phase, start und end
         # überprüft, dass self.phaseCount zwischen start und end (einschließlich start und ausschließlich end) liegt
@@ -278,28 +297,6 @@ class Frm_main(QMainWindow, Ui_StartWindow):
 
 
         try:
-            # Tabelle 'PhasenWerte' erstellen, falls nicht vorhanden
-            create_table_phasen = """
-            CREATE TABLE IF NOT EXISTS PhasenWerte (
-                Kategorien VARCHAR(50),
-                Denaturierung DECIMAL(5,2),
-                Annealing DECIMAL(5,2),
-                Elongation DECIMAL(5,2)
-            )
-            """
-            self.cursor_phasen.execute(create_table_phasen)
-            print("Tabelle 'PhasenWerte' erstellt")
-
-            # Tabelle 'Messwerte' erstellen, falls nicht vorhanden
-            create_table_messwert = """
-            CREATE TABLE IF NOT EXISTS Messwerte (
-                Kategorien VARCHAR(50),
-                Anzahl DECIMAL(5,2)
-            )
-            """
-            self.cursor_mess.execute(create_table_messwert)
-            print("Tabelle 'Messwerte' erstellt")
-
             # INSERT INTO-Anweisung für PhasenWerte
             insert_phasen = """
             INSERT INTO PhasenWerte (Kategorien, Denaturierung, Annealing, Elongation)

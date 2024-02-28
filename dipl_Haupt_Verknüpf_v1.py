@@ -7,7 +7,7 @@ import time
 from dipl_Einfuehrung.einfuehrung_v4 import Ui_StartWindow
 from dipl_Einfuehrung.Voraussetzungen_Vererbt_v1 import Frm_voraus
 from dipl_Einfuehrung.zeitDefinition_Vererbt_v1 import Frm_zeitDef
-from test1_CountInclude import Frm_WarteWindow
+from dipl_Einfuehrung.WarteWindow_Vererbt_v1 import Frm_WarteWindow
 from dipl_Phasenablauf.Phasenablauf_Vererbt_v1 import Frm_denat, Frm_aneal, Frm_sens, Frm_asens, Frm_elong
 from dipl_Kontrolle.KontrollErgebnis_Vererbt_v1 import Frm_kont, Frm_ergeb
 
@@ -18,6 +18,13 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         super().__init__()
         # Initialisierung der Benutzeroberfläche 
         self.setupUi(self)
+
+        # Öffne den I2C-Bus 7
+        self.bus = smbus.SMBus(7)
+        # Adresse des Slave-Geräts
+        self.beweg_address = 0x04
+        # Adresse des Arduino-Slave
+        self.temp_address = 0x05
 
         self.timer_seconds = 0
         self.timer = QTimer()
@@ -88,10 +95,6 @@ class Frm_main(QMainWindow, Ui_StartWindow):
 
     def WarteStart(self):
         self.i2c_operation_requested = Signal(int)
-        # Öffne den I2C-Bus 7
-        self.bus = smbus.SMBus(7)
-        # Adresse des Slave-Geräts
-        self.address = 0x04
         
         self.data_sent = False  # Hält den Zustand, ob die Daten gesendet wurden
         self.stopped_reading = False  # Hält den Zustand, ob der Leseprozess gestoppt wurde
@@ -103,31 +106,32 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.frm_ww.showFullScreen()
         print ("hide Zeit")
         self.frm_zeitDef.hide()
-            
+        
+        
         while not self.stopped_reading:
             self.frm_ww.showFullScreen()
             print("Senden der Daten ... ")
-            print(self.read_data_from_slave())
-            self.read_data_from_slave()
+            print(self.read_data_from_beweg())
+            self.read_data_from_beweg()
 
         if self.stopped_reading:
             self.timer.stop()  # Stoppen Sie den Timer, da der Leseprozess gestoppt wurde
             self.phasen_Ablauf()
 
-    def read_data_from_slave(self):
+    def read_data_from_beweg(self):
     # Nur Daten vom Slave lesen, wenn der Leseprozess nicht gestoppt wurde
         if not self.stopped_reading:
             try:
                 if self.i == 0:
-                    data = self.read_from_slave()
+                    data = self.read_from_beweg()
                     if data is None:             
-                        data = self.read_from_slave()
+                        data = self.read_from_beweg()
 
                     if data == 7:
-                        data = self.read_from_slave()
+                        data = self.read_from_beweg()
                         
                     if data == 0:
-                        data = self.read_from_slave()
+                        data = self.read_from_beweg()
 
                     if data == 5 and not self.data_sent:
                         self.data_sent = True
@@ -135,39 +139,42 @@ class Frm_main(QMainWindow, Ui_StartWindow):
                         self.i += 1
                         print(self.i)
                         # Hier könnten Sie die gewünschten Daten an den Slave senden
-                        self.write_to_slave(1)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
-                        self.write_to_slave(self.frm_zeitDef.value_denat)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
-                        self.write_to_slave(2)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
-                        self.write_to_slave(self.frm_zeitDef.value_aneal_gesamt)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
-                        self.write_to_slave(3)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
-                        self.write_to_slave(self.frm_zeitDef.value_elong_gesamt)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
-                        self.write_to_slave(4)
+                        self.write_to_beweg(1)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
+                        self.write_to_beweg(self.frm_zeitDef.value_denat)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
+                        self.write_to_beweg(2)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
+                        self.write_to_beweg(self.frm_zeitDef.value_aneal_gesamt)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
+                        self.write_to_beweg(3)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
+                        self.write_to_beweg(self.frm_zeitDef.value_elong_gesamt)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
                         self.stopped_reading = True  # Leseprozess stoppen
                     
                         
             except Exception as e:
                 print(f"Fehler beim Lesen von Daten vom Slave: {str(e)}")
 
-    def write_to_slave(self, data):
+    def write_to_beweg(self, data):
         try:
             # Schreibe Daten an den Slave
-            self.bus.write_byte(self.address, data)
+            self.bus.write_byte(self.beweg_address, data)
             print(f"Daten {data} erfolgreich an Slave gesendet.")
         except Exception as e:
             print(f"Fehler beim Senden von Daten an den Slave: {str(e)}")
 
-    def read_from_slave(self):
+    def read_from_beweg(self):
         try:
             # Lese Daten vom Slave
-            data = self.bus.read_byte(self.address)
+            data = self.bus.read_byte(self.beweg_address)
             return data
         except Exception as e:
             print(f"Fehler")
 
+    def read_from_temp(self):
+        self.data = []
+        for _ in range(3):  # Wir erwarten 3 Datenpunkte (temp_denat, temp_aneal, temp_elong)
+            self.data.append(self.bus.read_byte(self.temp_address))
+        return self.data
     
     def WarteKont(self):
         self.frm_ww.showFullScreen()
-        self.write_to_slave(5)
 
         QTimer.singleShot(10000, self.frm_kont.showFullScreen)
         QTimer.singleShot(10000, self.frm_ww.hide)
@@ -188,6 +195,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
             self.WarteKont()
         
         else:
+            self.write_to_beweg(4)
             self.run_phasen_Ablauf()
             
             self.phaseCount = 0
@@ -215,6 +223,20 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.frm_sens.Timer_zaehler.display(f"{hours:02d}:{minutes:02d}:{seconds:02d}")
         self.frm_asens.Timer_zaehler.display(f"{hours:02d}:{minutes:02d}:{seconds:02d}")
         self.frm_elong.Timer_zaehler.display(f"{hours:02d}:{minutes:02d}:{seconds:02d}")
+
+        
+        # Daten vom Arduino lesen
+        temp_received = self.read_from_temp()
+
+        self.frm_denat.temp_denat = temp_received[0] 
+        self.frm_aneal.temp_aneal = temp_received[1] 
+        self.frm_elong.temp_elong = temp_received[2] 
+        
+        self.frm_denat.temp_sensD.display(self.frm_denat.temp_denat)
+        self.frm_aneal.temp_sensA.display(self.frm_aneal.temp_aneal)
+        self.frm_sens.temp_sensA.display(self.frm_aneal.temp_aneal)
+        self.frm_asens.temp_sensA.display(self.frm_aneal.temp_aneal)
+        self.frm_elong.temp_sensE.display(self.frm_elong.temp_elong)
         
         # Funktion - nimmt drei Parameter entgegen: phase, start und end
         # überprüft, dass self.phaseCount zwischen start und end (einschließlich start und ausschließlich end) liegt
@@ -248,6 +270,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
 
     def kontroll_Erklaerung(self):
         self.phasen_running = False  # Stoppe phasen_Ablauf
+        self.write_to_beweg(5)
         self.DL_counter = 0
 
     def weiter(self):
@@ -274,28 +297,6 @@ class Frm_main(QMainWindow, Ui_StartWindow):
 
 
         try:
-            # Tabelle 'PhasenWerte' erstellen, falls nicht vorhanden
-            create_table_phasen = """
-            CREATE TABLE IF NOT EXISTS PhasenWerte (
-                Kategorien VARCHAR(50),
-                Denaturierung DECIMAL(5,2),
-                Annealing DECIMAL(5,2),
-                Elongation DECIMAL(5,2)
-            )
-            """
-            self.cursor_phasen.execute(create_table_phasen)
-            print("Tabelle 'PhasenWerte' erstellt")
-
-            # Tabelle 'Messwerte' erstellen, falls nicht vorhanden
-            create_table_messwert = """
-            CREATE TABLE IF NOT EXISTS Messwerte (
-                Kategorien VARCHAR(50),
-                Anzahl DECIMAL(5,2)
-            )
-            """
-            self.cursor_mess.execute(create_table_messwert)
-            print("Tabelle 'Messwerte' erstellt")
-
             # INSERT INTO-Anweisung für PhasenWerte
             insert_phasen = """
             INSERT INTO PhasenWerte (Kategorien, Denaturierung, Annealing, Elongation)
