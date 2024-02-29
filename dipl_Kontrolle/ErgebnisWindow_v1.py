@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'ErgebnisWindow_v1.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.6.1
+## Created by: Qt User Interface Compiler version 6.6.0
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -16,14 +16,14 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QHeaderView, QLabel, QMainWindow,
-    QMenuBar, QPushButton, QSizePolicy, QStatusBar, QTableWidget,
+    QMenuBar, QPushButton, QSizePolicy, QStatusBar,
     QTableView, QWidget)
 
 class Ui_Ergebnis(object):
     def setupUi(self, Ergebnis):
         if not Ergebnis.objectName():
             Ergebnis.setObjectName(u"Ergebnis")
-        Ergebnis.resize(486, 733)
+        Ergebnis.resize(486, 724)
         self.centralwidget = QWidget(Ergebnis)
         self.centralwidget.setObjectName(u"centralwidget")
         self.label = QLabel(self.centralwidget)
@@ -42,19 +42,22 @@ class Ui_Ergebnis(object):
         font1.setFamilies([u"Arial Narrow"])
         font1.setPointSize(20)
         self.btn_Ende.setFont(font1)
-        self.tbl_phasen = QTableWidget(self.centralwidget)
+        self.tbl_phasen = QTableView(self.centralwidget)
         self.tbl_phasen.setObjectName(u"tbl_phasen")
-        self.tbl_phasen.setGeometry(QRect(0, 140, 491, 131))
-        self.tbl_dl = QTableWidget(self.centralwidget)
+        self.tbl_phasen.setGeometry(QRect(20, 120, 451, 91))
+        self.tbl_mess_1 = QTableView(self.centralwidget)
+        self.tbl_mess_1.setObjectName(u"tbl_mess_1")
+        self.tbl_mess_1.setGeometry(QRect(20, 330, 201, 261))
+        self.tbl_dl = QTableView(self.centralwidget)
         self.tbl_dl.setObjectName(u"tbl_dl")
-        self.tbl_dl.setGeometry(QRect(0, 420, 491, 131))
-        self.tbl_mess = QTableWidget(self.centralwidget)
-        self.tbl_mess.setObjectName(u"tbl_mess")
-        self.tbl_mess.setGeometry(QRect(0, 280, 491, 131))
+        self.tbl_dl.setGeometry(QRect(20, 220, 451, 101))
+        self.tbl_mess_2 = QTableView(self.centralwidget)
+        self.tbl_mess_2.setObjectName(u"tbl_mess_2")
+        self.tbl_mess_2.setGeometry(QRect(270, 330, 201, 261))
         Ergebnis.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(Ergebnis)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 486, 21))
+        self.menubar.setGeometry(QRect(0, 0, 486, 22))
         Ergebnis.setMenuBar(self.menubar)
         self.statusbar = QStatusBar(Ergebnis)
         self.statusbar.setObjectName(u"statusbar")
