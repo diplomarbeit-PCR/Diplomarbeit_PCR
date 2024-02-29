@@ -221,7 +221,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
             create_table_messwert1 = """
             CREATE TABLE IF NOT EXISTS Messwerte1 (
                 Probe VARCHAR(5),
-                Lichtstärke STRING(10)
+                Lichtstärke VARCHAR(10)
             )
             """
             self.cursor_mess1.execute(create_table_messwert1)
@@ -231,7 +231,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
             create_table_messwert2 = """
             CREATE TABLE IF NOT EXISTS Messwerte2 (
                 Probe VARCHAR(5),
-                Lichtstärke STRING(10)
+                Lichtstärke VARCHAR(10)
             )
             """
             self.cursor_mess2.execute(create_table_messwert2)
