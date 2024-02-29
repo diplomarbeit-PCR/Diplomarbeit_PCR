@@ -220,8 +220,8 @@ class Frm_main(QMainWindow, Ui_StartWindow):
             # Tabelle 'Messwerte' erstellen, falls nicht vorhanden
             create_table_messwert1 = """
             CREATE TABLE IF NOT EXISTS Messwerte1 (
-                Probe VARCHAR(5),
-                Lichtstärke VARCHAR(10)
+                Probe VARCHAR(15),
+                Lichtstärke DECIMAL(5,2)
             )
             """
             self.cursor_mess1.execute(create_table_messwert1)
@@ -230,8 +230,8 @@ class Frm_main(QMainWindow, Ui_StartWindow):
             # Tabelle 'Messwerte' erstellen, falls nicht vorhanden
             create_table_messwert2 = """
             CREATE TABLE IF NOT EXISTS Messwerte2 (
-                Probe VARCHAR(5),
-                Lichtstärke VARCHAR(10)
+                Probe VARCHAR(15),
+                Lichtstärke DECIMAL(5,2)
             )
             """
             self.cursor_mess2.execute(create_table_messwert2)
@@ -260,10 +260,10 @@ class Frm_main(QMainWindow, Ui_StartWindow):
             insert_messwerte1 = """
             INSERT INTO Messwerte1 (Probe, Lichtstärke)
             VALUES 
-            ("P1", %s "lum"),
-            ("P2", %s "lum"),
-            ("P3", %s "lum"),
-            ("P4", %s "lum")
+            ("P1 in Lumen", %s),
+            ("P2 in Lumen", %s),
+            ("P3 in Lumen", %s),
+            ("P4 in Lumen", %s)
             """
             self.cursor_mess1.execute(insert_messwerte1, (self.frm_kont.p1, self.frm_kont.p2, self.frm_kont.p3, self.frm_kont.p4))
 
@@ -271,10 +271,10 @@ class Frm_main(QMainWindow, Ui_StartWindow):
             insert_messwerte2 = """
             INSERT INTO Messwerte2 (Probe, Lichtstärke)
             VALUES 
-            ("P5", %s "lum"),
-            ("P6", %s "lum"),
-            ("P7", %s "lum"),
-            ("P8", %s "lum"),
+            ("P5 in Lumen", %s),
+            ("P6 in Lumen", %s),
+            ("P7 in Lumen", %s),
+            ("P8 in Lumen", %s),
             """
 
             self.cursor_mess2.execute(insert_messwerte2, (self.frm_kont.p5, self.frm_kont.p6, self.frm_kont.p7, self.frm_kont.p8))
