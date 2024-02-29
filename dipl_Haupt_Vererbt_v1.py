@@ -29,7 +29,8 @@ class Frm_main(QMainWindow, Ui_StartWindow):
             database='eduPCR'
         )
 
-        self.cursor_mess = self.connection.cursor()
+        self.cursor_mess1 = self.connection.cursor()
+        self.cursor_mess2 = self.connection.cursor()
         self.cursor_phasen = self.connection.cursor()
         self.cursor_dl = self.connection.cursor()
 
@@ -187,8 +188,10 @@ class Frm_main(QMainWindow, Ui_StartWindow):
     def ergebnis(self):
         self.frm_ergeb.tbl_phasen.setColumnCount(4)  # Fünf Spalten
         self.frm_ergeb.tbl_phasen.setHorizontalHeaderLabels(["Kategorien", "Denaturierung", "Annealing", "Elongation"])
-        self.frm_ergeb.tbl_mess.setColumnCount(9)  # Zwei Spalten
-        self.frm_ergeb.tbl_mess.setHorizontalHeaderLabels(["Kategorie", "P1", "P2", "P3", "P4", "P5", "P6", "P7", "P8"])
+        self.frm_ergeb.tbl_mess1.setColumnCount(2)  # Zwei Spalten
+        self.frm_ergeb.tbl_mess1.setHorizontalHeaderLabels(["Probe", "Lichtstärke in Lumen"])
+        self.frm_ergeb.tbl_mess2.setColumnCount(2)  # Zwei Spalten
+        self.frm_ergeb.tbl_mess2.setHorizontalHeaderLabels(["Probe", "Lichtstärke in Lumen"])
         self.frm_ergeb.tbl_dl.setColumnCount(2)  # Zwei Spalten
         self.frm_ergeb.tbl_dl.setHorizontalHeaderLabels(["Kategorie", "Anzahl"])
 
@@ -215,21 +218,24 @@ class Frm_main(QMainWindow, Ui_StartWindow):
             print("Tabelle 'PhasenWerte' erstellt")
 
             # Tabelle 'Messwerte' erstellen, falls nicht vorhanden
-            create_table_messwert = """
-            CREATE TABLE IF NOT EXISTS Messwerte (
-                Kategorie VARCHAR(50),
-                P1 DECIMAL(5,2),
-                P2 DECIMAL(5,2),
-                P3 DECIMAL(5,2),
-                P4 DECIMAL(5,2),
-                P5 DECIMAL(5,2),
-                P6 DECIMAL(5,2),
-                P7 DECIMAL(5,2),
-                P8 DECIMAL(5,2)
+            create_table_messwert1 = """
+            CREATE TABLE IF NOT EXISTS Messwerte1 (
+                Probe VARCHAR(5),
+                Lichtstärke in Lumen DECIMAL(5,2)
             )
             """
-            self.cursor_mess.execute(create_table_messwert)
-            print("Tabelle 'Messwerte' erstellt")
+            self.cursor_mess1.execute(create_table_messwert1)
+            print("Tabelle 'Messwerte1' erstellt")
+
+            # Tabelle 'Messwerte' erstellen, falls nicht vorhanden
+            create_table_messwert2 = """
+            CREATE TABLE IF NOT EXISTS Messwerte2 (
+                Probe VARCHAR(5),
+                Lichtstärke in Lumen DECIMAL(5,2)
+            )
+            """
+            self.cursor_mess2.execute(create_table_messwert2)
+            print("Tabelle 'Messwerte2' erstellt")
 
             # Tabelle 'Durchläufe' erstellen, falls nicht vorhanden
             create_table_dl = """
@@ -252,11 +258,26 @@ class Frm_main(QMainWindow, Ui_StartWindow):
 
             # INSERT INTO-Anweisung für Messwerte
             insert_messwerte = """
-            INSERT INTO Messwerte (Kategorie, P1, P2, P3, P4, P5, P6, P7, P8)
+            INSERT INTO Messwerte1 (Probe, Lichtstärke in Lumen)
             VALUES 
-            ("Lichtstärke in Lumen", %s, %s, %s, %s, %s, %s, %s, %s)
+            ("P1", %s),
+            ("P2", %s),
+            ("P3", %s),
+            ("P4", %s)
             """
-            self.cursor_mess.execute(insert_messwerte, (self.frm_kont.p1, self.frm_kont.p2, self.frm_kont.p3, self.frm_kont.p4, self.frm_kont.p5, self.frm_kont.p6, self.frm_kont.p7, self.frm_kont.p8))
+            self.cursor_mess1.execute(insert_messwerte, (self.frm_kont.p1, self.frm_kont.p2, self.frm_kont.p3, self.frm_kont.p4))
+
+            # INSERT INTO-Anweisung für Messwerte
+            insert_messwerte = """
+            INSERT INTO Messwerte2 (Probe, Lichtstärke in Lumen)
+            VALUES 
+            ("P5", %s),
+            ("P6", %s),
+            ("P7", %s),
+            ("P8", %s)
+            """
+            self.cursor_mess2.execute(insert_messwerte, (self.frm_kont.p5, self.frm_kont.p6, self.frm_kont.p7, self.frm_kont.p8))
+
 
             # INSERT INTO-Anweisung für Messwerte
             insert_dl = """
@@ -271,8 +292,13 @@ class Frm_main(QMainWindow, Ui_StartWindow):
             result_phasen = self.cursor_phasen.fetchall()
 
             # Daten aus Tabelle 'Messwerte' abrufen
-            self.cursor_mess.execute("SELECT * FROM Messwerte")
-            result_messwerte = self.cursor_mess.fetchall()
+            self.cursor_mess1.execute("SELECT * FROM Messwert1")
+            result_messwerte1 = self.cursor_mess1.fetchall()
+
+            
+            # Daten aus Tabelle 'Messwerte' abrufen
+            self.cursor_mess2.execute("SELECT * FROM Messwerte2")
+            result_messwerte2 = self.cursor_mess2.fetchall()
 
             # Daten aus Tabelle 'Messwerte' abrufen
             self.cursor_dl.execute("SELECT * FROM Durchlauf")
@@ -285,10 +311,17 @@ class Frm_main(QMainWindow, Ui_StartWindow):
                     self.frm_ergeb.tbl_phasen.setItem(row_num, col_num, QTableWidgetItem(str(col_data)))
 
             # Ergebnisse in tbl_messwerte einfügen
-            for row_num, row_data in enumerate(result_messwerte):
-                self.frm_ergeb.tbl_mess.insertRow(row_num)
+            for row_num, row_data in enumerate(result_messwerte1):
+                self.frm_ergeb.tbl_mess1.insertRow(row_num)
                 for col_num, col_data in enumerate(row_data):
-                    self.frm_ergeb.tbl_mess.setItem(row_num, col_num, QTableWidgetItem(str(col_data)))
+                    self.frm_ergeb.tbl_mess1.setItem(row_num, col_num, QTableWidgetItem(str(col_data)))
+
+                    
+            # Ergebnisse in tbl_messwerte einfügen
+            for row_num, row_data in enumerate(result_messwerte2):
+                self.frm_ergeb.tbl_mess2.insertRow(row_num)
+                for col_num, col_data in enumerate(row_data):
+                    self.frm_ergeb.tbl_mess2.setItem(row_num, col_num, QTableWidgetItem(str(col_data)))
 
             # Ergebnisse in tbl_messwerte einfügen
             for row_num, row_data in enumerate(result_dl):
