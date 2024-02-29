@@ -31,6 +31,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
 
         self.cursor_mess = self.connection.cursor()
         self.cursor_phasen = self.connection.cursor()
+        self.cursor_dl = self.connection.cursor()
 
         self.DL_zaehler_value = 0
         self.DL_counter = 0
@@ -50,8 +51,14 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.frm_denat.temp_denat = 94
         self.frm_aneal.temp_aneal = 65
         self.frm_elong.temp_elong = 67
-        self.frm_kont.value_spg = 40.1
-        self.frm_kont.value_light = 17.39
+        self.frm_kont.p1 = 40.1
+        self.frm_kont.p2 = 17.39
+        self.frm_kont.p3 = 40.1
+        self.frm_kont.p4 = 17.39
+        self.frm_kont.p5 = 40.1
+        self.frm_kont.p6 = 17.39
+        self.frm_kont.p7 = 40.1
+        self.frm_kont.p8 = 17.39
          
         # Verbindung des Start-Knopfes mit der Methode erlaubteDauer 
         self.btn_Start.clicked.connect(self.erlaubteDauer)
@@ -210,11 +217,28 @@ class Frm_main(QMainWindow, Ui_StartWindow):
             # Tabelle 'Messwerte' erstellen, falls nicht vorhanden
             create_table_messwert = """
             CREATE TABLE IF NOT EXISTS Messwerte (
-                Kategorien VARCHAR(50),
-                Anzahl DECIMAL(5,2)
+                Kategorie VARCHAR(50),
+                P1 DECIMAL(5,2),
+                P2 DECIMAL(5,2),
+                P3 DECIMAL(5,2),
+                P4 DECIMAL(5,2),
+                P5 DECIMAL(5,2),
+                P6 DECIMAL(5,2),
+                P7 DECIMAL(5,2),
+                P8 DECIMAL(5,2)
             )
             """
             self.cursor_mess.execute(create_table_messwert)
+            print("Tabelle 'Messwerte' erstellt")
+
+            # Tabelle 'Durchläufe' erstellen, falls nicht vorhanden
+            create_table_dl = """
+            CREATE TABLE IF NOT EXISTS Messwerte (
+                Kategorie VARCHAR(50),
+                Anzahl DECIMAL(5,2)
+            )
+            """
+            self.cursor_dl.execute(create_table_dl)
             print("Tabelle 'Messwerte' erstellt")
 
             # INSERT INTO-Anweisung für PhasenWerte
@@ -228,13 +252,19 @@ class Frm_main(QMainWindow, Ui_StartWindow):
 
             # INSERT INTO-Anweisung für Messwerte
             insert_messwerte = """
-            INSERT INTO Messwerte (Kategorien, Anzahl)
+            INSERT INTO Messwerte (Kategorie, P1, P2, P3, P4, P5, P6, P7, P8)
             VALUES 
-            ("Durchläufe", %s),
-            ("Spannung in mV", %s),
-            ("Lichtstärke in Lumen", %s )
+            ("Lichtstärke in Lumen", %s, %s, %s, %s, %s, %s, %s)
             """
-            self.cursor_mess.execute(insert_messwerte, (self.DL_zaehler_value, self.frm_kont.value_spg, self.frm_kont.value_light))
+            self.cursor_mess.execute(insert_messwerte, (self.frm_kont.p1, self.frm_kont.p2, self.frm_kont.p3, self.frm_kont.p4, self.frm_kont.p5, self.frm_kont.p6, self.frm_kont.p7, self.frm_kont.p8))
+
+            # INSERT INTO-Anweisung für Messwerte
+            insert_dl = """
+            INSERT INTO Messwerte (Kategorie, Anzahl)
+            VALUES 
+            ("Durchlaufn", %s)
+            """
+            self.cursor_dl.execute(insert_dl, (self.DL_zaehler_value))
 
             # Daten aus Tabelle 'PhasenWerte' abrufen
             self.cursor_phasen.execute("SELECT * FROM PhasenWerte")
