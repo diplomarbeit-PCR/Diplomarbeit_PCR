@@ -4,6 +4,8 @@ import time
 # Definieren Sie die Adresse des Arduino-Slave auf dem I2C-Bus
 detect_address = 0x06  # Beispieladresse, ersetzen Sie sie durch die tatsächliche Slave-Adresse
 
+# https://prod.liveshare.vsengsaas.visualstudio.com/join?E0A2025B26F32D1C701AC13840DCC9C2A6E6
+
 # Öffnen Sie den I2C-Bus (abhängig von Ihrem System kann die Busnummer variieren)
 bus = smbus.SMBus(7)  # Bus 1 öffnen, Sie können die richtige Busnummer je nach Ihrem Setup anpassen
 
@@ -46,7 +48,7 @@ def read_from_detect(self):
         data.append(bus.read_byte(detect_address))
     return data
 
-time.sleep(10)
+time.sleep(30)
 
 write_to_data(4)
 
