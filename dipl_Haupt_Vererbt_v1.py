@@ -293,7 +293,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
             result_phasen = self.cursor_phasen.fetchall()
 
             # Daten aus Tabelle 'Messwerte' abrufen
-            self.cursor_mess1.execute("SELECT * FROM Messwert1")
+            self.cursor_mess1.execute("SELECT * FROM Messwerte1")
             result_messwerte1 = self.cursor_mess1.fetchall()
 
             
