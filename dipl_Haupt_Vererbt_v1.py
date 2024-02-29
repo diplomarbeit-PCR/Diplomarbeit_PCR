@@ -189,9 +189,9 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.frm_ergeb.tbl_phasen.setColumnCount(4)  # Fünf Spalten
         self.frm_ergeb.tbl_phasen.setHorizontalHeaderLabels(["Kategorien", "Denaturierung", "Annealing", "Elongation"])
         self.frm_ergeb.tbl_mess1.setColumnCount(2)  # Zwei Spalten
-        self.frm_ergeb.tbl_mess1.setHorizontalHeaderLabels(["Probe", "Lichtstärke in Lumen"])
+        self.frm_ergeb.tbl_mess1.setHorizontalHeaderLabels(["Probe", "Lichtstärke"])
         self.frm_ergeb.tbl_mess2.setColumnCount(2)  # Zwei Spalten
-        self.frm_ergeb.tbl_mess2.setHorizontalHeaderLabels(["Probe", "Lichtstärke in Lumen"])
+        self.frm_ergeb.tbl_mess2.setHorizontalHeaderLabels(["Probe", "Lichtstärke"])
         self.frm_ergeb.tbl_dl.setColumnCount(2)  # Zwei Spalten
         self.frm_ergeb.tbl_dl.setHorizontalHeaderLabels(["Kategorie", "Anzahl"])
 
@@ -221,7 +221,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
             create_table_messwert1 = """
             CREATE TABLE IF NOT EXISTS Messwerte1 (
                 Probe VARCHAR(5),
-                Lichtstärke in Lumen DECIMAL(5,2)
+                Lichtstärke DECIMAL(5,2)
             )
             """
             self.cursor_mess1.execute(create_table_messwert1)
@@ -231,7 +231,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
             create_table_messwert2 = """
             CREATE TABLE IF NOT EXISTS Messwerte2 (
                 Probe VARCHAR(5),
-                Lichtstärke in Lumen DECIMAL(5,2)
+                Lichtstärke DECIMAL(5,2)
             )
             """
             self.cursor_mess2.execute(create_table_messwert2)
@@ -258,23 +258,23 @@ class Frm_main(QMainWindow, Ui_StartWindow):
 
             # INSERT INTO-Anweisung für Messwerte
             insert_messwerte1 = """
-            INSERT INTO Messwerte1 (Probe, Lichtstärke in Lumen)
+            INSERT INTO Messwerte1 (Probe, Lichtstärke)
             VALUES 
-            ("P1", %s),
-            ("P2", %s),
-            ("P3", %s),
-            ("P4", %s)
+            ("P1", %s, "lum"),
+            ("P2", %s, "lum"),
+            ("P3", %s, "lum"),
+            ("P4", %s, "lum"),
             """
             self.cursor_mess1.execute(insert_messwerte1, (self.frm_kont.p1, self.frm_kont.p2, self.frm_kont.p3, self.frm_kont.p4))
 
             # INSERT INTO-Anweisung für Messwerte
             insert_messwerte2 = """
-            INSERT INTO Messwerte2 (Probe, Lichtstärke in Lumen)
+            INSERT INTO Messwerte2 (Probe, Lichtstärke)
             VALUES 
-            ("P5", %s),
-            ("P6", %s),
-            ("P7", %s),
-            ("P8", %s)
+            ("P5", %s, "lum"),
+            ("P6", %s, "lum"),
+            ("P7", %s, "lum"),
+            ("P8", %s, "lum"),
             """
             self.cursor_mess2.execute(insert_messwerte2, (self.frm_kont.p5, self.frm_kont.p6, self.frm_kont.p7, self.frm_kont.p8))
 
