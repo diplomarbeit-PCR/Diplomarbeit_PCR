@@ -274,7 +274,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
             ("P5 in Lumen", %s),
             ("P6 in Lumen", %s),
             ("P7 in Lumen", %s),
-            ("P8 in Lumen", %s),
+            ("P8 in Lumen", %s)
             """
 
             self.cursor_mess2.execute(insert_messwerte2, (self.frm_kont.p5, self.frm_kont.p6, self.frm_kont.p7, self.frm_kont.p8))
@@ -293,7 +293,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
             result_phasen = self.cursor_phasen.fetchall()
 
             # Daten aus Tabelle 'Messwerte' abrufen
-            self.cursor_mess1.execute("SELECT * FROM Messwert1")
+            self.cursor_mess1.execute("SELECT * FROM Messwerte1")
             result_messwerte1 = self.cursor_mess1.fetchall()
 
             
