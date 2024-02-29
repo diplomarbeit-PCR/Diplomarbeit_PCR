@@ -66,12 +66,12 @@
      </rect>
     </property>
    </widget>
-   <widget class="QTableView" name="tbl_mess_1">
+   <widget class="QTableView" name="tbl_mess1">
     <property name="geometry">
      <rect>
       <x>20</x>
       <y>330</y>
-      <width>201</width>
+      <width>231</width>
       <height>261</height>
      </rect>
     </property>
@@ -86,12 +86,12 @@
      </rect>
     </property>
    </widget>
-   <widget class="QTableView" name="tbl_mess_2">
+   <widget class="QTableView" name="tbl_mess2">
     <property name="geometry">
      <rect>
-      <x>270</x>
+      <x>250</x>
       <y>330</y>
-      <width>201</width>
+      <width>221</width>
       <height>261</height>
      </rect>
     </property>
