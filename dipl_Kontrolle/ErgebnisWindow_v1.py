@@ -16,7 +16,7 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QHeaderView, QLabel, QMainWindow,
-    QMenuBar, QPushButton, QSizePolicy, QStatusBar,
+    QMenuBar, QTableWidget, QPushButton, QSizePolicy, QStatusBar,
     QTableView, QWidget)
 
 class Ui_Ergebnis(object):
@@ -42,18 +42,18 @@ class Ui_Ergebnis(object):
         font1.setFamilies([u"Arial Narrow"])
         font1.setPointSize(20)
         self.btn_Ende.setFont(font1)
-        self.tbl_phasen = QTableView(self.centralwidget)
+        self.tbl_phasen = QTableWidget(self.centralwidget)
         self.tbl_phasen.setObjectName(u"tbl_phasen")
         self.tbl_phasen.setGeometry(QRect(20, 120, 451, 91))
-        self.tbl_mess_1 = QTableView(self.centralwidget)
-        self.tbl_mess_1.setObjectName(u"tbl_mess_1")
-        self.tbl_mess_1.setGeometry(QRect(20, 330, 201, 261))
-        self.tbl_dl = QTableView(self.centralwidget)
+        self.tbl_mess1 = QTableWidget(self.centralwidget)
+        self.tbl_mess1.setObjectName(u"tbl_mess_1")
+        self.tbl_mess1.setGeometry(QRect(20, 330, 201, 261))
+        self.tbl_dl = QTableWidget(self.centralwidget)
         self.tbl_dl.setObjectName(u"tbl_dl")
         self.tbl_dl.setGeometry(QRect(20, 220, 451, 101))
-        self.tbl_mess_2 = QTableView(self.centralwidget)
-        self.tbl_mess_2.setObjectName(u"tbl_mess_2")
-        self.tbl_mess_2.setGeometry(QRect(270, 330, 201, 261))
+        self.tbl_mess2 = QTableWidget(self.centralwidget)
+        self.tbl_mess2.setObjectName(u"tbl_mess_2")
+        self.tbl_mess2.setGeometry(QRect(270, 330, 201, 261))
         Ergebnis.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(Ergebnis)
         self.menubar.setObjectName(u"menubar")

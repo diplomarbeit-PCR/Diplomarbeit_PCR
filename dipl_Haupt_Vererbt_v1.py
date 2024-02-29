@@ -257,7 +257,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
             self.cursor_phasen.execute(insert_phasen, (self.frm_denat.temp_denat, self.frm_aneal.temp_aneal, self.frm_elong.temp_elong, self.frm_zeitDef.value_denat, self.frm_zeitDef.value_aneal_gesamt, self.frm_zeitDef.value_elong_gesamt))
 
             # INSERT INTO-Anweisung für Messwerte
-            insert_messwerte = """
+            insert_messwerte1 = """
             INSERT INTO Messwerte1 (Probe, Lichtstärke in Lumen)
             VALUES 
             ("P1", %s),
@@ -265,10 +265,10 @@ class Frm_main(QMainWindow, Ui_StartWindow):
             ("P3", %s),
             ("P4", %s)
             """
-            self.cursor_mess1.execute(insert_messwerte, (self.frm_kont.p1, self.frm_kont.p2, self.frm_kont.p3, self.frm_kont.p4))
+            self.cursor_mess1.execute(insert_messwerte1, (self.frm_kont.p1, self.frm_kont.p2, self.frm_kont.p3, self.frm_kont.p4))
 
             # INSERT INTO-Anweisung für Messwerte
-            insert_messwerte = """
+            insert_messwerte2 = """
             INSERT INTO Messwerte2 (Probe, Lichtstärke in Lumen)
             VALUES 
             ("P5", %s),
@@ -276,7 +276,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
             ("P7", %s),
             ("P8", %s)
             """
-            self.cursor_mess2.execute(insert_messwerte, (self.frm_kont.p5, self.frm_kont.p6, self.frm_kont.p7, self.frm_kont.p8))
+            self.cursor_mess2.execute(insert_messwerte2, (self.frm_kont.p5, self.frm_kont.p6, self.frm_kont.p7, self.frm_kont.p8))
 
 
             # INSERT INTO-Anweisung für Messwerte
