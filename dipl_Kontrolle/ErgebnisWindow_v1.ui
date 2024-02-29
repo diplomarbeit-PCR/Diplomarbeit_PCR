@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>490</width>
+    <width>486</width>
     <height>733</height>
    </rect>
   </property>
@@ -60,9 +60,19 @@
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>120</y>
+      <y>140</y>
       <width>491</width>
-      <height>261</height>
+      <height>131</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QTableView" name="tbl_dl">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>420</y>
+      <width>491</width>
+      <height>131</height>
      </rect>
     </property>
    </widget>
@@ -70,9 +80,9 @@
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>390</y>
+      <y>280</y>
       <width>491</width>
-      <height>211</height>
+      <height>131</height>
      </rect>
     </property>
    </widget>
@@ -82,8 +92,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>490</width>
-     <height>22</height>
+     <width>486</width>
+     <height>21</height>
     </rect>
    </property>
   </widget>

@@ -187,8 +187,10 @@ class Frm_main(QMainWindow, Ui_StartWindow):
     def ergebnis(self):
         self.frm_ergeb.tbl_phasen.setColumnCount(4)  # Fünf Spalten
         self.frm_ergeb.tbl_phasen.setHorizontalHeaderLabels(["Kategorien", "Denaturierung", "Annealing", "Elongation"])
-        self.frm_ergeb.tbl_mess.setColumnCount(2)  # Zwei Spalten
-        self.frm_ergeb.tbl_mess.setHorizontalHeaderLabels(["Kategorien", "Anzahl"])#
+        self.frm_ergeb.tbl_mess.setColumnCount(9)  # Zwei Spalten
+        self.frm_ergeb.tbl_mess.setHorizontalHeaderLabels(["Kategorie", "P1", "P2", "P3", "P4", "P5", "P6", "P7", "P8"])
+        self.frm_ergeb.tbl_dl.setColumnCount(2)  # Zwei Spalten
+        self.frm_ergeb.tbl_dl.setHorizontalHeaderLabels(["Kategorie", "Anzahl"])
 
         print("temp_d", self.frm_denat.temp_denat)
         print("temp_a", self.frm_aneal.temp_aneal)
@@ -197,8 +199,6 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         print("dauer_a", self.frm_zeitDef.value_aneal_gesamt)
         print("dauer_e", self.frm_zeitDef.value_elong_gesamt)
         print("dl", self.DL_zaehler_value)
-        print("spg", self.frm_kont.value_spg)
-        print("light", self.frm_kont.value_light)
 
 
         try:
@@ -233,13 +233,13 @@ class Frm_main(QMainWindow, Ui_StartWindow):
 
             # Tabelle 'Durchläufe' erstellen, falls nicht vorhanden
             create_table_dl = """
-            CREATE TABLE IF NOT EXISTS Messwerte (
+            CREATE TABLE IF NOT EXISTS Durchlauf (
                 Kategorie VARCHAR(50),
                 Anzahl DECIMAL(5,2)
             )
             """
             self.cursor_dl.execute(create_table_dl)
-            print("Tabelle 'Messwerte' erstellt")
+            print("Tabelle 'Durchlauf' erstellt")
 
             # INSERT INTO-Anweisung für PhasenWerte
             insert_phasen = """
@@ -254,15 +254,15 @@ class Frm_main(QMainWindow, Ui_StartWindow):
             insert_messwerte = """
             INSERT INTO Messwerte (Kategorie, P1, P2, P3, P4, P5, P6, P7, P8)
             VALUES 
-            ("Lichtstärke in Lumen", %s, %s, %s, %s, %s, %s, %s)
+            ("Lichtstärke in Lumen", %s, %s, %s, %s, %s, %s, %s, %s)
             """
             self.cursor_mess.execute(insert_messwerte, (self.frm_kont.p1, self.frm_kont.p2, self.frm_kont.p3, self.frm_kont.p4, self.frm_kont.p5, self.frm_kont.p6, self.frm_kont.p7, self.frm_kont.p8))
 
             # INSERT INTO-Anweisung für Messwerte
             insert_dl = """
-            INSERT INTO Messwerte (Kategorie, Anzahl)
+            INSERT INTO Durchlauf (Kategorie, Anzahl)
             VALUES 
-            ("Durchlaufn", %s)
+            ("Durchlauf", %s)
             """
             self.cursor_dl.execute(insert_dl, (self.DL_zaehler_value))
 
@@ -273,6 +273,10 @@ class Frm_main(QMainWindow, Ui_StartWindow):
             # Daten aus Tabelle 'Messwerte' abrufen
             self.cursor_mess.execute("SELECT * FROM Messwerte")
             result_messwerte = self.cursor_mess.fetchall()
+
+            # Daten aus Tabelle 'Messwerte' abrufen
+            self.cursor_dl.execute("SELECT * FROM Durchlauf")
+            result_dl = self.cursor_dl.fetchall()
 
             # Ergebnisse in tbl_phasen einfügen
             for row_num, row_data in enumerate(result_phasen):
@@ -285,6 +289,12 @@ class Frm_main(QMainWindow, Ui_StartWindow):
                 self.frm_ergeb.tbl_mess.insertRow(row_num)
                 for col_num, col_data in enumerate(row_data):
                     self.frm_ergeb.tbl_mess.setItem(row_num, col_num, QTableWidgetItem(str(col_data)))
+
+            # Ergebnisse in tbl_messwerte einfügen
+            for row_num, row_data in enumerate(result_dl):
+                self.frm_ergeb.tbl_dl.insertRow(row_num)
+                for col_num, col_data in enumerate(row_data):
+                    self.frm_ergeb.tbl_dl.setItem(row_num, col_num, QTableWidgetItem(str(col_data)))
 
         except pymysql.MySQLError as e:
             print("MySQL-Fehler: {}".format(str(e)))
