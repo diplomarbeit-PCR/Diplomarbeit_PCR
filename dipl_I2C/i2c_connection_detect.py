@@ -1,66 +1,48 @@
 import smbus
 import time
 
-# Definieren Sie die Adresse des Arduino-Slave auf dem I2C-Bus
-detect_address = 0x06  # Beispieladresse, ersetzen Sie sie durch die tatsächliche Slave-Adresse
+# I2C-Adresse des Arduino-Slave
+SLAVE_ADDRESS = 0x08
 
-# https://prod.liveshare.vsengsaas.visualstudio.com/join?E0A2025B26F32D1C701AC13840DCC9C2A6E6
+# Instanziierung des I2C-Bus
+bus = smbus.SMBus(7)
 
-# Öffnen Sie den I2C-Bus (abhängig von Ihrem System kann die Busnummer variieren)
-bus = smbus.SMBus(7)  # Bus 1 öffnen, Sie können die richtige Busnummer je nach Ihrem Setup anpassen
+def main():
+    # Lies den Wert vom Arduino-Slave
+    switch_state = bus.read_byte(SLAVE_ADDRESS)
 
+    # Entscheide, welcher Wert basierend auf dem Zustand des Endschalters gesendet werden soll
+    if switch_state == 7:
+        print("Received switch state: LOW")
+        switch_state = bus.read_byte(SLAVE_ADDRESS)
 
-# def read_data_from_data(self):
-#     # Nur Daten vom Slave lesen, wenn der Leseprozess nicht gestoppt wurde
-#     if not self.stopped_reading:
-#         try:
-#             if self.i == 0:
-#                 data = self.read_from_beweg()
-#                 if data is None:             
-#                     data = self.read_from_beweg()
+    elif switch_state == 5:
+        print("Received switch state: HIGH")
 
-#                 if data == 7:
-#                     data = self.read_from_beweg()
-                        
-#                 if data == 0:
-#                     data = self.read_from_beweg()
+        # Sende Befehl an den Slave, das Hauptprogramm zu starten
+        bus.write_byte(SLAVE_ADDRESS, 4)
 
-#                 if data == 5 and not self.data_sent:
-#                     self.data_sent = True
-#                     print("5 erhalten")
-#                     self.stopped_reading = True  # Leseprozess stoppen
-                    
-                        
-#         except Exception as e:
-#             print(f"Fehler beim Lesen von Daten vom Slave: {str(e)}")
+        # Warte auf die Bestätigung vom Slave, dass das Hauptprogramm abgeschlossen ist
+        while True:
+            if bus.read_byte(SLAVE_ADDRESS) == 1:
+                break
 
-def write_to_data(self, data):
-        try:
-            # Schreibe Daten an den Slave
-            self.bus.write_byte(self.detect_address, data)
-            print(f"Daten {data} erfolgreich an Slave gesendet.")
-        except Exception as e:
-            print(f"Fehler beim Senden von Daten an den Slave: {str(e)}")
+        # Empfange die gemessenen Werte vom Slave
+        value_spg = 0
+        value_light = 0
 
-def read_from_detect(self):
-    data = []
-    for _ in range(3):  # Wir erwarten 3 Datenpunkte (temp_denat, temp_aneal, temp_elong)
-        data.append(bus.read_byte(detect_address))
-    return data
+        # Lese die eindeutig gekennzeichneten Werte
+        while True:
+            data = bus.read_byte(SLAVE_ADDRESS)
+            if data == ord('S'): # Kennzeichnung für SPG
+                value_spg = bus.read_byte(SLAVE_ADDRESS)
+            elif data == ord('L'): # Kennzeichnung für Light
+                value_light = bus.read_byte(SLAVE_ADDRESS)
+            if value_spg != 0 and value_light != 0:
+                break
 
-time.sleep(30)
+        # Zeige die gemessenen Werte an
+        print("Received values from slave: SPG -", value_spg, ", Light -", value_light)
 
-write_to_data(4)
-
-time.sleep(10)
-
-# Daten vom Arduino lesen
-data_received = read_from_detect()
-
-value_spg = data_received[0] 
-value_light = data_received[1] 
-
-# Die erhaltenen Daten anzeigen
-print("Messwerte")
-print("SPG:", value_spg)
-print("Licht:", value_light)
+if __name__ == "__main__":
+    main()
