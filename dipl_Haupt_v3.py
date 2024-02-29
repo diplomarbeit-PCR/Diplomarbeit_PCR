@@ -282,8 +282,12 @@ class Frm_main(QMainWindow, Ui_StartWindow):
     def ergebnis(self):
         self.frm_ergeb.tbl_phasen.setColumnCount(4)  # Fünf Spalten
         self.frm_ergeb.tbl_phasen.setHorizontalHeaderLabels(["Kategorien", "Denaturierung", "Annealing", "Elongation"])
-        self.frm_ergeb.tbl_mess.setColumnCount(2)  # Zwei Spalten
-        self.frm_ergeb.tbl_mess.setHorizontalHeaderLabels(["Kategorien", "Anzahl"])#
+        self.frm_ergeb.tbl_mess1.setColumnCount(2)  # Zwei Spalten
+        self.frm_ergeb.tbl_mess1.setHorizontalHeaderLabels(["Probe", "Lichtstärke"])
+        self.frm_ergeb.tbl_mess2.setColumnCount(2)  # Zwei Spalten
+        self.frm_ergeb.tbl_mess2.setHorizontalHeaderLabels(["Probe", "Lichtstärke"])
+        self.frm_ergeb.tbl_dl.setColumnCount(2)  # Zwei Spalten
+        self.frm_ergeb.tbl_dl.setHorizontalHeaderLabels(["Kategorie", "Anzahl"])
 
         print("temp_d", self.frm_denat.temp_denat)
         print("temp_a", self.frm_aneal.temp_aneal)
@@ -292,8 +296,6 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         print("dauer_a", self.frm_zeitDef.value_aneal_gesamt)
         print("dauer_e", self.frm_zeitDef.value_elong_gesamt)
         print("dl", self.DL_zaehler_value)
-        print("spg", self.frm_kont.value_spg)
-        print("light", self.frm_kont.value_light)
 
 
         try:
@@ -307,22 +309,53 @@ class Frm_main(QMainWindow, Ui_StartWindow):
             self.cursor_phasen.execute(insert_phasen, (self.frm_denat.temp_denat, self.frm_aneal.temp_aneal, self.frm_elong.temp_elong, self.frm_zeitDef.value_denat, self.frm_zeitDef.value_aneal_gesamt, self.frm_zeitDef.value_elong_gesamt))
 
             # INSERT INTO-Anweisung für Messwerte
-            insert_messwerte = """
-            INSERT INTO Messwerte (Kategorien, Anzahl)
+            insert_messwerte1 = """
+            INSERT INTO Messwerte1 (Probe, Lichtstärke)
             VALUES 
-            ("Durchläufe", %s),
-            ("Spannung in mV", %s),
-            ("Lichtstärke in Lumen", %s )
+            ("P1 in Lumen", %s),
+            ("P2 in Lumen", %s),
+            ("P3 in Lumen", %s),
+            ("P4 in Lumen", %s)
             """
-            self.cursor_mess.execute(insert_messwerte, (self.DL_zaehler_value, self.frm_kont.value_spg, self.frm_kont.value_light))
+            self.cursor_mess1.execute(insert_messwerte1, (self.frm_kont.p1, self.frm_kont.p2, self.frm_kont.p3, self.frm_kont.p4))
+
+            # INSERT INTO-Anweisung für Messwerte
+            insert_messwerte2 = """
+            INSERT INTO Messwerte2 (Probe, Lichtstärke)
+            VALUES 
+            ("P5 in Lumen", %s),
+            ("P6 in Lumen", %s),
+            ("P7 in Lumen", %s),
+            ("P8 in Lumen", %s)
+            """
+
+            self.cursor_mess2.execute(insert_messwerte2, (self.frm_kont.p5, self.frm_kont.p6, self.frm_kont.p7, self.frm_kont.p8))
+
+
+            # INSERT INTO-Anweisung für Messwerte
+            insert_dl = """
+            INSERT INTO Durchlauf (Kategorie, Anzahl)
+            VALUES 
+            ("Durchlauf", %s)
+            """
+            self.cursor_dl.execute(insert_dl, (self.DL_zaehler_value))
 
             # Daten aus Tabelle 'PhasenWerte' abrufen
             self.cursor_phasen.execute("SELECT * FROM PhasenWerte")
             result_phasen = self.cursor_phasen.fetchall()
 
             # Daten aus Tabelle 'Messwerte' abrufen
-            self.cursor_mess.execute("SELECT * FROM Messwerte")
-            result_messwerte = self.cursor_mess.fetchall()
+            self.cursor_mess1.execute("SELECT * FROM Messwerte1")
+            result_messwerte1 = self.cursor_mess1.fetchall()
+
+            
+            # Daten aus Tabelle 'Messwerte' abrufen
+            self.cursor_mess2.execute("SELECT * FROM Messwerte2")
+            result_messwerte2 = self.cursor_mess2.fetchall()
+
+            # Daten aus Tabelle 'Messwerte' abrufen
+            self.cursor_dl.execute("SELECT * FROM Durchlauf")
+            result_dl = self.cursor_dl.fetchall()
 
             # Ergebnisse in tbl_phasen einfügen
             for row_num, row_data in enumerate(result_phasen):
@@ -331,10 +364,23 @@ class Frm_main(QMainWindow, Ui_StartWindow):
                     self.frm_ergeb.tbl_phasen.setItem(row_num, col_num, QTableWidgetItem(str(col_data)))
 
             # Ergebnisse in tbl_messwerte einfügen
-            for row_num, row_data in enumerate(result_messwerte):
-                self.frm_ergeb.tbl_mess.insertRow(row_num)
+            for row_num, row_data in enumerate(result_messwerte1):
+                self.frm_ergeb.tbl_mess1.insertRow(row_num)
                 for col_num, col_data in enumerate(row_data):
-                    self.frm_ergeb.tbl_mess.setItem(row_num, col_num, QTableWidgetItem(str(col_data)))
+                    self.frm_ergeb.tbl_mess1.setItem(row_num, col_num, QTableWidgetItem(str(col_data)))
+
+                    
+            # Ergebnisse in tbl_messwerte einfügen
+            for row_num, row_data in enumerate(result_messwerte2):
+                self.frm_ergeb.tbl_mess2.insertRow(row_num)
+                for col_num, col_data in enumerate(row_data):
+                    self.frm_ergeb.tbl_mess2.setItem(row_num, col_num, QTableWidgetItem(str(col_data)))
+
+            # Ergebnisse in tbl_messwerte einfügen
+            for row_num, row_data in enumerate(result_dl):
+                self.frm_ergeb.tbl_dl.insertRow(row_num)
+                for col_num, col_data in enumerate(row_data):
+                    self.frm_ergeb.tbl_dl.setItem(row_num, col_num, QTableWidgetItem(str(col_data)))
 
         except pymysql.MySQLError as e:
             print("MySQL-Fehler: {}".format(str(e)))
@@ -349,7 +395,6 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         # phasen_Ablauf soll wiederholt werden
         self.frm_ergeb.showFullScreen()
         self.frm_kont.hide()
-
     def esc(self):
         # alles auf Start Einstellungen zurücksetzen
         frm_main.showFullScreen()
