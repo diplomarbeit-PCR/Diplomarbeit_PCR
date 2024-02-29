@@ -260,24 +260,24 @@ class Frm_main(QMainWindow, Ui_StartWindow):
             insert_messwerte1 = """
             INSERT INTO Messwerte1 (Probe, Lichtstärke)
             VALUES 
-            ("P1", %s),
-            ("P2", %s),
-            ("P3", %s),
-            ("P4", %s),
+            ("P1", {} "lum".format(self.frm_kont.p1)),
+            ("P2", {} "lum".format(self.frm_kont.p2)),
+            ("P3", {} "lum".format(self.frm_kont.p3)),
+            ("P4", {} "lum".format(self.frm_kont.p4)),
             """
-            self.cursor_mess1.execute(insert_messwerte1, (self.frm_kont.p1 +"lum", self.frm_kont.p2 +"lum", self.frm_kont.p3 +"lum", self.frm_kont.p4 +"lum"))
+            self.cursor_mess1.execute(insert_messwerte1)
 
             # INSERT INTO-Anweisung für Messwerte
             insert_messwerte2 = """
             INSERT INTO Messwerte2 (Probe, Lichtstärke)
             VALUES 
-            ("P5", %s),
-            ("P6", %s),
-            ("P7", %s),
-            ("P8", %s),
+            ("P5", {} "lum".format(self.frm_kont.p6)),
+            ("P6", {} "lum".format(self.frm_kont.p7)),
+            ("P7", {} "lum".format(self.frm_kont.p8)),
+            ("P8", {} "lum".format(self.frm_kont.p9)),
             """
 
-            self.cursor_mess2.execute(insert_messwerte2, (self.frm_kont.p5 +"lum", self.frm_kont.p6 +"lum", self.frm_kont.p7 +"lum", self.frm_kont.p8 +"lum"))
+            self.cursor_mess2.execute(insert_messwerte2)
 
 
             # INSERT INTO-Anweisung für Messwerte
