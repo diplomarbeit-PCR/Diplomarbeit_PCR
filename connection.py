@@ -116,9 +116,9 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         while  not self.stopped_detect:
             self.frm_ww.showFullScreen()
             print("Senden der Daten ... ")
-            #print(self.read_data_from_beweg())
-            #self.read_data_from_beweg()
-            self.read_data_from_detect()
+            print(self.read_data_from_beweg())
+            self.read_data_from_beweg()
+#            self.read_data_from_detect()
 
         # self.stopped_reading and
         if  self.stopped_detect:
@@ -290,11 +290,11 @@ class Frm_main(QMainWindow, Ui_StartWindow):
 
         
         # Daten vom Arduino lesen
-        #temp_received = self.read_from_temp()
+        temp_received = self.read_from_temp()
 
-        #self.frm_denat.temp_denat = temp_received[0] 
-        #self.frm_aneal.temp_aneal = temp_received[1] 
-        #self.frm_elong.temp_elong = temp_received[2] 
+        self.frm_denat.temp_denat = temp_received[0] 
+        self.frm_aneal.temp_aneal = temp_received[1] 
+        self.frm_elong.temp_elong = temp_received[2] 
         
         self.frm_denat.temp_sensD.display(self.frm_denat.temp_denat)
         self.frm_aneal.temp_sensA.display(self.frm_aneal.temp_aneal)

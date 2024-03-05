@@ -16,6 +16,15 @@ def WarteStart(self):
     print ("show WW")
     print("Senden der Daten ...")
     print ("hide Zeit")
+
+    self.p1 = 0
+    self.p2 = 0
+    self.p3 = 0
+    self.p4 = 0
+    self.p5 = 0
+    self.p6 = 0
+    self.p7 = 0
+    self.p8 = 0
             
        
     while not self.stopped_reading:
@@ -42,20 +51,44 @@ def read_data_from_detect(self):
                     self.data_sent = True
                     print("5 erhalten")
                     self.i += 1
+                    write_to_detect(10)
                     print(self.i)
                     # Hier könnten Sie die gewünschten Daten an den Slave senden
                     self.stopped_reading = True  # Leseprozess stoppen
 
-                if detect_receive[0] != 0:
-                    self.value_spg = detect_received[0] 
-                    self.value_light = detect_received[1] 
-
+                if detect_receive[0] == 1:
                     # Die erhaltenen Daten anzeigen
-                    print("Messwerte")
-                    print("SPG:", self.value_spg)
-                    print("Licht:", self.value_light)
-                    self.data_sent = True
-                    self.stopped_reading = True  # Leseprozess stoppen
+                    self.p1 == detect_receive[1]
+                    write_to_detect(1)
+
+                if detect_receive[0] == 2:
+                    self.p2 == detect_receive[1]
+                    write_to_detect(2)
+
+                if detect_receive[0] == 3:
+                    self.p3 == detect_receive[1]
+                    write_to_detect(3)
+
+                if detect_receive[0] == 4:
+                    self.p4 == detect_receive[1]
+                    write_to_detect(4)
+
+                if detect_receive[0] == 5:
+                    self.p5 == detect_receive[1]
+                    write_to_detect(5)
+
+                if detect_receive[0] == 6:
+                    self.p6 == detect_receive[1]
+                    write_to_detect(6)
+
+                if detect_receive[0] == 7:
+                    self.p7 == detect_receive[1]
+                    write_to_detect(7)
+
+                if detect_receive[0] == 8:
+                    self.p8 == detect_receive[1]
+                    write_to_detect(8)
+                    
                         
         except Exception as e:
             print(f"Fehler beim Lesen von Daten vom Slave: {str(e)}")
