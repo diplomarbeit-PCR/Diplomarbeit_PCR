@@ -3,6 +3,9 @@ from PySide6.QtCore import QTimer, Signal
 import pymysql
 import smbus
 import time
+
+# https://prod.liveshare.vsengsaas.visualstudio.com/join?76958D5CEBC2A760C355FD66DCB2358200A3
+
 # Auf die unterschiedlichen Windows zugreifen (QT Deklaration, die in Py umgewandelt wurden)
 from dipl_Einfuehrung.einfuehrung_v4 import Ui_StartWindow
 from dipl_Einfuehrung.Voraussetzungen_Vererbt_v1 import Frm_voraus
@@ -10,8 +13,6 @@ from dipl_Einfuehrung.zeitDefinition_Vererbt_v1 import Frm_zeitDef
 from dipl_Einfuehrung.WarteWindow_Vererbt_v1 import Frm_WarteWindow
 from dipl_Phasenablauf.Phasenablauf_Vererbt_v1 import Frm_denat, Frm_aneal, Frm_sens, Frm_asens, Frm_elong
 from dipl_Kontrolle.KontrollErgebnis_Vererbt_v1 import Frm_kont, Frm_ergeb
-
-# https://prod.liveshare.vsengsaas.visualstudio.com/join?76958D5CEBC2A760C355FD66DCB2358200A3
 
 class Frm_main(QMainWindow, Ui_StartWindow):
 
