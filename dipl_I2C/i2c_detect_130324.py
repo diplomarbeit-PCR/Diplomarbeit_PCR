@@ -21,70 +21,79 @@ def wait_start():
     p8 = 0
 
     print("Warte auf Start...")
-    
-    while not stopped_reading:
-        print("Senden der Daten ... ")
-        print(read_from_detect())
-        detect_receive = read_from_detect()
 
-        if detect_receive[0] == 0 and detect_receive[1] == 7 and not data_sent:
-                data_sent = True
-
-            # Überprüfen Sie die empfangenen Daten und handeln Sie entsprechend
-        if detect_receive[0] == 0 and detect_receive[1] == 5 and not data_sent:
-                data_sent = True
-                print("Startsignal empfangen. Senden von Daten an den Slave...")
-                write_to_detect(10)
-
-    if stopped_reading:
-        time(1000)
-        detect_receive = read_from_detect()
-        if detect_receive[0] == 1:
-                # Die erhaltenen Daten anzeigen
-                p1 == detect_receive[1]
-                write_to_detect(2)
-
-        if detect_receive[0] == 2:
-                p2 == detect_receive[1]
-                write_to_detect(3)
-
-        if detect_receive[0] == 3:
-                p3 == detect_receive[1]
-                write_to_detect(4)
-
-        if detect_receive[0] == 4:
-                p4 == detect_receive[1]
-                write_to_detect(5)
-
-        if detect_receive[0] == 5:
-                p5 == detect_receive[1]
-                write_to_detect(6)
-
-        if detect_receive[0] == 6:
-                p6 == detect_receive[1]
-                write_to_detect(7)
-
-        if detect_receive[0] == 7:
-                p7 == detect_receive[1]
-                write_to_detect(8)
-
-        if detect_receive[0] == 8:
-                p8 == detect_receive[1]
-                stopped_reading = True  # Leseprozess stoppen
-                write_to_detect(9)
-
-def write_to_detect(data):
-    try:
-        # Schreiben Sie Daten an den Slave
-        bus.write_byte(detect_address, data)
-    except Exception as e:
-        print(f"Fehler beim Senden von Daten an den Slave: {str(e)}")
-
-def read_from_detect():
+def read_data():
     data = []
-    for _ in range(2):  # Wir erwarten 3 Datenpunkte (temp_denat, temp_aneal, temp_elong)
+    for _ in range(3):  # Wir erwarten 3 Datenpunkte (temp_denat, temp_aneal, temp_elong)
         data.append(bus.read_byte(detect_address))
     return data
 
-if __name__ == "__main__":
-    wait_start()
+# Daten vom Arduino lesen
+data_received = read_data()
+    
+#     while not stopped_reading:
+#         print("Senden der Daten ... ")
+#         print(read_from_detect())
+#         detect_receive = read_from_detect()
+
+#         if detect_receive[0] == 0 and detect_receive[1] == 7 and not data_sent:
+#                 data_sent = True
+
+#             # Überprüfen Sie die empfangenen Daten und handeln Sie entsprechend
+#         if detect_receive[0] == 0 and detect_receive[1] == 5 and not data_sent:
+#                 data_sent = True
+#                 print("Startsignal empfangen. Senden von Daten an den Slave...")
+#                 write_to_detect(10)
+
+#     if stopped_reading:
+#         time(1000)
+#         detect_receive = read_from_detect()
+#         if detect_receive[0] == 1:
+#                 # Die erhaltenen Daten anzeigen
+#                 p1 == detect_receive[1]
+#                 write_to_detect(2)
+
+#         if detect_receive[0] == 2:
+#                 p2 == detect_receive[1]
+#                 write_to_detect(3)
+
+#         if detect_receive[0] == 3:
+#                 p3 == detect_receive[1]
+#                 write_to_detect(4)
+
+#         if detect_receive[0] == 4:
+#                 p4 == detect_receive[1]
+#                 write_to_detect(5)
+
+#         if detect_receive[0] == 5:
+#                 p5 == detect_receive[1]
+#                 write_to_detect(6)
+
+#         if detect_receive[0] == 6:
+#                 p6 == detect_receive[1]
+#                 write_to_detect(7)
+
+#         if detect_receive[0] == 7:
+#                 p7 == detect_receive[1]
+#                 write_to_detect(8)
+
+#         if detect_receive[0] == 8:
+#                 p8 == detect_receive[1]
+#                 stopped_reading = True  # Leseprozess stoppen
+#                 write_to_detect(9)
+
+# def write_to_detect(data):
+#     try:
+#         # Schreiben Sie Daten an den Slave
+#         bus.write_byte(detect_address, data)
+#     except Exception as e:
+#         print(f"Fehler beim Senden von Daten an den Slave: {str(e)}")
+
+# def read_from_detect():
+#     data = []
+#     for _ in range(2):  # Wir erwarten 3 Datenpunkte (temp_denat, temp_aneal, temp_elong)
+#         data.append(bus.read_byte(detect_address))
+#     return data
+
+# if __name__ == "__main__":
+#     wait_start()
