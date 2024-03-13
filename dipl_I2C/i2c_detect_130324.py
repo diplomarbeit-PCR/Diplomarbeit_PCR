@@ -2,7 +2,7 @@ import smbus
 import time
 
 # Definieren Sie die Adresse des Arduinos auf dem I2C-Bus
-detect_address = 0x06 # Beispieladresse, ersetzen Sie sie durch die tatsächliche Slave-Adresse
+detect_address = 0x10 # Beispieladresse, ersetzen Sie sie durch die tatsächliche Slave-Adresse
 
 # Öffnen Sie den I2C-Bus (abhängig von Ihrem System kann die Busnummer variieren)
 bus = smbus.SMBus(7)  # Bus 1 öffnen, Sie können die richtige Busnummer je nach Ihrem Setup anpassen
