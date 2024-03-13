@@ -93,10 +93,10 @@ def read_data_from_detect(self):
         except Exception as e:
             print(f"Fehler beim Lesen von Daten vom Slave: {str(e)}")
 
-def write_to_detect():
+def write_to_detect(data):
     try:
         # Schreibe Daten an den Slave
-        bus.write_byte(detect_address)
+        bus.write_byte(detect_address, data)
     except Exception as e:
         print(f"Fehler beim Senden von Daten an den Slave: {str(e)}")
 
