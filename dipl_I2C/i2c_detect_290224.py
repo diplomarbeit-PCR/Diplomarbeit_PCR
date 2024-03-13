@@ -59,45 +59,44 @@ def read_data_from_detect(self):
                 if detect_receive[0] == 1:
                     # Die erhaltenen Daten anzeigen
                     self.p1 == detect_receive[1]
-                    write_to_detect(1)
+                    write_to_detect(2)
 
                 if detect_receive[0] == 2:
                     self.p2 == detect_receive[1]
-                    write_to_detect(2)
+                    write_to_detect(3)
 
                 if detect_receive[0] == 3:
                     self.p3 == detect_receive[1]
-                    write_to_detect(3)
+                    write_to_detect(4)
 
                 if detect_receive[0] == 4:
                     self.p4 == detect_receive[1]
-                    write_to_detect(4)
+                    write_to_detect(5)
 
                 if detect_receive[0] == 5:
                     self.p5 == detect_receive[1]
-                    write_to_detect(5)
+                    write_to_detect(6)
 
                 if detect_receive[0] == 6:
                     self.p6 == detect_receive[1]
-                    write_to_detect(6)
+                    write_to_detect(7)
 
                 if detect_receive[0] == 7:
                     self.p7 == detect_receive[1]
-                    write_to_detect(7)
+                    write_to_detect(8)
 
                 if detect_receive[0] == 8:
                     self.p8 == detect_receive[1]
-                    write_to_detect(8)
+                    write_to_detect(9)
                     
                         
         except Exception as e:
             print(f"Fehler beim Lesen von Daten vom Slave: {str(e)}")
 
-def write_to_detect(self, data):
+def write_to_detect():
     try:
         # Schreibe Daten an den Slave
-        self.bus.write_byte(self.detect_address, data)
-        print(f"Daten {data} erfolgreich an Slave gesendet.")
+        bus.write_byte(detect_address)
     except Exception as e:
         print(f"Fehler beim Senden von Daten an den Slave: {str(e)}")
 

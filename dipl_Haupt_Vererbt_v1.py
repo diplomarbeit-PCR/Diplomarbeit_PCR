@@ -254,7 +254,8 @@ class Frm_main(QMainWindow, Ui_StartWindow):
             ("Temperatur in °C", %s, %s, %s),
             ("Dauer in sek", %s, %s, %s)
             """
-            self.cursor_phasen.execute(insert_phasen, (self.frm_denat.temp_denat, self.frm_aneal.temp_aneal, self.frm_elong.temp_elong, self.frm_zeitDef.value_denat, self.frm_zeitDef.value_aneal_gesamt, self.frm_zeitDef.value_elong_gesamt))
+            self.cursor_phasen.execute(insert_phasen, (self.frm_denat.temp_denat, self.frm_aneal.temp_aneal, self.frm_elong.temp_elong, 
+                                                       self.frm_zeitDef.value_denat, self.frm_zeitDef.value_aneal_gesamt, self.frm_zeitDef.value_elong_gesamt))
 
             # INSERT INTO-Anweisung für Messwerte
             insert_messwerte1 = """
