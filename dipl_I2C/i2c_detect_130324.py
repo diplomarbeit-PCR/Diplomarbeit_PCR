@@ -22,7 +22,19 @@ def wait_start():
 
     print("Warte auf Start...")
     
+    while not stopped_reading:
+        print("Senden der Daten ... ")
+        print(read_from_detect())
+        read_from_detect()
+
+    if stopped_reading:
+        time(1000)
+        read_from_detect()
+        
+        
+
     try:
+        
         while not stopped_reading:
             # Lesen Sie Daten vom Slave, wenn der Leseprozess nicht gestoppt wurde
             detect_receive = read_from_detect()
