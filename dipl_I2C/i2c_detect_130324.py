@@ -82,7 +82,7 @@ def write_to_detect(data):
 
 def read_from_detect():
     data = []
-    for _ in range(3):  # Wir erwarten 3 Datenpunkte (temp_denat, temp_aneal, temp_elong)
+    for _ in range(2):  # Wir erwarten 3 Datenpunkte (temp_denat, temp_aneal, temp_elong)
         data.append(bus.read_byte(detect_address))
     return data
 
