@@ -11,7 +11,14 @@ def wait_start():
     data_sent = False  # Hält den Zustand, ob die Daten gesendet wurden
     stopped_reading = False  # Hält den Zustand, ob der Leseprozess gestoppt wurde
     i = 0
-    p1, p2, p3, p4, p5, p6, p7, p8 = 0
+    p1 = 0
+    p2 = 0
+    p3 = 0
+    p4 = 0
+    p5 = 0
+    p6 = 0
+    p7 = 0
+    p8 = 0
 
     print("Warte auf Start...")
     
