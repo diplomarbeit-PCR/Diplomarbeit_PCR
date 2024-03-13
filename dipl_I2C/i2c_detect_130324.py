@@ -61,6 +61,8 @@ def wait_start():
                 stopped_reading = True  # Leseprozess stoppen
                 write_to_detect(9)
 
+            return p1,p2,p3,p4,p5,p6,p7,p8
+
     except Exception as e:
         print(f"Fehler aufgetreten: {str(e)}")
     finally:
