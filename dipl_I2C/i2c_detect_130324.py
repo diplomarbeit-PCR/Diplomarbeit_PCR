@@ -25,14 +25,16 @@ def wait_start():
     try:
         while not stopped_reading:
             # Lesen Sie Daten vom Slave, wenn der Leseprozess nicht gestoppt wurde
-            if i == 0:
-                detect_receive = read_from_detect()
+            detect_receive = read_from_detect()
 
-                # Überprüfen Sie die empfangenen Daten und handeln Sie entsprechend
-                if detect_receive[0] == 0 and detect_receive[1] == 5 and not data_sent:
-                    data_sent = True
-                    print("Startsignal empfangen. Senden von Daten an den Slave...")
-                    write_to_detect(10)
+            if detect_receive[0] == 0 and detect_receive[1] == 7 and not data_sent:
+                data_sent = True
+
+            # Überprüfen Sie die empfangenen Daten und handeln Sie entsprechend
+            if detect_receive[0] == 0 and detect_receive[1] == 5 and not data_sent:
+                data_sent = True
+                print("Startsignal empfangen. Senden von Daten an den Slave...")
+                write_to_detect(10)
 
             if detect_receive[0] == 1:
                 # Die erhaltenen Daten anzeigen
