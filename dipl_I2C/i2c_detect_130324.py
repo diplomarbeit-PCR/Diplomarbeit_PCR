@@ -80,7 +80,7 @@ def write_to_detect(data):
     except Exception as e:
         print(f"Fehler beim Senden von Daten an den Slave: {str(e)}")
 
-def read_frm_detect():
+def read_from_detect():
     data = []
     for _ in range(3):  # Wir erwarten 3 Datenpunkte (temp_denat, temp_aneal, temp_elong)
         data.append(bus.read_byte(detect_address))
