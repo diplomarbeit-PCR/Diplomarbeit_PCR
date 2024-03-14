@@ -65,3 +65,5 @@ def read_detect_null():
         print("Temperature (Elong):", temp_el)
         print("Temperature (Denat):", temp_den)
         print("Temperature (Aneal):", temp_ane)
+
+read_detect_null()
