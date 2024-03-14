@@ -7,7 +7,7 @@ temp_address = 0x12  # Beispieladresse, ersetzen Sie sie durch die tatsächliche
 # Öffnen Sie den I2C-Bus (abhängig von Ihrem System kann die Busnummer variieren)
 bus = smbus.SMBus(7)  # Bus 1 öffnen, Sie können die richtige Busnummer je nach Ihrem Setup anpassen
 
-
+null = 0
 # Funktion zum Lesen von Daten vom Arduino
 def read_data():
     data = []
