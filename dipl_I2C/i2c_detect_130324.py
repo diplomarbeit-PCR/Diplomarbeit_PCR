@@ -43,7 +43,10 @@ def read_detect_null():
     if data == 5 and not data_sent:
         data_sent = True
 
-        # Daten vom Arduino lesen
+null = read_detect_null()
+
+if null == 5:
+# Daten vom Arduino lesen
         data_received = read_data()
 
         temp_d = data_received[0] 
@@ -65,5 +68,3 @@ def read_detect_null():
         print("Temperature (Elong):", temp_el)
         print("Temperature (Denat):", temp_den)
         print("Temperature (Aneal):", temp_ane)
-
-read_detect_null()
