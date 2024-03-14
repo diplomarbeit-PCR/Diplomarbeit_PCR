@@ -74,5 +74,6 @@ def read_from_detect():
         return null
     except Exception as e:
         print("Failed to read")
+        
 while True:
     read_detect_null()
