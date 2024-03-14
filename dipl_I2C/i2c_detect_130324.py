@@ -31,16 +31,16 @@ def read_data():
 def read_detect_null():
     # Nur Daten vom Slave lesen, wenn der Leseprozess nicht gestoppt wurde
     data_sent = False
-    if data is None:             
-        data = read_detect_null()
+    if null is None:             
+        null = read_detect_null()
 
-    if data == 7:
-        data = read_detect_null()
+    if null == 7:
+        null = read_detect_null()
                         
-    if data == 0:
-        data = read_detect_null()
+    if null == 0:
+        null = read_detect_null()
     
-    if data == 5 and not data_sent:
+    if null == 5 and not data_sent:
         data_sent = True
 
 null = read_detect_null()
