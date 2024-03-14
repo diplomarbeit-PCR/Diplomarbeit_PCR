@@ -8,6 +8,7 @@ temp_address = 0x12  # Beispieladresse, ersetzen Sie sie durch die tatsächliche
 bus = smbus.SMBus(7)  # Bus 1 öffnen, Sie können die richtige Busnummer je nach Ihrem Setup anpassen
 
 null = 0
+
 # Funktion zum Lesen von Daten vom Arduino
 def read_data():
     data = []
@@ -29,24 +30,21 @@ def read_data():
     return data
 
 def read_detect_null():
+    null = read_from_detect()
     # Nur Daten vom Slave lesen, wenn der Leseprozess nicht gestoppt wurde
     data_sent = False
     if null is None:             
-        null = read_detect_null()
+        null = read_from_detect()
 
     if null == 7:
-        null = read_detect_null()
+        null = read_from_detect()
                         
     if null == 0:
-        null = read_detect_null()
+        null = read_from_detect()
     
     if null == 5 and not data_sent:
         data_sent = True
 
-null = read_detect_null()
-
-if null == 5:
-# Daten vom Arduino lesen
         data_received = read_data()
 
         temp_d = data_received[0] 
@@ -68,3 +66,13 @@ if null == 5:
         print("Temperature (Elong):", temp_el)
         print("Temperature (Denat):", temp_den)
         print("Temperature (Aneal):", temp_ane)
+
+def read_from_detect():
+    try:
+        # Lese Daten vom Slave
+        null = bus.read_byte(temp_address)
+        return null
+    except Exception as e:
+        print("Failed to read")
+
+read_detect_null()
