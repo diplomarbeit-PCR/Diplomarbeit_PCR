@@ -10,7 +10,7 @@ bus = smbus.SMBus(7)  # Bus 1 öffnen, Sie können die richtige Busnummer je nac
 # Funktion zum Lesen von Daten vom Arduino
 def read_data():
     data = []
-    for _ in range(9):  # Wir erwarten 3 Datenpunkte (temp_denat, temp_aneal, temp_elong)
+    for _ in range(8):  # Wir erwarten 3 Datenpunkte (temp_denat, temp_aneal, temp_elong)
         data.append(bus.read_byte(temp_address))
     return data
 
@@ -25,7 +25,6 @@ temp_an = data_received[4]
 temp_el = data_received[5] 
 temp_den = data_received[6] 
 temp_ane = data_received[7] 
-temp_elo = data_received[8] 
 
 # Die erhaltenen Daten anzeigen
 print("Temperaturen")
@@ -37,4 +36,3 @@ print("Temperature (Aneal):", temp_an)
 print("Temperature (Elong):", temp_el)
 print("Temperature (Denat):", temp_den)
 print("Temperature (Aneal):", temp_ane)
-print("Temperature (Elong):", temp_elo)
