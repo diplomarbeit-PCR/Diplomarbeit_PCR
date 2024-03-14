@@ -1,6 +1,7 @@
 import smbus
 import time
 
+# Funktionierender I2C-Detektor Code
 # Definieren Sie die Adresse des Arduinos auf dem I2C-Bus
 temp_address = 0x12  # Beispieladresse, ersetzen Sie sie durch die tatsächliche Slave-Adresse
 
