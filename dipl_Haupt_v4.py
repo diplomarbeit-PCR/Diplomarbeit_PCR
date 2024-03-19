@@ -417,9 +417,9 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         except OSError as o:
             print("Fehler: {}".format(str(o)))
 
-        finally:
-            # Verbindung schließen
-            self.connection.close()
+        # finally:
+        #     # Verbindung schließen
+        #     self.connection.close()
 
         # phasen_Ablauf soll wiederholt werden
         self.frm_ergeb.showFullScreen()
