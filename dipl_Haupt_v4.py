@@ -243,6 +243,10 @@ class Frm_main(QMainWindow, Ui_StartWindow):
             except OSError as o:
                 print("Fehler: {}".format(str(o)))
 
+            finally:
+                # Verbindung schließen
+                self.connection.open()
+
             self.WarteKont()
         
         else:
@@ -397,7 +401,6 @@ class Frm_main(QMainWindow, Ui_StartWindow):
                 for col_num, col_data in enumerate(row_data):
                     self.frm_ergeb.tbl_mess1.setItem(row_num, col_num, QTableWidgetItem(str(col_data)))
 
-                    
             # Ergebnisse in tbl_messwerte einfügen
             for row_num, row_data in enumerate(result_messwerte2):
                 self.frm_ergeb.tbl_mess2.insertRow(row_num)
