@@ -7,6 +7,7 @@ import time
 from dipl_Einfuehrung.einfuehrung_v4 import Ui_StartWindow
 from dipl_Einfuehrung.Voraussetzungen_Vererbt_v1 import Frm_voraus
 from dipl_Einfuehrung.zeitDefinition_Vererbt_v1 import Frm_zeitDef
+from dipl_Einfuehrung.tempDefinition_Vererbt_v1 import Frm_tempDef
 from dipl_Einfuehrung.WarteWindow_Vererbt_v1 import Frm_WarteWindow
 from dipl_Phasenablauf.Phasenablauf_Vererbt_v1 import Frm_denat, Frm_aneal, Frm_sens, Frm_asens, Frm_elong
 from dipl_Kontrolle.KontrollErgebnis_Vererbt_v1 import Frm_kont, Frm_ergeb
@@ -50,6 +51,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
 
         self.frm_voraus = Frm_voraus()
         self.frm_zeitDef = Frm_zeitDef()
+        self.frm_tempDef = Frm_tempDef()
         self.frm_ww = Frm_WarteWindow()
         self.frm_denat = Frm_denat()
         self.frm_aneal = Frm_aneal()
@@ -60,7 +62,10 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.frm_ergeb = Frm_ergeb()
          
         # Verbindung des Start-Knopfes mit der Methode erlaubteDauer 
-        self.btn_Start.clicked.connect(self.erlaubteDauer)
+        self.btn_Start.clicked.connect(self.erlaubteTemp)
+        
+        # Verbindung des Weiter-Knopfes mit der Methode phasen_Ablauf
+        self.frm_tempDef.btn_Weiter.clicked.connect(self.erlaubteDauer)
 
         # Verbindung des Weiter-Knopfes mit der Methode phasen_Ablauf
         self.frm_zeitDef.btn_Weiter.clicked.connect(self.WarteStart)
@@ -80,12 +85,16 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.phaseCount = 0
         self.stopped_reading = True
         
-    def erlaubteDauer(self):
+    def erlaubteTemp(self):
         self.frm_voraus.showFullScreen()
         self.hide()
         
-        QTimer.singleShot(10000, self.frm_zeitDef.showFullScreen)
+        QTimer.singleShot(10000, self.frm_tempDef.showFullScreen)
         QTimer.singleShot(10000, self.frm_voraus.hide)
+
+    def erlaubteDauer(self):
+        self.frm_zeitDef.showFullScreen()
+        self.frm_tempDef.hide()
 
     def WarteStart(self):
         self.i2c_operation_requested = Signal(int)
