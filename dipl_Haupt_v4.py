@@ -42,6 +42,8 @@ class Frm_main(QMainWindow, Ui_StartWindow):
 
         self.cursor_mess1 = self.connection.cursor()
         self.cursor_mess2 = self.connection.cursor()
+        self.cursor_phasen = self.connection.cursor()
+        self.cursor_dl = self.connection.cursor()
 
         self.DL_zaehler_value = 0
         self.DL_counter = 0
