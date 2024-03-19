@@ -17,7 +17,7 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QHeaderView, QLabel, QMainWindow,
     QMenuBar, QPushButton, QSizePolicy, QStatusBar,
-    QTableView, QTextEdit, QWidget)
+    QTableView, QTextEdit, QWidget, QTableWidget)
 
 class Ui_Kontrolle(object):
     def setupUi(self, Kontrolle):
@@ -50,10 +50,10 @@ class Ui_Kontrolle(object):
         self.btn_Fortfuehren.setObjectName(u"btn_Fortfuehren")
         self.btn_Fortfuehren.setGeometry(QRect(40, 610, 151, 51))
         self.btn_Fortfuehren.setFont(font1)
-        self.tbl_mess1 = QTableView(self.centralwidget)
+        self.tbl_mess1 = QTableWidget(self.centralwidget)
         self.tbl_mess1.setObjectName(u"tbl_mess1")
         self.tbl_mess1.setGeometry(QRect(70, 450, 151, 141))
-        self.tbl_mess2 = QTableView(self.centralwidget)
+        self.tbl_mess2 = QTableWidget(self.centralwidget)
         self.tbl_mess2.setObjectName(u"tbl_mess2")
         self.tbl_mess2.setGeometry(QRect(260, 450, 151, 141))
         Kontrolle.setCentralWidget(self.centralwidget)
