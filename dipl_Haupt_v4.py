@@ -1,6 +1,8 @@
 from PySide6.QtWidgets import QMainWindow, QApplication, QTableWidgetItem, QTableWidget
-from PySide6.QtCore import QTimer
+from PySide6.QtCore import QTimer, Signal
 import pymysql
+import smbus
+import time
 # Auf die unterschiedlichen Windows zugreifen (QT Deklaration, die in Py umgewandelt wurden)
 from dipl_Einfuehrung.einfuehrung_v4 import Ui_StartWindow
 from dipl_Einfuehrung.Voraussetzungen_Vererbt_v1 import Frm_voraus
@@ -9,6 +11,7 @@ from dipl_Einfuehrung.WarteWindow_Vererbt_v1 import Frm_WarteWindow
 from dipl_Phasenablauf.Phasenablauf_Vererbt_v1 import Frm_denat, Frm_aneal, Frm_sens, Frm_asens, Frm_elong
 from dipl_Kontrolle.KontrollErgebnis_Vererbt_v1 import Frm_kont, Frm_ergeb
 
+
 class Frm_main(QMainWindow, Ui_StartWindow):
 
     def __init__(self):
@@ -16,8 +19,16 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         # Initialisierung der Benutzeroberfläche 
         self.setupUi(self)
 
+        # # Öffne den I2C-Bus 7
+        # self.bus = smbus.SMBus(7)
+        # # Adresse des Slave-Geräts
+        # self.beweg_address = 0x04
+        # # Adresse des Arduino-Slave
+        # self.temp_address = 0x05
+
         self.timer_seconds = 0
         self.timer = QTimer()
+        self.go_Beweg = False
         # mit einem Intervall von 
         self.timer.setInterval(1000)
         
@@ -29,10 +40,8 @@ class Frm_main(QMainWindow, Ui_StartWindow):
             database='eduPCR'
         )
 
-        self.cursor_mess1 = self.connection.cursor()
-        self.cursor_mess2 = self.connection.cursor()
+        self.cursor_mess = self.connection.cursor()
         self.cursor_phasen = self.connection.cursor()
-        self.cursor_dl = self.connection.cursor()
 
         self.DL_zaehler_value = 0
         self.DL_counter = 0
@@ -47,19 +56,6 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.frm_elong = Frm_elong()
         self.frm_kont = Frm_kont()
         self.frm_ergeb = Frm_ergeb()
-
-        
-        self.frm_denat.temp_denat = 94
-        self.frm_aneal.temp_aneal = 65
-        self.frm_elong.temp_elong = 67
-        self.frm_kont.p1 = 40.1
-        self.frm_kont.p2 = 17.39
-        self.frm_kont.p3 = 40.1
-        self.frm_kont.p4 = 17.39
-        self.frm_kont.p5 = 40.1
-        self.frm_kont.p6 = 17.39
-        self.frm_kont.p7 = 40.1
-        self.frm_kont.p8 = 17.39
          
         # Verbindung des Start-Knopfes mit der Methode erlaubteDauer 
         self.btn_Start.clicked.connect(self.erlaubteDauer)
@@ -80,7 +76,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.timer.timeout.connect(self.run_phasen_Ablauf)  # Verbinde den Timer mit der Methode
         
         self.phaseCount = 0
-        
+        self.stopped_reading = True
         
     def erlaubteDauer(self):
         self.frm_voraus.showFullScreen()
@@ -90,11 +86,87 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         QTimer.singleShot(10000, self.frm_voraus.hide)
 
     def WarteStart(self):
-        self.frm_ww.showFullScreen()
-        self.frm_zeitDef.hide()
+        self.i2c_operation_requested = Signal(int)
+        
+        self.data_sent = False  # Hält den Zustand, ob die Daten gesendet wurden
+        self.stopped_reading = False  # Hält den Zustand, ob der Leseprozess gestoppt wurde
+        self.i = 0
 
         QTimer.singleShot(10000, self.phasen_Ablauf)
 
+        # self.frm_ww.timer.start(500)
+        # print ("show WW")
+        # print("Senden der Daten ...")
+        # self.frm_ww.showFullScreen()
+        # print ("hide Zeit")
+        # self.frm_zeitDef.hide()
+        
+        
+        # while not self.stopped_reading:
+        #     self.frm_ww.showFullScreen()
+        #     print("Senden der Daten ... ")
+        #     print(self.read_data_from_beweg())
+        #     self.read_data_from_beweg()
+
+        # if self.stopped_reading:
+        #     self.timer.stop()  # Stoppen Sie den Timer, da der Leseprozess gestoppt wurde
+        #     self.phasen_Ablauf()
+
+    def read_data_from_beweg(self):
+    # Nur Daten vom Slave lesen, wenn der Leseprozess nicht gestoppt wurde
+        if not self.stopped_reading:
+            try:
+                if self.i == 0:
+                    data = self.read_from_beweg()
+                    if data is None:             
+                        data = self.read_from_beweg()
+
+                    if data == 7:
+                        data = self.read_from_beweg()
+                        
+                    if data == 0:
+                        data = self.read_from_beweg()
+
+                    if data == 5 and not self.data_sent:
+                        self.data_sent = True
+                        print("5 erhalten")
+                        self.i += 1
+                        print(self.i)
+                        # Hier könnten Sie die gewünschten Daten an den Slave senden
+                        self.write_to_beweg(1)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
+                        self.write_to_beweg(self.frm_zeitDef.value_denat)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
+                        self.write_to_beweg(2)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
+                        self.write_to_beweg(self.frm_zeitDef.value_aneal_gesamt)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
+                        self.write_to_beweg(3)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
+                        self.write_to_beweg(self.frm_zeitDef.value_elong_gesamt)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
+                        self.stopped_reading = True  # Leseprozess stoppen
+                    
+                        
+            except Exception as e:
+                print(f"Fehler beim Lesen von Daten vom Slave: {str(e)}")
+
+    def write_to_beweg(self, data):
+        try:
+            # Schreibe Daten an den Slave
+            self.bus.write_byte(self.beweg_address, data)
+            print(f"Daten {data} erfolgreich an Slave gesendet.")
+        except Exception as e:
+            print(f"Fehler beim Senden von Daten an den Slave: {str(e)}")
+
+    def read_from_beweg(self):
+        try:
+            # Lese Daten vom Slave
+            data = self.bus.read_byte(self.beweg_address)
+            return data
+        except Exception as e:
+            print(f"Fehler")
+
+    def read_from_temp(self):
+        self.data = []
+        for _ in range(3):  # Wir erwarten 3 Datenpunkte (temp_denat, temp_aneal, temp_elong)
+            self.data.append(self.bus.read_byte(self.temp_address))
+        return self.data
+    
     def WarteKont(self):
         self.frm_ww.showFullScreen()
 
@@ -114,9 +186,66 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         
         if self.phasen_running == False:
             self.timer.stop()
+            self.frm_kont.tbl_mess1.setColumnCount(2)  # Zwei Spalten
+            self.frm_kont.tbl_mess1.setHorizontalHeaderLabels(["Probe", "Lichtstärke"])
+            self.frm_kont.tbl_mess2.setColumnCount(2)  # Zwei Spalten
+            self.frm_kont.tbl_mess2.setHorizontalHeaderLabels(["Probe", "Lichtstärke"])
+
+            try:
+                # INSERT INTO-Anweisung für Messwerte
+                insert_messwerte1 = """
+                INSERT INTO Messwerte1 (Probe, Lichtstärke)
+                VALUES 
+                ("P1 in Lumen", %s),
+                ("P2 in Lumen", %s),
+                ("P3 in Lumen", %s),
+                ("P4 in Lumen", %s)
+                """
+                self.cursor_mess1.execute(insert_messwerte1, (self.frm_kont.p1, self.frm_kont.p2, self.frm_kont.p3, self.frm_kont.p4))
+
+                # INSERT INTO-Anweisung für Messwerte
+                insert_messwerte2 = """
+                INSERT INTO Messwerte2 (Probe, Lichtstärke)
+                VALUES 
+                ("P5 in Lumen", %s),
+                ("P6 in Lumen", %s),
+                ("P7 in Lumen", %s),
+                ("P8 in Lumen", %s)
+                """
+
+                self.cursor_mess2.execute(insert_messwerte2, (self.frm_kont.p5, self.frm_kont.p6, self.frm_kont.p7, self.frm_kont.p8))
+
+                # Daten aus Tabelle 'Messwerte' abrufen
+                self.cursor_mess1.execute("SELECT * FROM Messwerte1")
+                result_messwerte1 = self.cursor_mess1.fetchall()
+
+                
+                # Daten aus Tabelle 'Messwerte' abrufen
+                self.cursor_mess2.execute("SELECT * FROM Messwerte2")
+                result_messwerte2 = self.cursor_mess2.fetchall()
+
+                # Ergebnisse in tbl_messwerte einfügen
+                for row_num, row_data in enumerate(result_messwerte1):
+                    self.frm_kont.tbl_mess1.insertRow(row_num)
+                    for col_num, col_data in enumerate(row_data):
+                        self.frm_kont.tbl_mess1.setItem(row_num, col_num, QTableWidgetItem(str(col_data)))
+                        
+                # Ergebnisse in tbl_messwerte einfügen
+                for row_num, row_data in enumerate(result_messwerte2):
+                    self.frm_kont.tbl_mess2.insertRow(row_num)
+                    for col_num, col_data in enumerate(row_data):
+                        self.frm_kont.tbl_mess2.setItem(row_num, col_num, QTableWidgetItem(str(col_data)))
+
+            except pymysql.MySQLError as e:
+                print("MySQL-Fehler: {}".format(str(e)))
+
+            except OSError as o:
+                print("Fehler: {}".format(str(o)))
+
             self.WarteKont()
         
         else:
+            #self.write_to_beweg(4)
             self.run_phasen_Ablauf()
             
             self.phaseCount = 0
@@ -144,6 +273,20 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.frm_sens.Timer_zaehler.display(f"{hours:02d}:{minutes:02d}:{seconds:02d}")
         self.frm_asens.Timer_zaehler.display(f"{hours:02d}:{minutes:02d}:{seconds:02d}")
         self.frm_elong.Timer_zaehler.display(f"{hours:02d}:{minutes:02d}:{seconds:02d}")
+
+        
+        # Daten vom Arduino lesen
+        temp_received = self.read_from_temp()
+
+        self.frm_denat.temp_denat = temp_received[0] 
+        self.frm_aneal.temp_aneal = temp_received[1] 
+        self.frm_elong.temp_elong = temp_received[2] 
+        
+        self.frm_denat.temp_sensD.display(self.frm_denat.temp_denat)
+        self.frm_aneal.temp_sensA.display(self.frm_aneal.temp_aneal)
+        self.frm_sens.temp_sensA.display(self.frm_aneal.temp_aneal)
+        self.frm_asens.temp_sensA.display(self.frm_aneal.temp_aneal)
+        self.frm_elong.temp_sensE.display(self.frm_elong.temp_elong)
         
         # Funktion - nimmt drei Parameter entgegen: phase, start und end
         # überprüft, dass self.phaseCount zwischen start und end (einschließlich start und ausschließlich end) liegt
@@ -177,6 +320,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
 
     def kontroll_Erklaerung(self):
         self.phasen_running = False  # Stoppe phasen_Ablauf
+        #self.write_to_beweg(5)
         self.DL_counter = 0
 
     def weiter(self):
@@ -186,6 +330,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.frm_kont.hide()
 
     def ergebnis(self):
+       
         self.frm_ergeb.tbl_phasen.setColumnCount(4)  # Fünf Spalten
         self.frm_ergeb.tbl_phasen.setHorizontalHeaderLabels(["Kategorien", "Denaturierung", "Annealing", "Elongation"])
         self.frm_ergeb.tbl_mess1.setColumnCount(2)  # Zwei Spalten
@@ -205,48 +350,6 @@ class Frm_main(QMainWindow, Ui_StartWindow):
 
 
         try:
-            # Tabelle 'PhasenWerte' erstellen, falls nicht vorhanden
-            create_table_phasen = """
-            CREATE TABLE IF NOT EXISTS PhasenWerte (
-                Kategorien VARCHAR(50),
-                Denaturierung DECIMAL(5,2),
-                Annealing DECIMAL(5,2),
-                Elongation DECIMAL(5,2)
-            )
-            """
-            self.cursor_phasen.execute(create_table_phasen)
-            print("Tabelle 'PhasenWerte' erstellt")
-
-            # Tabelle 'Messwerte' erstellen, falls nicht vorhanden
-            create_table_messwert1 = """
-            CREATE TABLE IF NOT EXISTS Messwerte1 (
-                Probe VARCHAR(15),
-                Lichtstärke DECIMAL(5,2)
-            )
-            """
-            self.cursor_mess1.execute(create_table_messwert1)
-            print("Tabelle 'Messwerte1' erstellt")
-
-            # Tabelle 'Messwerte' erstellen, falls nicht vorhanden
-            create_table_messwert2 = """
-            CREATE TABLE IF NOT EXISTS Messwerte2 (
-                Probe VARCHAR(15),
-                Lichtstärke DECIMAL(5,2)
-            )
-            """
-            self.cursor_mess2.execute(create_table_messwert2)
-            print("Tabelle 'Messwerte2' erstellt")
-
-            # Tabelle 'Durchläufe' erstellen, falls nicht vorhanden
-            create_table_dl = """
-            CREATE TABLE IF NOT EXISTS Durchlauf (
-                Kategorie VARCHAR(50),
-                Anzahl DECIMAL(5,2)
-            )
-            """
-            self.cursor_dl.execute(create_table_dl)
-            print("Tabelle 'Durchlauf' erstellt")
-
             # INSERT INTO-Anweisung für PhasenWerte
             insert_phasen = """
             INSERT INTO PhasenWerte (Kategorien, Denaturierung, Annealing, Elongation)
@@ -254,32 +357,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
             ("Temperatur in °C", %s, %s, %s),
             ("Dauer in sek", %s, %s, %s)
             """
-            self.cursor_phasen.execute(insert_phasen, (self.frm_denat.temp_denat, self.frm_aneal.temp_aneal, self.frm_elong.temp_elong, 
-                                                       self.frm_zeitDef.value_denat, self.frm_zeitDef.value_aneal_gesamt, self.frm_zeitDef.value_elong_gesamt))
-
-            # INSERT INTO-Anweisung für Messwerte
-            insert_messwerte1 = """
-            INSERT INTO Messwerte1 (Probe, Lichtstärke)
-            VALUES 
-            ("P1 in Lumen", %s),
-            ("P2 in Lumen", %s),
-            ("P3 in Lumen", %s),
-            ("P4 in Lumen", %s)
-            """
-            self.cursor_mess1.execute(insert_messwerte1, (self.frm_kont.p1, self.frm_kont.p2, self.frm_kont.p3, self.frm_kont.p4))
-
-            # INSERT INTO-Anweisung für Messwerte
-            insert_messwerte2 = """
-            INSERT INTO Messwerte2 (Probe, Lichtstärke)
-            VALUES 
-            ("P5 in Lumen", %s),
-            ("P6 in Lumen", %s),
-            ("P7 in Lumen", %s),
-            ("P8 in Lumen", %s)
-            """
-
-            self.cursor_mess2.execute(insert_messwerte2, (self.frm_kont.p5, self.frm_kont.p6, self.frm_kont.p7, self.frm_kont.p8))
-
+            self.cursor_phasen.execute(insert_phasen, (self.frm_denat.temp_denat, self.frm_aneal.temp_aneal, self.frm_elong.temp_elong, self.frm_zeitDef.value_denat, self.frm_zeitDef.value_aneal_gesamt, self.frm_zeitDef.value_elong_gesamt))
 
             # INSERT INTO-Anweisung für Messwerte
             insert_dl = """

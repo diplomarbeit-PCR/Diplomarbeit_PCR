@@ -98,74 +98,24 @@ li.checked::marker { content: &quot;\2612&quot;; }
      <string>Fortführen</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="Spg_line">
+   <widget class="QTableView" name="tbl_mess1">
+    <property name="geometry">
+     <rect>
+      <x>70</x>
+      <y>450</y>
+      <width>151</width>
+      <height>141</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QTableView" name="tbl_mess2">
     <property name="geometry">
      <rect>
       <x>260</x>
-      <y>490</y>
-      <width>111</width>
-      <height>31</height>
+      <y>450</y>
+      <width>151</width>
+      <height>141</height>
      </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Arial Narrow</family>
-      <pointsize>15</pointsize>
-     </font>
-    </property>
-    <property name="text">
-     <string>Spannung:</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignCenter</set>
-    </property>
-    <property name="readOnly">
-     <bool>true</bool>
-    </property>
-   </widget>
-   <widget class="QLCDNumber" name="Spg_detekt">
-    <property name="geometry">
-     <rect>
-      <x>260</x>
-      <y>530</y>
-      <width>111</width>
-      <height>51</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QLCDNumber" name="Licht_detekt">
-    <property name="geometry">
-     <rect>
-      <x>90</x>
-      <y>530</y>
-      <width>121</width>
-      <height>51</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="Licht_line">
-    <property name="geometry">
-     <rect>
-      <x>90</x>
-      <y>490</y>
-      <width>121</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Arial Narrow</family>
-      <pointsize>15</pointsize>
-     </font>
-    </property>
-    <property name="text">
-     <string>Lichtintensität:</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignCenter</set>
-    </property>
-    <property name="readOnly">
-     <bool>true</bool>
     </property>
    </widget>
   </widget>

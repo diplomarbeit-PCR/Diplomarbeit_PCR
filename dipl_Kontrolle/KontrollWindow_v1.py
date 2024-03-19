@@ -15,9 +15,9 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QLCDNumber, QLabel, QLineEdit,
-    QMainWindow, QMenuBar, QPushButton, QSizePolicy,
-    QStatusBar, QTextEdit, QWidget)
+from PySide6.QtWidgets import (QApplication, QHeaderView, QLabel, QMainWindow,
+    QMenuBar, QPushButton, QSizePolicy, QStatusBar,
+    QTableView, QTextEdit, QWidget)
 
 class Ui_Kontrolle(object):
     def setupUi(self, Kontrolle):
@@ -50,27 +50,12 @@ class Ui_Kontrolle(object):
         self.btn_Fortfuehren.setObjectName(u"btn_Fortfuehren")
         self.btn_Fortfuehren.setGeometry(QRect(40, 610, 151, 51))
         self.btn_Fortfuehren.setFont(font1)
-        self.Spg_line = QLineEdit(self.centralwidget)
-        self.Spg_line.setObjectName(u"Spg_line")
-        self.Spg_line.setGeometry(QRect(260, 490, 111, 31))
-        font2 = QFont()
-        font2.setFamilies([u"Arial Narrow"])
-        font2.setPointSize(15)
-        self.Spg_line.setFont(font2)
-        self.Spg_line.setAlignment(Qt.AlignCenter)
-        self.Spg_line.setReadOnly(True)
-        self.Spg_detekt = QLCDNumber(self.centralwidget)
-        self.Spg_detekt.setObjectName(u"Spg_detekt")
-        self.Spg_detekt.setGeometry(QRect(260, 530, 111, 51))
-        self.Licht_detekt = QLCDNumber(self.centralwidget)
-        self.Licht_detekt.setObjectName(u"Licht_detekt")
-        self.Licht_detekt.setGeometry(QRect(90, 530, 121, 51))
-        self.Licht_line = QLineEdit(self.centralwidget)
-        self.Licht_line.setObjectName(u"Licht_line")
-        self.Licht_line.setGeometry(QRect(90, 490, 121, 31))
-        self.Licht_line.setFont(font2)
-        self.Licht_line.setAlignment(Qt.AlignCenter)
-        self.Licht_line.setReadOnly(True)
+        self.tbl_mess1 = QTableView(self.centralwidget)
+        self.tbl_mess1.setObjectName(u"tbl_mess1")
+        self.tbl_mess1.setGeometry(QRect(70, 450, 151, 141))
+        self.tbl_mess2 = QTableView(self.centralwidget)
+        self.tbl_mess2.setObjectName(u"tbl_mess2")
+        self.tbl_mess2.setGeometry(QRect(260, 450, 151, 141))
         Kontrolle.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(Kontrolle)
         self.menubar.setObjectName(u"menubar")
@@ -99,7 +84,5 @@ class Ui_Kontrolle(object):
         self.label.setText(QCoreApplication.translate("Kontrolle", u"Kontrolle", None))
         self.btn_Beenden.setText(QCoreApplication.translate("Kontrolle", u"Beenden", None))
         self.btn_Fortfuehren.setText(QCoreApplication.translate("Kontrolle", u"Fortf\u00fchren", None))
-        self.Spg_line.setText(QCoreApplication.translate("Kontrolle", u"Spannung:", None))
-        self.Licht_line.setText(QCoreApplication.translate("Kontrolle", u"Lichtintensit\u00e4t:", None))
     # retranslateUi
 
