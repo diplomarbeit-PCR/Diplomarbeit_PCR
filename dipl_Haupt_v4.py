@@ -40,8 +40,8 @@ class Frm_main(QMainWindow, Ui_StartWindow):
             database='eduPCR'
         )
 
-        self.cursor_mess = self.connection.cursor()
-        self.cursor_phasen = self.connection.cursor()
+        self.cursor_mess1 = self.connection.cursor()
+        self.cursor_mess2 = self.connection.cursor()
 
         self.DL_zaehler_value = 0
         self.DL_counter = 0
@@ -92,6 +92,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.stopped_reading = False  # Hält den Zustand, ob der Leseprozess gestoppt wurde
         self.i = 0
         self.frm_ww.showFullScreen()
+        self.frm_zeitDef.hide()
         QTimer.singleShot(10000, self.phasen_Ablauf)
 
         # self.frm_ww.timer.start(500)
