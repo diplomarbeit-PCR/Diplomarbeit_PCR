@@ -91,7 +91,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.data_sent = False  # Hält den Zustand, ob die Daten gesendet wurden
         self.stopped_reading = False  # Hält den Zustand, ob der Leseprozess gestoppt wurde
         self.i = 0
-
+        self.frm_ww.showFullScreen()
         QTimer.singleShot(10000, self.phasen_Ablauf)
 
         # self.frm_ww.timer.start(500)
