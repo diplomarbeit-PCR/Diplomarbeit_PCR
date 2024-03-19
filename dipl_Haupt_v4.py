@@ -245,10 +245,6 @@ class Frm_main(QMainWindow, Ui_StartWindow):
             except OSError as o:
                 print("Fehler: {}".format(str(o)))
 
-            finally:
-                # Verbindung schließen
-                self.connection.open()
-
             self.WarteKont()
         
         else:
