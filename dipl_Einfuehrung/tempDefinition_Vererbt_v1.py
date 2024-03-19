@@ -61,7 +61,7 @@ class Ui_tempDef_Voraus(object):
         self.wasserTemp_elong.setValue(70)    # Setze den Startwert
         self.wasserTemp_elong.setGeometry(QRect(260, 540, 161, 51))
         self.wasserTemp_elong.setAlignment(Qt.AlignCenter)
-        self.wasserTemp_elong.setReadOnly(True)
+        self.wasserTemp_elong.setReadOnly(False)
         self.Dauer_line_2 = QLineEdit(self.centralwidget)
         self.Dauer_line_2.setObjectName(u"Dauer_line_2")
         self.Dauer_line_2.setGeometry(QRect(70, 490, 151, 31))
@@ -74,7 +74,7 @@ class Ui_tempDef_Voraus(object):
         self.wasserTemp_aneal.setValue(57)    # Setze den Startwert
         self.wasserTemp_aneal.setGeometry(QRect(260, 480, 161, 51))
         self.wasserTemp_aneal.setAlignment(Qt.AlignCenter)
-        self.wasserTemp_aneal.setReadOnly(True)
+        self.wasserTemp_aneal.setReadOnly(False)
         self.Dauer_line_3 = QLineEdit(self.centralwidget)
         self.Dauer_line_3.setObjectName(u"Dauer_line_3")
         self.Dauer_line_3.setGeometry(QRect(70, 430, 151, 31))
@@ -87,7 +87,7 @@ class Ui_tempDef_Voraus(object):
         self.wasserTemp_denat.setValue(96)    # Setze den Startwert
         self.wasserTemp_denat.setGeometry(QRect(260, 420, 161, 51))
         self.wasserTemp_denat.setAlignment(Qt.AlignCenter)
-        self.wasserTemp_denat.setReadOnly(True)
+        self.wasserTemp_denat.setReadOnly(False)
         tempDef_Voraus.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(tempDef_Voraus)
         self.menubar.setObjectName(u"menubar")
