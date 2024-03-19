@@ -190,9 +190,9 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         if self.phasen_running == False:
             self.timer.stop()
             self.frm_kont.tbl_mess1.setColumnCount(2)  # Zwei Spalten
-            self.frm_kont.tbl_mess1.setHorizontalHeaderLabels(["Probe", "Lichtstärke"])
+            self.frm_kont.tbl_mess1.setHorizontalHeaderLabels(["Probe", "Lum"])
             self.frm_kont.tbl_mess2.setColumnCount(2)  # Zwei Spalten
-            self.frm_kont.tbl_mess2.setHorizontalHeaderLabels(["Probe", "Lichtstärke"])
+            self.frm_kont.tbl_mess2.setHorizontalHeaderLabels(["Probe", "Lum"])
 
             try:
                 # INSERT INTO-Anweisung für Messwerte
