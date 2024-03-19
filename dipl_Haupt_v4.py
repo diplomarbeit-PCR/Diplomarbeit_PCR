@@ -276,7 +276,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
 
         
         # Daten vom Arduino lesen
-        temp_received = self.read_from_temp()
+        #temp_received = self.read_from_temp()
 
         self.frm_denat.temp_denat = temp_received[0] 
         self.frm_aneal.temp_aneal = temp_received[1] 
