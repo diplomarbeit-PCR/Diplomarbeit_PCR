@@ -113,9 +113,9 @@ class Ui_tempDef_Voraus(object):
 "</style></head><body style=\" font-family:'Segoe UI'; font-size:9pt; font-weight:400; font-style:normal;\" bgcolor=\"#9cd4d6\">\n"
 "<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Arial','sans-serif'; font-size:16pt;\">Bitte definieren Sie je nach verwendetem Primer, welche Temperaturen in den einzelnen Phasen realisiert sein sollen.<br />Bitte beachten SIe, dass Toleranzen von +/- 2\u00b0C gegeben sind.<br />Nachdem Sie fertig sind, bet\u00e4tigen Sie bitte den WEITER Button. </span></p>\n"
 "<p style=\" margin-top:12px; margin-"
-                        "bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Arial','sans-serif'; font-size:16pt;\">Denaturierungsdauer: 94\u00b0C - 98\u00b0C</span></p>\n"
-"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Arial','sans-serif'; font-size:16pt;\">Annealingsdauer: 50\u00b0C - 65\u00b0C</span></p>\n"
-"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Arial','sans-serif'; font-size:16pt;\">Elongationsdauer: 68\u00b0C - 72\u00b0C</span></p></body></html>", None))
+                        "bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Arial','sans-serif'; font-size:16pt;\">Denaturierungstemperatur: 94\u00b0C - 98\u00b0C</span></p>\n"
+"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Arial','sans-serif'; font-size:16pt;\">Annealingstemperatur: 50\u00b0C - 65\u00b0C</span></p>\n"
+"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Arial','sans-serif'; font-size:16pt;\">Elongationstemperatur: 68\u00b0C - 72\u00b0C</span></p></body></html>", None))
         self.label.setText(QCoreApplication.translate("tempDef_Voraus", u"Temperaturbestimmung", None))
         self.btn_Weiter.setText(QCoreApplication.translate("tempDef_Voraus", u"Weiter", None))
         self.Dauer_line.setText(QCoreApplication.translate("tempDef_Voraus", u"Elongation:", None))
