@@ -35,7 +35,7 @@ class Ui_tempDef_Voraus(object):
         self.label.setGeometry(QRect(-2, 50, 491, 61))
         font = QFont()
         font.setFamilies([u"Tw Cen MT"])
-        font.setPointSize(30)
+        font.setPointSize(25)
         font.setBold(False)
         self.label.setFont(font)
         self.label.setAlignment(Qt.AlignCenter)
@@ -122,9 +122,6 @@ class Ui_tempDef_Voraus(object):
         self.Dauer_line_2.setText(QCoreApplication.translate("tempDef_Voraus", u"Annealing:", None))
         self.Dauer_line_3.setText(QCoreApplication.translate("tempDef_Voraus", u"Denaturierung:", None))
     # retranslateUi
-
-
-
 
 class Frm_tempDef(QMainWindow, Ui_tempDef_Voraus):
     def __init__(self):
