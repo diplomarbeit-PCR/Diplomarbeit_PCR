@@ -53,9 +53,11 @@ class Ui_Kontrolle(object):
         self.tbl_mess1 = QTableWidget(self.centralwidget)
         self.tbl_mess1.setObjectName(u"tbl_mess1")
         self.tbl_mess1.setGeometry(QRect(20, 450, 221, 161))
+        self.tbl_mess1.setReadOnly(True) # Schreibgeschützt gemacht
         self.tbl_mess2 = QTableWidget(self.centralwidget)
         self.tbl_mess2.setObjectName(u"tbl_mess2")
         self.tbl_mess2.setGeometry(QRect(250, 450, 221, 161))
+        self.tbl_mess2.setReadOnly(True) # Schreibgeschützt gemacht
         Kontrolle.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(Kontrolle)
         self.menubar.setObjectName(u"menubar")
