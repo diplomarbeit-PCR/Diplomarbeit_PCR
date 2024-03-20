@@ -110,7 +110,7 @@ class Ui_StartWindow(object):
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:16pt;\"><br /></p>\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:16pt;\">Wir w\u00fcnschen Ihnen im Namen der Gruppe viel Spa\u00df und ein gutes Lernverst\u00e4ndnis. </span></p></body></html>", None))
         self.lbl_Einfuehrung.setText(QCoreApplication.translate("StartWindow", u"Prozessstart", None))
-        self.menuProzessstart.setTitle(QCoreApplication.translate("StartWindow", u"Prozessstart", None))
+        self.menuProzessstart.setTitle(QCoreApplication.translate("StartWindow", u"Shut Down", None))
         pass
     # retranslateUi
 
