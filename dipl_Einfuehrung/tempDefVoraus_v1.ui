@@ -52,7 +52,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
     <property name="font">
      <font>
       <family>Tw Cen MT</family>
-      <pointsize>35</pointsize>
+      <pointsize>30</pointsize>
       <bold>false</bold>
      </font>
     </property>
@@ -120,7 +120,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
      <set>Qt::AlignCenter</set>
     </property>
     <property name="readOnly">
-     <bool>true</bool>
+     <bool>false</bool>
     </property>
    </widget>
    <widget class="QLineEdit" name="Dauer_line_2">
@@ -161,7 +161,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
      <set>Qt::AlignCenter</set>
     </property>
     <property name="readOnly">
-     <bool>true</bool>
+     <bool>false</bool>
     </property>
    </widget>
    <widget class="QLineEdit" name="Dauer_line_3">
@@ -202,7 +202,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
      <set>Qt::AlignCenter</set>
     </property>
     <property name="readOnly">
-     <bool>true</bool>
+     <bool>false</bool>
     </property>
    </widget>
   </widget>

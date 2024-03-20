@@ -35,7 +35,7 @@ class Ui_tempDef_Voraus(object):
         self.label.setGeometry(QRect(-2, 50, 491, 61))
         font = QFont()
         font.setFamilies([u"Tw Cen MT"])
-        font.setPointSize(35)
+        font.setPointSize(30)
         font.setBold(False)
         self.label.setFont(font)
         self.label.setAlignment(Qt.AlignCenter)
@@ -70,8 +70,8 @@ class Ui_tempDef_Voraus(object):
         self.Dauer_line_2.setReadOnly(True)
         self.wasserTemp_aneal = QSpinBox(self.centralwidget)
         self.wasserTemp_aneal.setObjectName(u"wasserTemp_aneal")
-        self.wasserTemp_aneal.setRange(50, 65)    # Setze die Mindest- und Höchstwerte
-        self.wasserTemp_aneal.setValue(57)    # Setze den Startwert
+        self.wasserTemp_denat.setRange(50, 65)    # Setze die Mindest- und Höchstwerte
+        self.wasserTemp_denat.setValue(57)    # Setze den Startwert
         self.wasserTemp_aneal.setGeometry(QRect(260, 480, 161, 51))
         self.wasserTemp_aneal.setAlignment(Qt.AlignCenter)
         self.wasserTemp_aneal.setReadOnly(False)
@@ -122,6 +122,7 @@ class Ui_tempDef_Voraus(object):
         self.Dauer_line_2.setText(QCoreApplication.translate("tempDef_Voraus", u"Annealing:", None))
         self.Dauer_line_3.setText(QCoreApplication.translate("tempDef_Voraus", u"Denaturierung:", None))
     # retranslateUi
+
 
 
 
