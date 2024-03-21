@@ -107,7 +107,6 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         
         self.data_sent = False  # Hält den Zustand, ob die Daten gesendet wurden
         self.stopped_reading_beweg = False  # Hält den Zustand, ob der Leseprozess gestoppt wurde
-        self.stopped_reading_detect = False  # Hält den Zustand, ob der Leseprozess gestoppt wurde
         self.i = 0
 
         self.frm_ww.timer.start(500)
@@ -118,12 +117,11 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.frm_zeitDef.hide()
         
         
-        while not self.stopped_reading_beweg and not self.stopped_reading_detect:
+        while not self.stopped_reading_beweg:
              self.frm_ww.showFullScreen()
              print("Senden der Daten ... ")
              print(self.read_data_from_beweg())
              self.read_data_from_beweg()
-             self.read_data_from_detect()
 
         if self.stopped_reading_beweg:
              self.timer.stop()  # Stoppen Sie den Timer, da der Leseprozess gestoppt wurde
@@ -263,12 +261,17 @@ class Frm_main(QMainWindow, Ui_StartWindow):
     
     def WarteKont(self):
         self.frm_ww.showFullScreen()
+        self.stopped_reading_detect = False  # Hält den Zustand, ob der Leseprozess gestoppt wurde
 
-        QTimer.singleShot(10000, self.frm_kont.showFullScreen)
-        QTimer.singleShot(10000, self.frm_ww.hide)
-        self.time.sleep(10000)
-        self.write_to_detect(10)
-        self.read_data_from_detect()
+        while not self.stopped_reading_detect:
+             self.frm_ww.showFullScreen()
+             print("Senden der Daten ... ")
+             print(self.read_data_from_beweg())
+             self.read_detect_null()
+
+        if self.stopped_reading_detect:
+             self.timer.stop()  # Stoppen Sie den Timer, da der Leseprozess gestoppt wurde
+             self.frm_kont.showFullScreen()
 
     def phasen_Ablauf(self):
         self.frm_ww.hide()
