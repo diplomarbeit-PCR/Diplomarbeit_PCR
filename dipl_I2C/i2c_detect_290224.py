@@ -27,7 +27,7 @@ def WarteStart(self):
     self.p8 = 0
     
     
-    write_to_detect(10)
+    self.write_to_detect(10)
        
     while not self.stopped_reading:
         self.frm_ww.showFullScreen()
