@@ -185,74 +185,68 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         except Exception as e:
             print(f"Fehler")
 
-    def read_data_from_detect(self):
-        # Nur Daten vom Slave lesen, wenn der Leseprozess nicht gestoppt wurde
-        if not self.stopped_reading:
-            try:
-                if self.i == 0:
-                    detect_receive = self.read_from_detect()
-                            
-                    if detect_receive[0] == 0 and detect_receive[1] == 7:
-                        detect_receive = self.read_from_detect()
-
-                    if detect_receive[0] == 0 and detect_receive[1] == 5 and not self.data_sent:
-                        self.data_sent = True
-                        print("5 erhalten")
-                        self.i += 1
-                        print(self.i)
-                        # Hier könnten Sie die gewünschten Daten an den Slave senden
-                        self.stopped_reading_detect = True  # Leseprozess stoppen
-
-                    if detect_receive[0] == 1:
-                        # Die erhaltenen Daten anzeigen
-                        self.p1 == detect_receive[1]
-                        self.write_to_detect(2)
-
-                    if detect_receive[0] == 2:
-                        self.p2 == detect_receive[1]
-                        self.write_to_detect(3)
-
-                    if detect_receive[0] == 3:
-                        self.p3 == detect_receive[1]
-                        self.write_to_detect(4)
-
-                    if detect_receive[0] == 4:
-                        self.p4 == detect_receive[1]
-                        self.write_to_detect(5)
-
-                    if detect_receive[0] == 5:
-                        self.p5 == detect_receive[1]
-                        self.write_to_detect(6)
-
-                    if detect_receive[0] == 6:
-                        self.p6 == detect_receive[1]
-                        self.write_to_detect(7)
-
-                    if detect_receive[0] == 7:
-                        self.p7 == detect_receive[1]
-                        self.write_to_detect(8)
-
-                    if detect_receive[0] == 8:
-                        self.p8 == detect_receive[1]
-                        self.write_to_detect(9)
-                        
-                            
-            except Exception as e:
-                print(f"Fehler beim Lesen von Daten vom Slave: {str(e)}")
-
-    def write_to_detect(self, data):
-        try:
-            # Schreibe Daten an den Slave
-            self.bus.write_byte(self.detect_address, data)
-        except Exception as e:
-            print(f"Fehler beim Senden von Daten an den Slave: {str(e)}")
-
-    # Funktion zum Lesen von Daten vom Arduino
-    def read_from_detect(self):
+    def read_data(self):
         self.data = []
-        for _ in range(2):  # Wir erwarten 2 Datenpunkte 
+        i = 0
+        self.bus.write_byte(self.detect_address, 10)
+        time.sleep(1)
+
+        for i in range(8):
+            i = i+1
+            self.bus.write_byte(self.temp_address, i)
+            print(i)
+            time.sleep(1)
+            
+        for _ in range(8):  # Wir erwarten 3 Datenpunkte (temp_denat, temp_aneal, temp_elong)
             self.data.append(self.bus.read_byte(self.detect_address))
+
         return self.data
+
+    def read_detect_null(self):
+        null = self.read_from_detect()
+        # Nur Daten vom Slave lesen, wenn der Leseprozess nicht gestoppt wurde
+        data_sent = False
+        if null is None:             
+            null = self.read_from_detect()
+
+        if null == 7:
+            null = self.read_from_detect()
+                            
+        if null == 0:
+            null = self.read_from_detect()
+        
+        if null == 5 and not data_sent:
+            data_sent = True
+
+            data_received = self.read_data()
+
+            self.frm_kont.p1 = data_received[0] 
+            self.frm_kont.p2 = data_received[1] 
+            self.frm_kont.p3 = data_received[2] 
+            self.frm_kont.p4 = data_received[3] 
+            self.frm_kont.p5 = data_received[4] 
+            self.frm_kont.p6 = data_received[5] 
+            self.frm_kont.p7 = data_received[6] 
+            self.frm_kont.p8 = data_received[7] 
+
+            # Die erhaltenen Daten anzeigen
+            print("Messergebnisse")
+            print("Probe1:", self.frm_kont.p1)
+            print("Probe2:", self.frm_kont.p2)
+            print("Probe3:", self.frm_kont.p3)
+            print("Probe4:", self.frm_kont.p4)
+            print("Probe5:", self.frm_kont.p5)
+            print("Probe6:", self.frm_kont.p6)
+            print("Probe7:", self.frm_kont.p7)
+            print("Probe8:", self.frm_kont.p8)
+
+    def read_from_detect(self):
+        try:
+            # Lese Daten vom Slave
+            null = self.bus.read_byte(self.detect_address)
+            return null
+        except Exception as e:
+            print("Failed to read")
 
     def read_from_temp(self):
         self.data = []
