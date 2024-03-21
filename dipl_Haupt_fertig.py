@@ -183,7 +183,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         except Exception as e:
             print(f"Fehler")
 
-    def read_data(self):
+    def read_data_from_detect(self):
         self.data = []
         i = 0
         self.bus.write_byte(self.detect_address, 10)
@@ -216,7 +216,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         if null == 5 and not data_sent:
             data_sent = True
 
-            data_received = self.read_data()
+            data_received = self.read_data_from_detect()
 
             self.frm_kont.p1 = data_received[0] 
             self.frm_kont.p2 = data_received[1] 
