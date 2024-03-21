@@ -134,8 +134,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
    </property>
    <widget class="QMenu" name="menuShutDown">
     <property name="title">
-     <string>Shut Down</string>
+     <string>Ausschalten</string>
     </property>
+    <addaction name="actionShut_Down"/>
    </widget>
    <addaction name="menuShutDown"/>
   </widget>
@@ -148,6 +149,11 @@ li.checked::marker { content: &quot;\2612&quot;; }
   <action name="actionLog_In">
    <property name="text">
     <string>Log In</string>
+   </property>
+  </action>
+  <action name="actionShut_Down">
+   <property name="text">
+    <string>Shut Down</string>
    </property>
   </action>
  </widget>

@@ -37,6 +37,8 @@ class Ui_StartWindow(object):
         self.actionHistory.setObjectName(u"actionHistory")
         self.actionLog_In = QAction(StartWindow)
         self.actionLog_In.setObjectName(u"actionLog_In")
+        self.actionShut_Down = QAction(StartWindow)
+        self.actionShut_Down.setObjectName(u"actionShut_Down")
         self.centralwidget = QWidget(StartWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.btn_Start = QPushButton(self.centralwidget)
@@ -80,6 +82,7 @@ class Ui_StartWindow(object):
         StartWindow.setStatusBar(self.statusbar)
 
         self.menubar.addAction(self.menuShutDown.menuAction())
+        self.menuShutDown.addAction(self.actionShut_Down)
 
         self.retranslateUi(StartWindow)
 
@@ -89,6 +92,7 @@ class Ui_StartWindow(object):
     def retranslateUi(self, StartWindow):
         self.actionHistory.setText(QCoreApplication.translate("StartWindow", u"History", None))
         self.actionLog_In.setText(QCoreApplication.translate("StartWindow", u"Log In", None))
+        self.actionShut_Down.setText(QCoreApplication.translate("StartWindow", u"Shut Down", None))
         self.btn_Start.setText(QCoreApplication.translate("StartWindow", u"Start", None))
         self.txt_Einfuehrung.setHtml(QCoreApplication.translate("StartWindow", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\n"
@@ -110,7 +114,7 @@ class Ui_StartWindow(object):
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:16pt;\"><br /></p>\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:16pt;\">Wir w\u00fcnschen Ihnen im Namen der Gruppe viel Spa\u00df und ein gutes Lernverst\u00e4ndnis. </span></p></body></html>", None))
         self.lbl_Einfuehrung.setText(QCoreApplication.translate("StartWindow", u"Prozessstart", None))
-        self.menuShutDown.setTitle(QCoreApplication.translate("StartWindow", u"Shut Down", None))
+        self.menuShutDown.setTitle(QCoreApplication.translate("StartWindow", u"Ausschalten", None))
         pass
     # retranslateUi
 

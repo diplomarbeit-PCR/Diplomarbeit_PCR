@@ -1,5 +1,6 @@
 from PySide6.QtWidgets import QMainWindow, QApplication, QTableWidgetItem, QTableWidget
 from PySide6.QtCore import QTimer, Signal
+from PySide6.QtGui import QAction
 import pymysql
 import smbus
 import time
@@ -62,7 +63,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.frm_kont = Frm_kont()
         self.frm_ergeb = Frm_ergeb()
 
-        self.menuShutDown.clicked.connect(self.shutDown)
+        self.menuShutDown.triggered.connect(self.shutDown)  # Verbinde mit der Methode, die ausgeführt werden soll
 
         # Verbindung des Start-Knopfes mit der Methode erlaubteDauer 
         self.btn_Start.clicked.connect(self.erlaubteTemp)

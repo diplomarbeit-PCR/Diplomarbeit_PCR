@@ -1,27 +1,23 @@
-import smbus
-import time
+from PySide6.QtWidgets import QApplication, QMainWindow, QMenu
+from PySide6.QtGui import QAction
 
-bus = smbus.SMBus(7)
+class MyWindow(QMainWindow):
+    def __init__(self):
+        super().__init__()
 
-address = 0x27
+        menubar = self.menuBar()
+        file_menu = menubar.addMenu('File')
+        
+        # Aktion erstellen
+        action = QAction('Open', self)
+        action.triggered.connect(self.open_file)  # Verbinde mit der Methode, die ausgeführt werden soll
+        file_menu.addAction(action)
+        
+    def open_file(self):
+        # Hier kann die Logik für das Öffnen einer Datei stehen
+        print("Opening file...")
 
-def writeNumber(value):
-    bus.write_byte(address, value)
-    return -1
-
-def readNumber():
-    number = bus.read_byte(address)
-    return number
-
-while True:
-    inp = input("Number between 1 and 9: ")
-    inp = int(inp)
-    if not inp:
-        continue
-
-    writeNumber(inp)
-    print ("RPi sends: ", inp)
-    time.sleep(1)
-
-    recv = readNumber()
-    print ("Arduino sends: ", recv)
+app = QApplication([])
+window = MyWindow()
+window.show()
+app.exec()
