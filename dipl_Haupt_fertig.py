@@ -11,7 +11,7 @@ from dipl_Einfuehrung.zeitDefinition_Vererbt_v1 import Frm_zeitDef
 from dipl_Einfuehrung.tempDefinition_Vererbt_v1 import Frm_tempDef
 from dipl_Einfuehrung.WarteWindow_Vererbt_v1 import Frm_WarteWindow
 from dipl_Phasenablauf.Phasenablauf_Vererbt_v1 import Frm_denat, Frm_aneal, Frm_sens, Frm_asens, Frm_elong
-from dipl_Kontrolle.KontrollErgebnis_Vererbt_v1 import Frm_kont, Frm_ergeb
+from dipl_Kontrolle.KontrollErgebnis_Vererbt_v1 import Frm_kont, Frm_ergeb, Frm_kontanspruch
 
 
 class Frm_main(QMainWindow, Ui_StartWindow):
@@ -61,6 +61,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.frm_sens = Frm_sens()
         self.frm_asens = Frm_asens()
         self.frm_elong = Frm_elong()
+        self.frm_kontanspruch = Frm_kontanspruch()
         self.frm_kont = Frm_kont()
         self.frm_ergeb = Frm_ergeb()
 
@@ -69,7 +70,10 @@ class Frm_main(QMainWindow, Ui_StartWindow):
          
         # Verbindung des Start-Knopfes mit der Methode erlaubteDauer 
         self.btn_Start.clicked.connect(self.erlaubteTemp)
-        
+
+        # Verbinde von Menüpunkt Weiter
+        self.frm_kontanspruch.btn_Weiter.clicked.connect(self.kontanspruch)
+
         # Verbindung des Weiter-Knopfes mit der Methode phasen_Ablauf
         self.frm_tempDef.btn_Weiter.clicked.connect(self.erlaubteDauer)
 
@@ -183,69 +187,6 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         except Exception as e:
             print(f"Fehler")
 
-    def read_data_from_detect(self):
-        self.data = []
-        i = 0
-        self.bus.write_byte(self.detect_address, 10)
-        time.sleep(1)
-
-        for i in range(8):
-            i = i+1
-            self.bus.write_byte(self.detect_address, i)
-            print(i)
-            time.sleep(1)
-            
-        for _ in range(8):  # Wir erwarten 3 Datenpunkte (temp_denat, temp_aneal, temp_elong)
-            self.data.append(self.bus.read_byte(self.detect_address))
-
-        return self.data
-
-    def read_detect_null(self):
-        null = self.read_from_detect()
-        # Nur Daten vom Slave lesen, wenn der Leseprozess nicht gestoppt wurde
-        data_sent = False
-        if null is None:             
-            null = self.read_from_detect()
-
-        if null == 7:
-            null = self.read_from_detect()
-                            
-        if null == 0:
-            null = self.read_from_detect()
-        
-        if null == 5 and not data_sent:
-            data_sent = True
-
-            data_received = self.read_data_from_detect()
-
-            self.frm_kont.p1 = data_received[0] 
-            self.frm_kont.p2 = data_received[1] 
-            self.frm_kont.p3 = data_received[2] 
-            self.frm_kont.p4 = data_received[3] 
-            self.frm_kont.p5 = data_received[4] 
-            self.frm_kont.p6 = data_received[5] 
-            self.frm_kont.p7 = data_received[6] 
-            self.frm_kont.p8 = data_received[7] 
-
-            # Die erhaltenen Daten anzeigen
-            print("Messergebnisse")
-            print("Probe1:", self.frm_kont.p1)
-            print("Probe2:", self.frm_kont.p2)
-            print("Probe3:", self.frm_kont.p3)
-            print("Probe4:", self.frm_kont.p4)
-            print("Probe5:", self.frm_kont.p5)
-            print("Probe6:", self.frm_kont.p6)
-            print("Probe7:", self.frm_kont.p7)
-            print("Probe8:", self.frm_kont.p8)
-
-    def read_from_detect(self):
-        try:
-            # Lese Daten vom Slave
-            null = self.bus.read_byte(self.detect_address)
-            return null
-        except Exception as e:
-            print("Failed to read")
-
     def read_from_temp(self):
         self.data = []
         for _ in range(3):  # Wir erwarten 3 Datenpunkte (temp_denat, temp_aneal, temp_elong)
@@ -258,20 +199,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
             self.bus.write_byte(self.temp_address, data)
         except Exception as e:
             print(f"Fehler beim Senden von Daten an den Slave: {str(e)}")
-    
-    def WarteKont(self):
-        self.frm_ww.showFullScreen()
-        self.stopped_reading_detect = False  # Hält den Zustand, ob der Leseprozess gestoppt wurde
 
-        while not self.stopped_reading_detect:
-             self.frm_ww.showFullScreen()
-             print("Senden der Daten ... ")
-             print(self.read_data_from_beweg())
-             self.read_detect_null()
-
-        if self.stopped_reading_detect:
-             self.timer.stop()  # Stoppen Sie den Timer, da der Leseprozess gestoppt wurde
-             self.frm_kont.showFullScreen()
 
     def phasen_Ablauf(self):
         self.frm_ww.hide()
@@ -286,64 +214,8 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         
         if self.phasen_running == False:
             self.timer.stop()
-            self.frm_kont.tbl_mess1.setColumnCount(2)  # Zwei Spalten
-            self.frm_kont.tbl_mess1.setHorizontalHeaderLabels(["Probe", "Lichtintensität"])
-            self.frm_kont.tbl_mess2.setColumnCount(2)  # Zwei Spalten
-            self.frm_kont.tbl_mess2.setHorizontalHeaderLabels(["Probe", "Lichtintensität"])
+            self.frm_kontanspruch.showFullScreen()
 
-            try:
-                # INSERT INTO-Anweisung für Messwerte
-                insert_messwerte1 = """
-                INSERT INTO Messwerte1 (Probe, Lichtstärke)
-                VALUES 
-                ("P1 in Lumen", %s),
-                ("P2 in Lumen", %s),
-                ("P3 in Lumen", %s),
-                ("P4 in Lumen", %s)
-                """
-                self.cursor_mess1.execute(insert_messwerte1, (self.frm_kont.p1, self.frm_kont.p2, self.frm_kont.p3, self.frm_kont.p4))
-
-                # INSERT INTO-Anweisung für Messwerte
-                insert_messwerte2 = """
-                INSERT INTO Messwerte2 (Probe, Lichtstärke)
-                VALUES 
-                ("P5 in Lumen", %s),
-                ("P6 in Lumen", %s),
-                ("P7 in Lumen", %s),
-                ("P8 in Lumen", %s)
-                """
-
-                self.cursor_mess2.execute(insert_messwerte2, (self.frm_kont.p5, self.frm_kont.p6, self.frm_kont.p7, self.frm_kont.p8))
-
-                # Daten aus Tabelle 'Messwerte' abrufen
-                self.cursor_mess1.execute("SELECT * FROM Messwerte1")
-                result_messwerte1 = self.cursor_mess1.fetchall()
-
-                
-                # Daten aus Tabelle 'Messwerte' abrufen
-                self.cursor_mess2.execute("SELECT * FROM Messwerte2")
-                result_messwerte2 = self.cursor_mess2.fetchall()
-
-                # Ergebnisse in tbl_messwerte einfügen
-                for row_num, row_data in enumerate(result_messwerte1):
-                    self.frm_kont.tbl_mess1.insertRow(row_num)
-                    for col_num, col_data in enumerate(row_data):
-                        self.frm_kont.tbl_mess1.setItem(row_num, col_num, QTableWidgetItem(str(col_data)))
-                        
-                # Ergebnisse in tbl_messwerte einfügen
-                for row_num, row_data in enumerate(result_messwerte2):
-                    self.frm_kont.tbl_mess2.insertRow(row_num)
-                    for col_num, col_data in enumerate(row_data):
-                        self.frm_kont.tbl_mess2.setItem(row_num, col_num, QTableWidgetItem(str(col_data)))
-
-            except pymysql.MySQLError as e:
-                print("MySQL-Fehler: {}".format(str(e)))
-
-            except OSError as o:
-                print("Fehler: {}".format(str(o)))
-
-            self.WarteKont()
-        
         else:
             self.write_to_beweg(4)
             self.run_phasen_Ablauf()
@@ -534,6 +406,137 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         # Rock herunterfahren
         subprocess.call(['/sbin/shutdown', '-h', 'now'])
 
+    def kontanspruch(self):
+        self.posiRight = False
+
+        while not self.posiRight:
+            self.read_detect_null()
+
+        self.WarteKont()
+        
+        self.frm_kont.tbl_mess1.setColumnCount(2)  # Zwei Spalten
+        self.frm_kont.tbl_mess1.setHorizontalHeaderLabels(["Probe", "Lichtintensität"])
+        self.frm_kont.tbl_mess2.setColumnCount(2)  # Zwei Spalten
+        self.frm_kont.tbl_mess2.setHorizontalHeaderLabels(["Probe", "Lichtintensität"])
+
+        try:
+                # INSERT INTO-Anweisung für Messwerte
+                insert_messwerte1 = """
+                INSERT INTO Messwerte1 (Probe, Lichtstärke)
+                VALUES 
+                ("P1 in Lumen", %s),
+                ("P2 in Lumen", %s),
+                ("P3 in Lumen", %s),
+                ("P4 in Lumen", %s)
+                """
+                self.cursor_mess1.execute(insert_messwerte1, (self.frm_kont.p1, self.frm_kont.p2, self.frm_kont.p3, self.frm_kont.p4))
+
+                # INSERT INTO-Anweisung für Messwerte
+                insert_messwerte2 = """
+                INSERT INTO Messwerte2 (Probe, Lichtstärke)
+                VALUES 
+                ("P5 in Lumen", %s),
+                ("P6 in Lumen", %s),
+                ("P7 in Lumen", %s),
+                ("P8 in Lumen", %s)
+                """
+
+                self.cursor_mess2.execute(insert_messwerte2, (self.frm_kont.p5, self.frm_kont.p6, self.frm_kont.p7, self.frm_kont.p8))
+
+                # Daten aus Tabelle 'Messwerte' abrufen
+                self.cursor_mess1.execute("SELECT * FROM Messwerte1")
+                result_messwerte1 = self.cursor_mess1.fetchall()
+
+                
+                # Daten aus Tabelle 'Messwerte' abrufen
+                self.cursor_mess2.execute("SELECT * FROM Messwerte2")
+                result_messwerte2 = self.cursor_mess2.fetchall()
+
+                # Ergebnisse in tbl_messwerte einfügen
+                for row_num, row_data in enumerate(result_messwerte1):
+                    self.frm_kont.tbl_mess1.insertRow(row_num)
+                    for col_num, col_data in enumerate(row_data):
+                        self.frm_kont.tbl_mess1.setItem(row_num, col_num, QTableWidgetItem(str(col_data)))
+                        
+                # Ergebnisse in tbl_messwerte einfügen
+                for row_num, row_data in enumerate(result_messwerte2):
+                    self.frm_kont.tbl_mess2.insertRow(row_num)
+                    for col_num, col_data in enumerate(row_data):
+                        self.frm_kont.tbl_mess2.setItem(row_num, col_num, QTableWidgetItem(str(col_data)))
+
+        except pymysql.MySQLError as e:
+                print("MySQL-Fehler: {}".format(str(e)))
+
+        except OSError as o:
+                print("Fehler: {}".format(str(o)))
+
+
+# Funktion zum Lesen von Daten vom Arduino
+def read_data(self):
+    data = []
+    i = 0
+    self.bus.write_byte(self.detect_address, 10)
+    time.sleep(1)
+
+    for i in range(8):
+        i = i+1
+        self.bus.write_byte(self.temp_address, i)
+        print(i)
+        time.sleep(1)
+        
+        
+    for _ in range(8):  # Wir erwarten 3 Datenpunkte (temp_denat, temp_aneal, temp_elong)
+        data.append(self.bus.read_byte(self.detect_address))
+        
+
+    return data
+
+def read_detect_null(self):
+    null = read_from_detect()
+    # Nur Daten vom Slave lesen, wenn der Leseprozess nicht gestoppt wurde
+    data_sent = False
+    if null is None:             
+        null = read_from_detect()
+
+    if null == 7:
+        null = read_from_detect()
+                        
+    if null == 0:
+        null = read_from_detect()
+    
+    if null == 5 and not data_sent:
+        data_sent = True
+        self.posiRight = True
+
+        data_received = read_data()
+
+        self.frm_kont.p1 = data_received[0] 
+        self.frm_kont.p2 = data_received[1] 
+        self.frm_kont.p3 = data_received[2] 
+        self.frm_kont.p4 = data_received[3] 
+        self.frm_kont.p5 = data_received[4] 
+        self.frm_kont.p6 = data_received[5] 
+        self.frm_kont.p7 = data_received[6] 
+        self.frm_kont.p8 = data_received[7] 
+
+        # Die erhaltenen Daten anzeigen
+        print("Messergebnis")
+        print("Probe1:", self.frm_kont.p1)
+        print("Probe2:", self.frm_kont.p2)
+        print("Probe3:", self.frm_kont.p3)
+        print("Probe4:", self.frm_kont.p4)
+        print("Probe5:", self.frm_kont.p5)
+        print("Probe6:", self.frm_kont.p6)
+        print("Probe7:", self.frm_kont.p7)
+        print("Probe8:", self.frm_kont.p8)
+
+def read_from_detect(self):
+    try:
+        # Lese Daten vom Slave
+        null = self.bus.read_byte(self.detect_address)
+        return null
+    except Exception as e:
+        print("Failed to read")
 
 app = QApplication()
 frm_main = Frm_main()

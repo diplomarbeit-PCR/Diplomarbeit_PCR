@@ -1,7 +1,14 @@
 from PySide6.QtWidgets import QMainWindow
 
+from dipl_Kontrolle.KontrollAnspruchWindow_v1 import Ui_KontrollAnspruch
 from dipl_Kontrolle.KontrollWindow_v1 import Ui_Kontrolle
 from dipl_Kontrolle.ErgebnisWindow_v1 import Ui_Ergebnis
+
+class Frm_kontanspruch(QMainWindow, Ui_KontrollAnspruch):
+    def __init__(self):
+        super().__init__()
+        # Initialisierung der Benutzeroberfläche 
+        self.setupUi(self)
 
 class Frm_kont(QMainWindow, Ui_Kontrolle):
     def __init__(self):
