@@ -3,6 +3,7 @@ from PySide6.QtCore import QTimer, Signal
 import pymysql
 import smbus
 import time
+import subprocess
 # Auf die unterschiedlichen Windows zugreifen (QT Deklaration, die in Py umgewandelt wurden)
 from dipl_Einfuehrung.einfuehrung_v4 import Ui_StartWindow
 from dipl_Einfuehrung.Voraussetzungen_Vererbt_v1 import Frm_voraus
