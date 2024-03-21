@@ -492,23 +492,23 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         return data
 
     def read_detect_null(self):
-        null = read_from_detect()
+        null = self.read_from_detect()
         # Nur Daten vom Slave lesen, wenn der Leseprozess nicht gestoppt wurde
         data_sent = False
         if null is None:             
-            null = read_from_detect()
+            null = self.read_from_detect()
 
         if null == 7:
-            null = read_from_detect()
+            null = self.read_from_detect()
                             
         if null == 0:
-            null = read_from_detect()
+            null = self.read_from_detect()
         
         if null == 5 and not data_sent:
             data_sent = True
             self.posiRight = True
 
-            data_received = read_data()
+            data_received = self.read_data()
 
             self.frm_kont.p1 = data_received[0] 
             self.frm_kont.p2 = data_received[1] 
