@@ -72,14 +72,14 @@ class Ui_StartWindow(object):
         self.menubar = QMenuBar(StartWindow)
         self.menubar.setObjectName(u"menubar")
         self.menubar.setGeometry(QRect(0, 0, 489, 20))
-        self.menuProzessstart = QMenu(self.menubar)
-        self.menuProzessstart.setObjectName(u"menuProzessstart")
+        self.menuShutDown = QMenu(self.menubar)
+        self.menuShutDown.setObjectName(u"menuShutDown")
         StartWindow.setMenuBar(self.menubar)
         self.statusbar = QStatusBar(StartWindow)
         self.statusbar.setObjectName(u"statusbar")
         StartWindow.setStatusBar(self.statusbar)
 
-        self.menubar.addAction(self.menuProzessstart.menuAction())
+        self.menubar.addAction(self.menuShutDown.menuAction())
 
         self.retranslateUi(StartWindow)
 
@@ -110,7 +110,7 @@ class Ui_StartWindow(object):
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:16pt;\"><br /></p>\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:16pt;\">Wir w\u00fcnschen Ihnen im Namen der Gruppe viel Spa\u00df und ein gutes Lernverst\u00e4ndnis. </span></p></body></html>", None))
         self.lbl_Einfuehrung.setText(QCoreApplication.translate("StartWindow", u"Prozessstart", None))
-        self.menuProzessstart.setTitle(QCoreApplication.translate("StartWindow", u"Shut Down", None))
+        self.menuShutDown.setTitle(QCoreApplication.translate("StartWindow", u"Shut Down", None))
         pass
     # retranslateUi
 

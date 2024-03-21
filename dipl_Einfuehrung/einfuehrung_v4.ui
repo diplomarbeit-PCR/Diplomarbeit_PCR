@@ -132,12 +132,12 @@ li.checked::marker { content: &quot;\2612&quot;; }
      <height>20</height>
     </rect>
    </property>
-   <widget class="QMenu" name="menuProzessstart">
+   <widget class="QMenu" name="menuShutDown">
     <property name="title">
      <string>Shut Down</string>
     </property>
    </widget>
-   <addaction name="menuProzessstart"/>
+   <addaction name="menuShutDown"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionHistory">

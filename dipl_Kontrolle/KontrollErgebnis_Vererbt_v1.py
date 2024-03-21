@@ -9,15 +9,14 @@ class Frm_kont(QMainWindow, Ui_Kontrolle):
         # Initialisierung der Benutzeroberfläche 
         self.setupUi(self)
 
-    
-        self.p1 = 41
-        self.p2 = 44
-        self.p3 = 48
-        self.p4 = 39
-        self.p5 = 50
-        self.p6 = 42
-        self.p7 = 43
-        self.p8 = 47
+        self.p1 = 0
+        self.p2 = 0
+        self.p3 = 0
+        self.p4 = 0
+        self.p5 = 0
+        self.p6 = 0
+        self.p7 = 0
+        self.p8 = 0
 
 class Frm_ergeb(QMainWindow, Ui_Ergebnis):
     def __init__(self):
