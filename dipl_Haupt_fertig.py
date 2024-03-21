@@ -125,7 +125,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
              self.read_data_from_beweg()
              self.read_data_from_detect()
 
-        if self.stopped_reading_beweg and self.stopped_reading_detect:
+        if self.stopped_reading_beweg:
              self.timer.stop()  # Stoppen Sie den Timer, da der Leseprozess gestoppt wurde
              self.phasen_Ablauf()
 
