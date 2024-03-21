@@ -3,6 +3,7 @@ from PySide6.QtCore import QTimer, Signal
 import pymysql
 import smbus
 import time
+import subprocess
 # Auf die unterschiedlichen Windows zugreifen (QT Deklaration, die in Py umgewandelt wurden)
 from dipl_Einfuehrung.einfuehrung_v4 import Ui_StartWindow
 from dipl_Einfuehrung.Voraussetzungen_Vererbt_v1 import Frm_voraus
@@ -60,7 +61,9 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.frm_elong = Frm_elong()
         self.frm_kont = Frm_kont()
         self.frm_ergeb = Frm_ergeb()
-         
+
+        self.menuShutDown.clicked.connect(self.shutDown)
+
         # Verbindung des Start-Knopfes mit der Methode erlaubteDauer 
         self.btn_Start.clicked.connect(self.erlaubteTemp)
         
@@ -445,6 +448,9 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.frm_zeitDef.wasserDauer_denat.setValue(35)
         self.frm_zeitDef.wasserDauer_aneal.setValue(45)
         self.frm_zeitDef.wasserDauer_elong.setValue(40)
+    def shutDown(self):
+        # Rock herunterfahren
+        subprocess.call(['/sbin/shutdown', '-h', 'now'])
 
 app = QApplication()
 frm_main = Frm_main()
