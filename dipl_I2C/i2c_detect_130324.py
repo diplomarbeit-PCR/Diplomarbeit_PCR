@@ -3,7 +3,7 @@ import time
 
 # Funktionierender I2C-Detektor Code
 # Definieren Sie die Adresse des Arduinos auf dem I2C-Bus
-temp_address = 0x12  # Beispieladresse, ersetzen Sie sie durch die tatsächliche Slave-Adresse
+temp_address = 0x06  # Beispieladresse, ersetzen Sie sie durch die tatsächliche Slave-Adresse
 
 # Öffnen Sie den I2C-Bus (abhängig von Ihrem System kann die Busnummer variieren)
 bus = smbus.SMBus(7)  # Bus 1 öffnen, Sie können die richtige Busnummer je nach Ihrem Setup anpassen
