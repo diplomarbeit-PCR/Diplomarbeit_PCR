@@ -412,7 +412,8 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         while not self.posiRight:
             self.read_detect_null()
 
-        self.WarteKont()
+        self.frm_kont.showFullScreen()
+        self.frm_kontanspruch.hide()
         
         self.frm_kont.tbl_mess1.setColumnCount(2)  # Zwei Spalten
         self.frm_kont.tbl_mess1.setHorizontalHeaderLabels(["Probe", "Lichtintensität"])
