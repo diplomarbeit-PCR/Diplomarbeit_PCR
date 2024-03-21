@@ -1,6 +1,5 @@
 from PySide6.QtWidgets import QMainWindow, QApplication, QTableWidgetItem, QTableWidget
 from PySide6.QtCore import QTimer, Signal
-from PySide6.QtGui import QAction
 import pymysql
 import smbus
 import time
