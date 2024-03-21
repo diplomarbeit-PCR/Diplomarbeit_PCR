@@ -17,19 +17,12 @@ def read_data():
         data.append(bus.read_byte(temp_address))
     return data
 
-def write_to_temp(self, data):
-    try:
-        # Schreibe Daten an den Slave
-        self.bus.write_byte(self.temp_address, data)
-    except Exception as e:
-        print(f"Fehler beim Senden von Daten an den Slave: {str(e)}")
-    
-write_to_temp(1)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
-write_to_temp(value_denat)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
-write_to_temp(2)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
-write_to_temp(value_aneal)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
-write_to_temp(3)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
-write_to_temp(value_elong)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
+bus.write_byte(temp_address, 1)
+bus.write_byte(temp_address, value_denat)
+bus.write_byte(temp_address, 2)
+bus.write_byte(temp_address, value_aneal)
+bus.write_byte(temp_address, 3)
+bus.write_byte(temp_address, value_elong)
 
 # Daten vom Arduino lesen
 data_received = read_data()
