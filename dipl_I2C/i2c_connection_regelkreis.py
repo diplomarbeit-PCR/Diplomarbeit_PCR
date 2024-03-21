@@ -17,6 +17,7 @@ def read_data():
         data.append(bus.read_byte(temp_address))
     return data
 
+time.sleep(3)
 bus.write_byte(temp_address, 1)
 bus.write_byte(temp_address, value_denat)
 bus.write_byte(temp_address, 2)
