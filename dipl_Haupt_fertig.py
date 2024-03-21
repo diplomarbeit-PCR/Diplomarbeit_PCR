@@ -118,7 +118,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.frm_zeitDef.hide()
         
         
-        while not self.stopped_reading_beweg or not self.stopped_reading_detect:
+        while not self.stopped_reading_beweg and not self.stopped_reading_detect:
              self.frm_ww.showFullScreen()
              print("Senden der Daten ... ")
              print(self.read_data_from_beweg())
@@ -157,12 +157,13 @@ class Frm_main(QMainWindow, Ui_StartWindow):
                         self.write_to_beweg(3)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
                         self.write_to_beweg(self.frm_zeitDef.value_elong_gesamt)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
 
-                        self.write_to_temp(1)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
-                        self.write_to_temp(self.frm_tempDef.value_denat)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
-                        self.write_to_temp(2)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
-                        self.write_to_temp(self.frm_tempDef.value_aneal)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
-                        self.write_to_temp(3)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
-                        self.write_to_temp(self.frm_tempDef.value_elong)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
+                        self.bus.write_byte(self.temp_address, 1)
+                        self.bus.write_byte(self.temp_address, self.frm_tempDef.value_denat)
+                        self.bus.write_byte(self.temp_address, 2)
+                        self.bus.write_byte(self.temp_address, self.frm_tempDef.value_aneal)
+                        self.bus.write_byte(self.temp_address, 3)
+                        self.bus.write_byte(self.temp_address, self.frm_tempDef.value_elong)
+
                         self.stopped_reading_beweg = True  # Leseprozess stoppen
                     
             except Exception as e:
