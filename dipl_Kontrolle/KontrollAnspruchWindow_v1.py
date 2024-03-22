@@ -28,7 +28,7 @@ class Ui_KontrollAnspruch(object):
         self.centralwidget.setObjectName(u"centralwidget")
         self.textEdit = QTextEdit(self.centralwidget)
         self.textEdit.setObjectName(u"textEdit")
-        self.textEdit.setGeometry(QRect(60, 120, 371, 421))
+        self.textEdit.setGeometry(QRect(60, 120, 371, 491))
         self.textEdit.setReadOnly(True)
         self.label = QLabel(self.centralwidget)
         self.label.setObjectName(u"label")
@@ -41,7 +41,7 @@ class Ui_KontrollAnspruch(object):
         self.label.setAlignment(Qt.AlignCenter)
         self.btn_Weiter = QPushButton(self.centralwidget)
         self.btn_Weiter.setObjectName(u"btn_Weiter")
-        self.btn_Weiter.setGeometry(QRect(160, 580, 151, 51))
+        self.btn_Weiter.setGeometry(QRect(150, 620, 151, 51))
         font1 = QFont()
         font1.setFamilies([u"Arial Narrow"])
         font1.setPointSize(20)
@@ -71,7 +71,8 @@ class Ui_KontrollAnspruch(object):
 "</style></head><body style=\" font-family:'Segoe UI'; font-size:9pt; font-weight:400; font-style:normal;\" bgcolor=\"#9cd4d6\">\n"
 "<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Arial Narrow','sans-serif'; font-size:16pt;\">Mit einer blauen LED und einer Sammellinse entsteht ein Brennpunkt auf der Probe, was zu einer Anregung f\u00fchrt. Es kommt zu einer Emittierung von gr\u00fcnem Licht. Dieses durchdringt einen Streufilter, welches den kurzwelligen Anteil filtert.<br />Das \u00fcbrigbleibende gr\u00fcne Licht trifft auf die"
                         " im Deckel enthaltene Fotodiode, welche bei dem Kontakt mit Licht Strom erzeugt. <br />Ein Transimpetanzwandler verst\u00e4rkt diesen und erzeugt Spannung im mV Bereich. <br />Der Arduino liest diese ein und misst daraus die Lichtintensit\u00e4t in Millilumen.</span></p>\n"
-"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Arial Narrow','sans-serif'; font-size:16pt;\">Bitte dr\u00fccken Sie erst auf WEITER, wenn Sie die Probe von dem Bewegmechanismus in die Detektorhalterung bef\u00f6rdert haben.</span></p></body></html>", None))
+"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Arial Narrow','sans-serif'; font-size:16pt;\">Bitte dr\u00fccken Sie erst auf WEITER, wenn Sie die Probe von dem Bewegmechanismus in die Detektorhalterung bef\u00f6rdert haben.</span></p>\n"
+"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Arial Narrow','sans-serif'; font-size:16pt;\">Wenn WEITER gedr\u00fcckt wurde, so beginnt die Messung der Probe. Sobald sie fertig ist, werden die Ergebnisse angezeigt.</span></p></body></html>", None))
         self.label.setText(QCoreApplication.translate("KontrollAnspruch", u"Kontrollanspr\u00fcche", None))
         self.btn_Weiter.setText(QCoreApplication.translate("KontrollAnspruch", u"Weiter", None))
     # retranslateUi
