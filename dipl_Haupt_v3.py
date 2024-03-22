@@ -9,8 +9,7 @@ from dipl_Einfuehrung.Voraussetzungen_Vererbt_v1 import Frm_voraus
 from dipl_Einfuehrung.zeitDefinition_Vererbt_v1 import Frm_zeitDef
 from dipl_Einfuehrung.WarteWindow_Vererbt_v1 import Frm_WarteWindow
 from dipl_Phasenablauf.Phasenablauf_Vererbt_v1 import Frm_denat, Frm_aneal, Frm_sens, Frm_asens, Frm_elong
-from dipl_Kontrolle.KontrollErgebnis_Vererbt_v1 import Frm_kont, Frm_ergeb
-
+from dipl_Kontrolle.KontrollErgebnis_Vererbt_v1 import Frm_kont, Frm_ergeb, Frm_kontanspruch
 
 class Frm_main(QMainWindow, Ui_StartWindow):
 
@@ -56,7 +55,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.frm_elong = Frm_elong()
         self.frm_kont = Frm_kont()
         self.frm_ergeb = Frm_ergeb()
-
+        self.frm_kontanspruch = Frm_kontanspruch()
         
         self.frm_denat.temp_denat = 94
         self.frm_aneal.temp_aneal = 65
@@ -406,6 +405,6 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.frm_zeitDef.wasserDauer_elong.setValue(40)
 
 app = QApplication()
-frm_main = Frm_main()
+frm_main = Frm_kontanspruch()
 frm_main.showFullScreen()
 app.exec()
