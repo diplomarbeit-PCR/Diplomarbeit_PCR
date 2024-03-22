@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import QMainWindow
+from PySide6.QtWidgets import QMainWindow, QApplication
 
 from dipl_Kontrolle.KontrollAnspruchWindow_v1 import Ui_KontrollAnspruch
 from dipl_Kontrolle.KontrollWindow_v1 import Ui_Kontrolle
