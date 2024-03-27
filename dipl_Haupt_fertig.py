@@ -9,10 +9,8 @@ from dipl_Einfuehrung.einfuehrung_v4 import Ui_StartWindow
 from dipl_Einfuehrung.Voraussetzungen_Vererbt_v1 import Frm_voraus
 from dipl_Einfuehrung.zeitDefinition_Vererbt_v1 import Frm_zeitDef
 from dipl_Einfuehrung.tempDefinition_Vererbt_v1 import Frm_tempDef
-from dipl_Einfuehrung.WarteWindow_Vererbt_v1 import Frm_WarteWindow
 from dipl_Phasenablauf.Phasenablauf_Vererbt_v1 import Frm_denat, Frm_aneal, Frm_sens, Frm_asens, Frm_elong
 from dipl_Kontrolle.KontrollErgebnis_Vererbt_v1 import Frm_kont, Frm_ergeb, Frm_kontanspruch
-
 
 class Frm_main(QMainWindow, Ui_StartWindow):
 
@@ -55,7 +53,6 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.frm_voraus = Frm_voraus()
         self.frm_zeitDef = Frm_zeitDef()
         self.frm_tempDef = Frm_tempDef()
-        self.frm_ww = Frm_WarteWindow()
         self.frm_denat = Frm_denat()
         self.frm_aneal = Frm_aneal()
         self.frm_sens = Frm_sens()
@@ -113,16 +110,13 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.stopped_reading_beweg = False  # Hält den Zustand, ob der Leseprozess gestoppt wurde
         self.i = 0
 
-        self.frm_ww.timer.start(500)
         print ("show WW")
         print("Senden der Daten ...")
-        self.frm_ww.showFullScreen()
         print ("hide Zeit")
         self.frm_zeitDef.hide()
         
         
         while not self.stopped_reading_beweg:
-             self.frm_ww.showFullScreen()
              print("Senden der Daten ... ")
              print(self.read_data_from_beweg())
              self.read_data_from_beweg()
@@ -202,7 +196,6 @@ class Frm_main(QMainWindow, Ui_StartWindow):
 
 
     def phasen_Ablauf(self):
-        self.frm_ww.hide()
         self.timer.start()
 
         # Verbindung des Kontroll-Knopfes mit der Methode kontroll_Erklaerung 
