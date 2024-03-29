@@ -182,6 +182,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
                         self.bus.write_byte(self.temp_address, self.frm_tempDef.value_elong) # senden des Wertes der Elongation
 
                         self.stopped_reading_beweg = True  # Leseprozess stoppen
+                        data = 0
                     
             except Exception as e:
                 print(f"Fehler beim Lesen von Daten vom Slave: {str(e)}")
@@ -427,6 +428,9 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.frm_zeitDef.wasserDauer_denat.setValue(35)
         self.frm_zeitDef.wasserDauer_aneal.setValue(45)
         self.frm_zeitDef.wasserDauer_elong.setValue(40)
+        self.frm_tempDef.wasserTemp_denat.setValue(96)
+        self.frm_tempDef.wasserTemp_aneal.setValue(57)
+        self.frm_tempDef.wasserTemp_elong.setValue(70)
 
     def shutDown(self):
         # Rock herunterfahren
@@ -465,6 +469,8 @@ class Frm_main(QMainWindow, Ui_StartWindow):
                 self.frm_kont.p6 = data_received[5] 
                 self.frm_kont.p7 = data_received[6] 
                 self.frm_kont.p8 = data_received[7]
+
+                n = 0
 
         self.frm_kont.showFullScreen()
         self.frm_kontanspruch.hide()
