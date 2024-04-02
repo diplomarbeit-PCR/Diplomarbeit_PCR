@@ -133,11 +133,11 @@ class Frm_zeitDef(QMainWindow, Ui_zeitDef_Voraus):
         self.setupUi(self)
 
         # Standardwerte setzen
-        self.value_denat = 35 + 6
-        self.value_aneal = 45 * (1/3) + self.value_denat + 7
+        self.value_denat = 35 + 8
+        self.value_aneal = 45 * (1/3) + self.value_denat + 8
         self.value_sens = 45 * (1/3) + self.value_aneal
         self.value_asens = 45 * (1/3) + self.value_sens
-        self.value_elong = 40 + self.value_asens + 21
+        self.value_elong = 40 + self.value_asens + 15
         self.value_denat_gesamte = 35
         self.value_aneal_gesamt = 45
         self.value_elong_gesamt = 40
