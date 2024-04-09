@@ -158,7 +158,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
                         # B E W E G M E C H A N I S M U S
                         # senden: 1 um Bewegmechanismus zu zeigen, dass es um den ersten Wert (als Denaturierung definiert) geht
                         self.write_to_beweg(1) 
-                        self.write_to_beweg(self.frm_zeitDef.value_denat)  # senden des Wertes der Denaturierung
+                        self.write_to_beweg(self.frm_zeitDef.value_denat_gesamte)  # senden des Wertes der Denaturierung
 
                         # senden: 2 um Bewegmechanismus zu zeigen, dass es um den zweiten Wert (als Annealing definiert) geht
                         self.write_to_beweg(2)  
