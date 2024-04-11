@@ -350,27 +350,21 @@ class Frm_main(QMainWindow, Ui_StartWindow):
 
         try:
             # INSERT INTO-Anweisung für PhasenWerte
+            insert_phasen = """
+            INSERT INTO PhasenWerte (Kategorien, Denaturierung, Annealing, Elongation)
+            VALUES 
+            ("Temperatur in °C", %s, %s, %s),
+            ("Dauer in sek", %s, %s, %s)
             update_phasen = """
-            UPDATE PhasenWerte (Kategorien, Denaturierung, Annealing, Elongation)
-            SET Denaturierung = CASE
-                WHEN Kategorien='Temperatur in °C' THEN %s
-                WHEN Kategorien='Dauer in sek' THEN %s
-                ELSE Denaturierung
-                END
-            WHERE Kategorie IN ('Temperatur in °C', 'Dauer in sek')           
-            """
-            self.cursor_phasen.execute(update_phasen, (self.frm_denat.temp_denat, self.frm_aneal.temp_aneal, self.frm_elong.temp_elong, self.frm_zeitDef.value_denat, self.frm_zeitDef.value_aneal_gesamt, self.frm_zeitDef.value_elong_gesamt))
-
+            self.cursor_phasen.execute(insert_phasen, (self.frm_denat.temp_denat, self.frm_aneal.temp_aneal, self.frm_elong.temp_elong, self.frm_zeitDef.value_denat, self.frm_zeitDef.value_aneal_gesamt, self.frm_zeitDef.value_elong_gesamt))
+           
             # INSERT INTO-Anweisung für Messwerte
-            update_dl = """
-            UPDATE Durchlauf 
-            SET Anzahl = CASE
-                WHEN Kategorie = 'Durchlauf' THEN %s
-                ELSE Anzahl
-                END
-            WHERE Kategorie IN('Durchlauf)
+            insert_dl = """
+            INSERT INTO Durchlauf (Kategorie, Anzahl)
+            VALUES 
+            ("Durchlauf", %s)
             """
-            self.cursor_dl.execute(update_dl, (self.DL_zaehler_value))
+            self.cursor_dl.execute(insert_dl, (self.DL_zaehler_value))
 
             # Daten aus Tabelle 'PhasenWerte' abrufen
             self.cursor_phasen.execute("SELECT * FROM PhasenWerte")
@@ -488,31 +482,27 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.frm_kont.tbl_mess2.setHorizontalHeaderLabels(["Probe", "Lichtintensität"])
 
         try:
-                update_messwerte1 = """
-                UPDATE Messwerte1
-                SET Lichtstärke = CASE
-                    WHEN Probe = 'P1 in Lumen' THEN %s
-                    WHEN Probe = 'P2 in Lumen' THEN %s
-                    WHEN Probe = 'P3 in Lumen' THEN %s
-                    WHEN Probe = 'P4 in Lumen' THEN %s
-                    ELSE Lichtstärke
-                    END
-                WHERE Probe IN ('P1 in Lumen', 'P2 in Lumen', 'P3 in Lumen', 'P4 in Lumen')
+                # INSERT INTO-Anweisung für Messwerte
+                insert_messwerte1 = """
+                INSERT INTO Messwerte1 (Probe, Lichtstärke)
+                VALUES 
+                ("P1 in Lumen", %s),
+                ("P2 in Lumen", %s),
+                ("P3 in Lumen", %s),
+                ("P4 in Lumen", %s)
                 """
-                self.cursor_mess1.execute(update_messwerte1, (self.frm_kont.p1, self.frm_kont.p2, self.frm_kont.p3, self.frm_kont.p4))
+                self.cursor_mess1.execute(insert_messwerte1, (self.frm_kont.p1, self.frm_kont.p2, self.frm_kont.p3, self.frm_kont.p4))
 
-                update_messwerte2 = """
-                UPDATE Messwerte2 
-                SET Lichtstärke = CASE 
-                    WHEN Probe = 'P5 in Lumen' THEN %s
-                    WHEN Probe = 'P6 in Lumen' THEN %s
-                    WHEN Probe = 'P7 in Lumen' THEN %s
-                    WHEN Probe = 'P8 in Lumen' THEN %s
-                    ELSE Lichtstärke
-                    END
-                WHERE Probe IN ('P5 in Lumen', 'P6 in Lumen', 'P7 in Lumen', 'P8 in Lumen')
+                # INSERT INTO-Anweisung für Messwerte
+                insert_messwerte2 = """
+                INSERT INTO Messwerte2 (Probe, Lichtstärke)
+                VALUES 
+                ("P5 in Lumen", %s),
+                ("P6 in Lumen", %s),
+                ("P7 in Lumen", %s),
+                ("P8 in Lumen", %s)
                 """
-                self.cursor_mess2.execute(update_messwerte2, (self.frm_kont.p5, self.frm_kont.p6, self.frm_kont.p7, self.frm_kont.p8))
+                self.cursor_mess2.execute(insert_messwerte2, (self.frm_kont.p5, self.frm_kont.p6, self.frm_kont.p7, self.frm_kont.p8))
 
                 # Daten aus Tabelle 'Messwerte' abrufen
                 self.cursor_mess1.execute("SELECT * FROM Messwerte1")
