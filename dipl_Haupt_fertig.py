@@ -349,14 +349,10 @@ class Frm_main(QMainWindow, Ui_StartWindow):
 
             # Daten aus Tabelle 'Messwerte' abrufen
             self.cursor_mess2.execute("SELECT ID, Proben FROM Messwerte2 ODER BY ID DESC LIMIT(4)")
-            self.cursor_phasen.execute("ORDER BY ID DESC")
-            self.cursor_phasen.execute("LIMIT(4)")
             result_messwerte2 = self.cursor_mess2.fetchall()
 
             # Daten aus Tabelle 'Messwerte' abrufen
-            self.cursor_dl.execute("SELECT ID, Kategorien, Anzahl FROM Durchlauf")
-            self.cursor_phasen.execute("ORDER BY ID DESC")
-            self.cursor_phasen.execute("LIMIT(1)")
+            self.cursor_dl.execute("SELECT ID, Kategorien, Anzahl FROM Durchlauf ORDER BY ID DESC LIMIT(1)")
             result_dl = self.cursor_dl.fetchall()
 
             # Ergebnisse in tbl_phasen einfügen
