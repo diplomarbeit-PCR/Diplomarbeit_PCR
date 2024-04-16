@@ -333,33 +333,28 @@ class Frm_main(QMainWindow, Ui_StartWindow):
 
             # INSERT INTO-Anweisung für Messwerte
             insert_dl = """
-            INSERT INTO Durchlauf (Kategorie, Anzahl)
+            INSERT INTO Durchlauf (Kategorien, Anzahl)
             VALUES 
             ("Durchlauf", %s)
             """
             self.cursor_dl.execute(insert_dl, (self.DL_zaehler_value))
 
             # Daten aus Tabelle 'PhasenWerte' abrufen
-            self.cursor_phasen.execute("SELECT * FROM PhasenWerte")
-            self.cursor_phasen.execute("ORDER BY ID DESC")
-            self.cursor_phasen.execute("LIMIT(4)")
+            self.cursor_phasen.execute("SELECT ID, Kategorien, Denaturierung, Annealing, Elongation FROM PhasenWerte ORDER BY ID DESC LIMIT(2)")
             result_phasen = self.cursor_phasen.fetchall()
 
             # Daten aus Tabelle 'Messwerte' abrufen
-            self.cursor_mess1.execute("SELECT * FROM Messwerte1")
-            self.cursor_phasen.execute("ORDER BY ID DESC")
-            self.cursor_phasen.execute("LIMIT(4)")
+            self.cursor_mess1.execute("SELECT ID, Proben FROM Messwerte1 ODER BY ID DESC LIMIT(4)")
             result_messwerte1 = self.cursor_mess1.fetchall()
 
-            
             # Daten aus Tabelle 'Messwerte' abrufen
-            self.cursor_mess2.execute("SELECT * FROM Messwerte2")
+            self.cursor_mess2.execute("SELECT ID, Proben FROM Messwerte2 ODER BY ID DESC LIMIT(4)")
             self.cursor_phasen.execute("ORDER BY ID DESC")
             self.cursor_phasen.execute("LIMIT(4)")
             result_messwerte2 = self.cursor_mess2.fetchall()
 
             # Daten aus Tabelle 'Messwerte' abrufen
-            self.cursor_dl.execute("SELECT * FROM Durchlauf")
+            self.cursor_dl.execute("SELECT ID, Kategorien, Anzahl FROM Durchlauf")
             self.cursor_phasen.execute("ORDER BY ID DESC")
             self.cursor_phasen.execute("LIMIT(1)")
             result_dl = self.cursor_dl.fetchall()
@@ -460,14 +455,14 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.frm_kontanspruch.hide()
         
         self.frm_kont.tbl_mess1.setColumnCount(2)  # Zwei Spalten
-        self.frm_kont.tbl_mess1.setHorizontalHeaderLabels(["Probe", "Lichtintensität"])
+        self.frm_kont.tbl_mess1.setHorizontalHeaderLabels(["Proben", "Lichtintensität"])
         self.frm_kont.tbl_mess2.setColumnCount(2)  # Zwei Spalten
-        self.frm_kont.tbl_mess2.setHorizontalHeaderLabels(["Probe", "Lichtintensität"])
+        self.frm_kont.tbl_mess2.setHorizontalHeaderLabels(["Proben", "Lichtintensität"])
 
         try:
                 # INSERT INTO-Anweisung für Messwerte
                 insert_messwerte1 = """
-                INSERT INTO Messwerte1 (Probe, Lichtstärke)
+                INSERT INTO Messwerte1 (Proben, Lichtstärke)
                 VALUES 
                 ("P1 in Lumen", %s),
                 ("P2 in Lumen", %s),
@@ -478,7 +473,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
 
                 # INSERT INTO-Anweisung für Messwerte
                 insert_messwerte2 = """
-                INSERT INTO Messwerte2 (Probe, Lichtstärke)
+                INSERT INTO Messwerte2 (Proben, Lichtstärke)
                 VALUES 
                 ("P5 in Lumen", %s),
                 ("P6 in Lumen", %s),
@@ -489,16 +484,12 @@ class Frm_main(QMainWindow, Ui_StartWindow):
                 self.cursor_mess2.execute(insert_messwerte2, (self.frm_kont.p5, self.frm_kont.p6, self.frm_kont.p7, self.frm_kont.p8))
 
                 # Daten aus Tabelle 'Messwerte' abrufen
-                self.cursor_mess1.execute("SELECT * FROM Messwerte1")
-                self.cursor_phasen.execute("ORDER BY ID DESC")
-                self.cursor_phasen.execute("LIMIT(4)")
+                self.cursor_mess1.execute("SELECT ID, Proben FROM Messwerte1 ODER BY ID DESC LIMIT(4)")
                 result_messwerte1 = self.cursor_mess1.fetchall()
 
                 
                 # Daten aus Tabelle 'Messwerte' abrufen
-                self.cursor_mess2.execute("SELECT * FROM Messwerte2")
-                self.cursor_phasen.execute("ORDER BY ID DESC")
-                self.cursor_phasen.execute("LIMIT(4)")
+                self.cursor_mess2.execute("SELECT ID, Proben FROM Messwerte2 ODER BY ID DESC LIMIT(4)")
                 result_messwerte2 = self.cursor_mess2.fetchall()
 
                 # Ergebnisse in tbl_messwerte einfügen
