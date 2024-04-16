@@ -1,18 +1,18 @@
-# Importiere der QtEssentials 
 from PySide6.QtWidgets import QMainWindow, QApplication, QTableWidgetItem, QTableWidget
 from PySide6.QtCore import QTimer, Signal
-import pymysql # Importiere das Modul für die MySQL-Datenbankverbindung
-import smbus # Importiere das Modul für die Kommunikation über den I2C-Bus
-import time # Importiere das Modul für die Zeitfunktion
-import subprocess # Importiere das Modul für die Ausführung von externen Prozessen
-
-# Importieren der in .py umgewandelten MainWindows
+import pymysql
+import smbus
+import time
+import subprocess
+# Auf die unterschiedlichen Windows zugreifen (QT Deklaration, die in Py umgewandelt wurden)
 from dipl_Einfuehrung.einfuehrung_v4 import Ui_StartWindow
 from dipl_Einfuehrung.Voraussetzungen_Vererbt_v1 import Frm_voraus
 from dipl_Einfuehrung.zeitDefinition_Vererbt_v1 import Frm_zeitDef
 from dipl_Einfuehrung.tempDefinition_Vererbt_v1 import Frm_tempDef
+from dipl_Einfuehrung.WarteWindow_Vererbt_v1 import Frm_WarteWindow
 from dipl_Phasenablauf.Phasenablauf_Vererbt_v1 import Frm_denat, Frm_aneal, Frm_sens, Frm_asens, Frm_elong
 from dipl_Kontrolle.KontrollErgebnis_Vererbt_v1 import Frm_kont, Frm_ergeb, Frm_kontanspruch
+
 
 class Frm_main(QMainWindow, Ui_StartWindow):
 
@@ -23,17 +23,17 @@ class Frm_main(QMainWindow, Ui_StartWindow):
 
         # Öffne den I2C-Bus 7
         self.bus = smbus.SMBus(7)
-        # Adresse des Arduino-Slave (Bewegmechanismus)
+        # Adresse des Arduino-Slave
         self.beweg_address = 0x04
-        # Adresse des Arduino-Slave (Regelkreis)
+        # Adresse des Arduino-Slave
         self.temp_address = 0x05
-        # Adresse des Arduino-Slave (Detecktor)
+        # Adresse des Arduino-Slave
         self.detect_address = 0x06
 
         self.timer_seconds = 0
         self.timer = QTimer()
         self.go_Beweg = False
-        # setzt Intervall von timer auf 1 sek
+        # mit einem Intervall von 
         self.timer.setInterval(1000)
         
         # Verbindung zur Datenbank herstellen
@@ -44,21 +44,18 @@ class Frm_main(QMainWindow, Ui_StartWindow):
             database='eduPCR'
         )
 
-        # Cursor für Datenbankabfragen initialisieren
         self.cursor_mess1 = self.connection.cursor()
         self.cursor_mess2 = self.connection.cursor()
         self.cursor_phasen = self.connection.cursor()
         self.cursor_dl = self.connection.cursor()
 
-        # zählt Zyklen und gibt diese an der LCD-Anzeige aus
         self.DL_zaehler_value = 0
-        # zählt Zyklen - reseted value, wenn btn_kont gedrückt wird
-        self.DL_counter = 0 # falls value 10 erreicht, wird phasen_running False geschalten
+        self.DL_counter = 0
 
-        # Instanzen der UI-Klassen initialisieren
         self.frm_voraus = Frm_voraus()
         self.frm_zeitDef = Frm_zeitDef()
         self.frm_tempDef = Frm_tempDef()
+        self.frm_ww = Frm_WarteWindow()
         self.frm_denat = Frm_denat()
         self.frm_aneal = Frm_aneal()
         self.frm_sens = Frm_sens()
@@ -68,13 +65,13 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.frm_kont = Frm_kont()
         self.frm_ergeb = Frm_ergeb()
 
-        # Verbindung des Menüpunkts ShutDown mit der Methode shutDown
+        # Verbinde von Menüpunkt ShutDown
         self.menuShutDown.triggered.connect(self.shutDown) 
          
         # Verbindung des Start-Knopfes mit der Methode erlaubteDauer 
         self.btn_Start.clicked.connect(self.erlaubteTemp)
 
-        # Verbindung des Weiter-Knopfes mit der Methode kontanspruch
+        # Verbinde von Menüpunkt Weiter
         self.frm_kontanspruch.btn_Weiter.clicked.connect(self.kontanspruch)
 
         # Verbindung des Weiter-Knopfes mit der Methode phasen_Ablauf
@@ -85,22 +82,19 @@ class Frm_main(QMainWindow, Ui_StartWindow):
 
         # Verbindung des Fortfuehren-Knopfes mit der Methode weiter
         self.frm_kont.btn_Fortfuehren.clicked.connect(self.weiter)
-
         # Verbindung des Beenden-Knopfes mit der Methode esc
         self.frm_kont.btn_Beenden.clicked.connect(self.ergebnis)
-
         # Verbindung des Beenden-Knopfes mit der Methode esc
         self.frm_ergeb.btn_Ende.clicked.connect(self.esc)
 
         self.phasen_running = True  # Flag für den Zustand von phasen_Ablauf
 
         self.seconds = 0
-        self.timer.timeout.connect(self.run_phasen_Ablauf)  # Verbinde den Timer mit der Methode run_phasen_Ablauf
+        self.timer.timeout.connect(self.run_phasen_Ablauf)  # Verbinde den Timer mit der Methode
         
         self.phaseCount = 0
         self.stopped_reading = True
-
-    # Definieren der gewünschten Temperaturen in den Wasserbecken   
+        
     def erlaubteTemp(self):
         self.frm_voraus.showFullScreen()
         self.hide()
@@ -108,12 +102,10 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         QTimer.singleShot(10000, self.frm_tempDef.showFullScreen)
         QTimer.singleShot(10000, self.frm_voraus.hide)
 
-    # Definieren der gewünschten Dauer in den Wasserbecken
     def erlaubteDauer(self):
         self.frm_zeitDef.showFullScreen()
         self.frm_tempDef.hide()
 
-    # Starten der I2C-Kommunikation mit Bewegmechanismus(lesen und schreiben) und Regelkreis (schreiben)
     def WarteStart(self):
         self.i2c_operation_requested = Signal(int)
         
@@ -121,10 +113,16 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.stopped_reading_beweg = False  # Hält den Zustand, ob der Leseprozess gestoppt wurde
         self.i = 0
 
+        self.frm_ww.timer.start(500)
+        print ("show WW")
         print("Senden der Daten ...")
+        self.frm_ww.showFullScreen()
+        print ("hide Zeit")
         self.frm_zeitDef.hide()
         
+        
         while not self.stopped_reading_beweg:
+             self.frm_ww.showFullScreen()
              print("Senden der Daten ... ")
              print(self.read_data_from_beweg())
              self.read_data_from_beweg()
@@ -133,13 +131,11 @@ class Frm_main(QMainWindow, Ui_StartWindow):
              self.timer.stop()  # Stoppen Sie den Timer, da der Leseprozess gestoppt wurde
              self.phasen_Ablauf()
 
-    # Verarbeiten von gelesenen Daten des Bewegmechanismus
     def read_data_from_beweg(self):
     # Nur Daten vom Slave lesen, wenn der Leseprozess nicht gestoppt wurde
         if not self.stopped_reading_beweg:
             try:
                 if self.i == 0:
-                    # sollte etwas anderes als 5 gelesen werden, so soll die Lese-Methode nochmal aufgerufen werden
                     data = self.read_from_beweg()
                     if data is None:             
                         data = self.read_from_beweg()
@@ -150,44 +146,31 @@ class Frm_main(QMainWindow, Ui_StartWindow):
                     if data == 0:
                         data = self.read_from_beweg()
 
-                    # Bewegmechanismus in Nullposition - Daten Senden
                     if data == 5 and not self.data_sent:
                         self.data_sent = True
                         print("5 erhalten")
-                        
-                        # B E W E G M E C H A N I S M U S
-                        # senden: 1 um Bewegmechanismus zu zeigen, dass es um den ersten Wert (als Denaturierung definiert) geht
-                        self.write_to_beweg(1) 
-                        self.write_to_beweg(self.frm_zeitDef.value_denat_gesamt)  # senden des Wertes der Denaturierung
+                        self.i += 1
+                        print(self.i)
+                        # Hier könnten Sie die gewünschten Daten an den Slave senden
+                        self.write_to_beweg(1)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
+                        self.write_to_beweg(self.frm_zeitDef.value_denat_gesamt)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
+                        self.write_to_beweg(2)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
+                        self.write_to_beweg(self.frm_zeitDef.value_aneal_gesamt)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
+                        self.write_to_beweg(3)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
+                        self.write_to_beweg(self.frm_zeitDef.value_elong_gesamt)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
 
-                        # senden: 2 um Bewegmechanismus zu zeigen, dass es um den zweiten Wert (als Annealing definiert) geht
-                        self.write_to_beweg(2)  
-                        self.write_to_beweg(self.frm_zeitDef.value_aneal_gesamt)  # senden des Wertes von Annealing
-
-                        # senden: 3 um Bewegmechanismus zu zeigen, dass es um den dritten Wert (als Elongation definiert) geht
-                        self.write_to_beweg(3)  
-                        self.write_to_beweg(self.frm_zeitDef.value_elong_gesamt)  # senden des Wertes der Elongation
-
-                        # R E G E L K R E I S
-                        # senden: 1 um Bewegmechanismus zu zeigen, dass es um den ersten Wert (als Denaturierung definiert) geht       
-                        self.bus.write_byte(self.temp_address, 1) 
-                        self.bus.write_byte(self.temp_address, self.frm_tempDef.value_denat) # senden des Wertes der Denaturierung
-
-                        # senden: 2 um Bewegmechanismus zu zeigen, dass es um den zweiten Wert (als Annealing definiert) geht
-                        self.bus.write_byte(self.temp_address, 2) 
-                        self.bus.write_byte(self.temp_address, self.frm_tempDef.value_aneal) # senden des Wertes von Annealing
-
-                        # senden: 3 um Bewegmechanismus zu zeigen, dass es um den dritten Wert (als Elongation definiert) geht
-                        self.bus.write_byte(self.temp_address, 3) 
-                        self.bus.write_byte(self.temp_address, self.frm_tempDef.value_elong) # senden des Wertes der Elongation
+                        self.bus.write_byte(self.temp_address, 1)
+                        self.bus.write_byte(self.temp_address, self.frm_tempDef.value_denat)
+                        self.bus.write_byte(self.temp_address, 2)
+                        self.bus.write_byte(self.temp_address, self.frm_tempDef.value_aneal)
+                        self.bus.write_byte(self.temp_address, 3)
+                        self.bus.write_byte(self.temp_address, self.frm_tempDef.value_elong)
 
                         self.stopped_reading_beweg = True  # Leseprozess stoppen
-                        data = 0
                     
             except Exception as e:
                 print(f"Fehler beim Lesen von Daten vom Slave: {str(e)}")
 
-    # An Bewegmechanismus schreiben
     def write_to_beweg(self, data):
         try:
             # Schreibe Daten an den Slave
@@ -196,7 +179,6 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         except Exception as e:
             print(f"Fehler beim Senden von Daten an den Slave: {str(e)}")
 
-    # Von Bewegmechanismus lesen
     def read_from_beweg(self):
         try:
             # Lese Daten vom Slave
@@ -205,14 +187,12 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         except Exception as e:
             print(f"Fehler")
 
-    # Von Regelkreis lesen
     def read_from_temp(self):
         self.data = []
         for _ in range(3):  # Wir erwarten 3 Datenpunkte (temp_denat, temp_aneal, temp_elong)
             self.data.append(self.bus.read_byte(self.temp_address))
         return self.data
     
-    # An Regelkreis schreiben
     def write_to_temp(self, data):
         try:
             # Schreibe Daten an den Slave
@@ -222,6 +202,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
 
 
     def phasen_Ablauf(self):
+        self.frm_ww.hide()
         self.timer.start()
 
         # Verbindung des Kontroll-Knopfes mit der Methode kontroll_Erklaerung 
@@ -231,14 +212,11 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.frm_asens.btn_Kontrolle.clicked.connect(self.kontroll_Erklaerung)
         self.frm_elong.btn_Kontrolle.clicked.connect(self.kontroll_Erklaerung)
         
-        # Kontrollknopf gedrück
         if self.phasen_running == False:
-            self.timer.stop() # Timer stoppen
-            self.frm_kontanspruch.showFullScreen() # Fenster Kontrollansprüche ausgeben
+            self.timer.stop()
+            self.frm_kontanspruch.showFullScreen()
 
-        # Kontrollknopf nicht gedrückt
         else:
-            # Gibt Bewegmechanismus Startsignal
             self.write_to_beweg(4)
             self.run_phasen_Ablauf()
             
@@ -246,9 +224,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
             
             self.DL_counter += 1 
             
-            # Zählt bei jedem Zyklus um 1 nach oben
             self.DL_zaehler_value += 1  
-            # Durchlaufsanzahl am Display ausgeben
             self.frm_denat.update_DL_zaehler(self.DL_zaehler_value)
             self.frm_aneal.update_DL_zaehler(self.DL_zaehler_value)
             self.frm_sens.update_DL_zaehler(self.DL_zaehler_value)
@@ -264,7 +240,6 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         seconds = self.seconds % 60
 
         # Count Up Timer - Zeit zählt nach oben
-        # gibt am jeweiligen Display aus
         self.frm_denat.Timer_zaehler.display(f"{hours:02d}:{minutes:02d}:{seconds:02d}")
         self.frm_aneal.Timer_zaehler.display(f"{hours:02d}:{minutes:02d}:{seconds:02d}")
         self.frm_sens.Timer_zaehler.display(f"{hours:02d}:{minutes:02d}:{seconds:02d}")
@@ -274,13 +249,11 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         
         # Daten vom Arduino lesen
         temp_received = self.read_from_temp()
-        
-        # von Regelkreis gelesene Daten ihren VAriablen zuordnen
+
         self.frm_denat.temp_denat = temp_received[0] 
         self.frm_aneal.temp_aneal = temp_received[1] 
         self.frm_elong.temp_elong = temp_received[2] 
         
-        # Ausgeben der gemessenen Daten  auf den Displays
         self.frm_denat.temp_sensD.display(self.frm_denat.temp_denat)
         self.frm_aneal.temp_sensA.display(self.frm_aneal.temp_aneal)
         self.frm_sens.temp_sensA.display(self.frm_aneal.temp_aneal)
@@ -292,7 +265,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         # liegt dazwischen: Methode show() auf dem phase-Objekt wird aufgerufen
         # liegt nicht dazwischen: Methode hide() wird aufgerufen
         # start und end mit check_and_show definiert
-        # phase-Objekt erkennt anhand check_and_show was ausgefürht werden muss
+        # phase-Pbjekt erkennt anhand check_and_show was ausgefürht werden muss
         def check_and_show(phase, start, end):
             if start < self.phaseCount <= end:
                 phase.showFullScreen()
@@ -355,9 +328,9 @@ class Frm_main(QMainWindow, Ui_StartWindow):
             VALUES 
             ("Temperatur in °C", %s, %s, %s),
             ("Dauer in sek", %s, %s, %s)
-            update_phasen = """
+            """
             self.cursor_phasen.execute(insert_phasen, (self.frm_denat.temp_denat, self.frm_aneal.temp_aneal, self.frm_elong.temp_elong, self.frm_zeitDef.value_denat, self.frm_zeitDef.value_aneal_gesamt, self.frm_zeitDef.value_elong_gesamt))
-           
+
             # INSERT INTO-Anweisung für Messwerte
             insert_dl = """
             INSERT INTO Durchlauf (Kategorie, Anzahl)
@@ -368,19 +341,27 @@ class Frm_main(QMainWindow, Ui_StartWindow):
 
             # Daten aus Tabelle 'PhasenWerte' abrufen
             self.cursor_phasen.execute("SELECT * FROM PhasenWerte")
+            self.cursor_phasen.execute("ORDER BY ID DESC")
+            self.cursor_phasen.execute("LIMIT(4)")
             result_phasen = self.cursor_phasen.fetchall()
 
             # Daten aus Tabelle 'Messwerte' abrufen
             self.cursor_mess1.execute("SELECT * FROM Messwerte1")
+            self.cursor_phasen.execute("ORDER BY ID DESC")
+            self.cursor_phasen.execute("LIMIT(4)")
             result_messwerte1 = self.cursor_mess1.fetchall()
 
             
             # Daten aus Tabelle 'Messwerte' abrufen
             self.cursor_mess2.execute("SELECT * FROM Messwerte2")
+            self.cursor_phasen.execute("ORDER BY ID DESC")
+            self.cursor_phasen.execute("LIMIT(4)")
             result_messwerte2 = self.cursor_mess2.fetchall()
 
             # Daten aus Tabelle 'Messwerte' abrufen
             self.cursor_dl.execute("SELECT * FROM Durchlauf")
+            self.cursor_phasen.execute("ORDER BY ID DESC")
+            self.cursor_phasen.execute("LIMIT(1)")
             result_dl = self.cursor_dl.fetchall()
 
             # Ergebnisse in tbl_phasen einfügen
@@ -428,9 +409,6 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.frm_zeitDef.wasserDauer_denat.setValue(35)
         self.frm_zeitDef.wasserDauer_aneal.setValue(45)
         self.frm_zeitDef.wasserDauer_elong.setValue(40)
-        self.frm_tempDef.wasserTemp_denat.setValue(96)
-        self.frm_tempDef.wasserTemp_aneal.setValue(57)
-        self.frm_tempDef.wasserTemp_elong.setValue(70)
 
     def shutDown(self):
         # Rock herunterfahren
@@ -438,14 +416,11 @@ class Frm_main(QMainWindow, Ui_StartWindow):
 
     def kontanspruch(self):
         self.posiRight = False
-
-        # Verarbeiten von gelesenen Daten des Detektors
+      
         while not self.posiRight:
             n = self.read_from_detect()
             # Nur Daten vom Slave lesen, wenn der Leseprozess nicht gestoppt wurde
             data_sent = False
-
-            # wenn etwas anderes als 5 (Nullposition) gelesen wird, so soll die Lese-Methode wieder aufgerufen werden
             if n is None:             
                 n = self.read_from_detect()
 
@@ -470,12 +445,20 @@ class Frm_main(QMainWindow, Ui_StartWindow):
                 self.frm_kont.p7 = data_received[6] 
                 self.frm_kont.p8 = data_received[7]
 
-                n = 0
+                # Die erhaltenen Daten anzeigen
+                # print("Messergebnis")
+                # print("Probe1:", self.frm_kont.p1)
+                # print("Probe2:", self.frm_kont.p2)
+                # print("Probe3:", self.frm_kont.p3)
+                # print("Probe4:", self.frm_kont.p4)
+                # print("Probe5:", self.frm_kont.p5)
+                # print("Probe6:", self.frm_kont.p6)
+                # print("Probe7:", self.frm_kont.p7)
+                # print("Probe8:", self.frm_kont.p8)
 
         self.frm_kont.showFullScreen()
         self.frm_kontanspruch.hide()
         
-        # Ergebnisse in Datenbank schreiben und ausgeben
         self.frm_kont.tbl_mess1.setColumnCount(2)  # Zwei Spalten
         self.frm_kont.tbl_mess1.setHorizontalHeaderLabels(["Probe", "Lichtintensität"])
         self.frm_kont.tbl_mess2.setColumnCount(2)  # Zwei Spalten
@@ -502,15 +485,20 @@ class Frm_main(QMainWindow, Ui_StartWindow):
                 ("P7 in Lumen", %s),
                 ("P8 in Lumen", %s)
                 """
+
                 self.cursor_mess2.execute(insert_messwerte2, (self.frm_kont.p5, self.frm_kont.p6, self.frm_kont.p7, self.frm_kont.p8))
 
                 # Daten aus Tabelle 'Messwerte' abrufen
                 self.cursor_mess1.execute("SELECT * FROM Messwerte1")
+                self.cursor_phasen.execute("ORDER BY ID DESC")
+                self.cursor_phasen.execute("LIMIT(4)")
                 result_messwerte1 = self.cursor_mess1.fetchall()
 
                 
                 # Daten aus Tabelle 'Messwerte' abrufen
                 self.cursor_mess2.execute("SELECT * FROM Messwerte2")
+                self.cursor_phasen.execute("ORDER BY ID DESC")
+                self.cursor_phasen.execute("LIMIT(4)")
                 result_messwerte2 = self.cursor_mess2.fetchall()
 
                 # Ergebnisse in tbl_messwerte einfügen
@@ -532,7 +520,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
                 print("Fehler: {}".format(str(o)))
 
 
-    # vom Detektor lesen - Messwerte
+    # Funktion zum Lesen von Daten vom Arduino
     def read_data(self):
         data = []
         i = 0
@@ -545,12 +533,12 @@ class Frm_main(QMainWindow, Ui_StartWindow):
             print(i)
             time.sleep(1)
             
+            
         for _ in range(8):  # Wir erwarten 3 Datenpunkte (temp_denat, temp_aneal, temp_elong)
             data.append(self.bus.read_byte(self.detect_address))
             
         return data
-    
-    # von Detektor lesen - Nullposition
+
     def read_from_detect(self):
         try:
             # Lese Daten vom Slave

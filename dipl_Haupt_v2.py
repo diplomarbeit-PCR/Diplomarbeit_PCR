@@ -320,6 +320,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
             # Tabelle 'PhasenWerte' erstellen, falls nicht vorhanden
             create_table_phasen = """
             CREATE TABLE IF NOT EXISTS PhasenWerte (
+                id INT AUTOINCREMENT NOT NULL PRIMARY KEY,
                 Kategorien VARCHAR(50),
                 Denaturierung DECIMAL(5,2),
                 Annealing DECIMAL(5,2),
@@ -332,6 +333,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
             # Tabelle 'Messwerte' erstellen, falls nicht vorhanden
             create_table_messwert = """
             CREATE TABLE IF NOT EXISTS Messwerte (
+                id INT AUTOINCREMENT NOT NULL PRIMARY KEY,id INT AUTOINCREMENT NOT NULL PRIMARY KEY,
                 Kategorien VARCHAR(50),
                 Anzahl DECIMAL(5,2)
             )
@@ -360,10 +362,14 @@ class Frm_main(QMainWindow, Ui_StartWindow):
 
             # Daten aus Tabelle 'PhasenWerte' abrufen
             self.cursor_phasen.execute("SELECT * FROM PhasenWerte")
+            self.cursor_phasen.execute("ORDER BY id DESC")
+            self.cursor_phasen.execute("LIMIT(1)")
             result_phasen = self.cursor_phasen.fetchall()
 
             # Daten aus Tabelle 'Messwerte' abrufen
             self.cursor_mess.execute("SELECT * FROM Messwerte")
+            self.cursor_phasen.execute("ORDER BY id DESC")
+            self.cursor_phasen.execute("LIMIT(1)")
             result_messwerte = self.cursor_mess.fetchall()
 
             # Ergebnisse in tbl_phasen einfügen
