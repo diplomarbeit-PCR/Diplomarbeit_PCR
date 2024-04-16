@@ -343,11 +343,11 @@ class Frm_main(QMainWindow, Ui_StartWindow):
             result_phasen = self.cursor_phasen.fetchall()
 
             # Daten aus Tabelle 'Messwerte' abrufen
-            self.cursor_mess1.execute("SELECT * FROM Messwerte1 ODER BY ID DESC LIMIT 4")
+            self.cursor_mess1.execute("SELECT * FROM Messwerte1 ODER BY ID DESC LIMIT 41")
             result_messwerte1 = self.cursor_mess1.fetchall()
 
             # Daten aus Tabelle 'Messwerte' abrufen
-            self.cursor_mess2.execute("SELECT * FROM Messwerte2 ODER BY ID DESC LIMIT 4")
+            self.cursor_mess2.execute("SELECT * FROM Messwerte2 ODER BY ID DESC LIMIT 42")
             result_messwerte2 = self.cursor_mess2.fetchall()
 
             # Daten aus Tabelle 'Messwerte' abrufen
@@ -479,12 +479,12 @@ class Frm_main(QMainWindow, Ui_StartWindow):
                 self.cursor_mess2.execute(insert_messwerte2, (self.frm_kont.p5, self.frm_kont.p6, self.frm_kont.p7, self.frm_kont.p8))
 
                 # Daten aus Tabelle 'Messwerte' abrufen
-                self.cursor_mess1.execute("SELECT * FROM Messwerte1 ODER BY ID DESC LIMIT 4")
+                self.cursor_mess1.execute("SELECT * FROM Messwerte1 ODER BY ID DESC LIMIT 43")
                 result_messwerte1 = self.cursor_mess1.fetchall()
 
                 
                 # Daten aus Tabelle 'Messwerte' abrufen
-                self.cursor_mess2.execute("SELECT * FROM Messwerte2 ODER BY ID DESC LIMIT 4")
+                self.cursor_mess2.execute("SELECT * FROM Messwerte2 ODER BY ID DESC LIMIT 44")
                 result_messwerte2 = self.cursor_mess2.fetchall()
 
                 # Ergebnisse in tbl_messwerte einfügen
