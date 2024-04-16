@@ -153,7 +153,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
                         print(self.i)
                         # Hier könnten Sie die gewünschten Daten an den Slave senden
                         self.write_to_beweg(1)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
-                        self.write_to_beweg(self.frm_zeitDef.value_denat_gesamt)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
+                        self.write_to_beweg(self.frm_zeitDef.value_denat)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
                         self.write_to_beweg(2)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
                         self.write_to_beweg(self.frm_zeitDef.value_aneal_gesamt)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
                         self.write_to_beweg(3)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
@@ -230,13 +230,6 @@ class Frm_main(QMainWindow, Ui_StartWindow):
             self.frm_sens.update_DL_zaehler(self.DL_zaehler_value)
             self.frm_asens.update_DL_zaehler(self.DL_zaehler_value)
             self.frm_elong.update_DL_zaehler(self.DL_zaehler_value)
-            
-            # Daten vom Arduino lesen
-            temp_received = self.read_from_temp()
-
-            self.frm_denat.temp_denat = temp_received[0] 
-            self.frm_aneal.temp_aneal = temp_received[1] 
-            self.frm_elong.temp_elong = temp_received[2] 
     
     def run_phasen_Ablauf(self):
         self.timer.start(1000)  # Timer feuert alle 1000 Millisekunden (1 Sekunde)
@@ -252,6 +245,14 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.frm_sens.Timer_zaehler.display(f"{hours:02d}:{minutes:02d}:{seconds:02d}")
         self.frm_asens.Timer_zaehler.display(f"{hours:02d}:{minutes:02d}:{seconds:02d}")
         self.frm_elong.Timer_zaehler.display(f"{hours:02d}:{minutes:02d}:{seconds:02d}")
+
+        
+        # Daten vom Arduino lesen
+        temp_received = self.read_from_temp()
+
+        self.frm_denat.temp_denat = temp_received[0] 
+        self.frm_aneal.temp_aneal = temp_received[1] 
+        self.frm_elong.temp_elong = temp_received[2] 
         
         self.frm_denat.temp_sensD.display(self.frm_denat.temp_denat)
         self.frm_aneal.temp_sensA.display(self.frm_aneal.temp_aneal)
@@ -332,26 +333,27 @@ class Frm_main(QMainWindow, Ui_StartWindow):
 
             # INSERT INTO-Anweisung für Messwerte
             insert_dl = """
-            INSERT INTO Durchlauf (Kategorien, Anzahl)
+            INSERT INTO Durchlauf (Kategorie, Anzahl)
             VALUES 
             ("Durchlauf", %s)
             """
             self.cursor_dl.execute(insert_dl, (self.DL_zaehler_value))
 
             # Daten aus Tabelle 'PhasenWerte' abrufen
-            self.cursor_phasen.execute("SELECT * FROM PhasenWerte ORDER BY ID DESC LIMIT(2)")
+            self.cursor_phasen.execute("SELECT * FROM PhasenWerte")
             result_phasen = self.cursor_phasen.fetchall()
 
             # Daten aus Tabelle 'Messwerte' abrufen
-            self.cursor_mess1.execute("SELECT * FROM Messwerte1 ODER BY ID DESC LIMIT(4)")
+            self.cursor_mess1.execute("SELECT * FROM Messwerte1")
             result_messwerte1 = self.cursor_mess1.fetchall()
 
+            
             # Daten aus Tabelle 'Messwerte' abrufen
-            self.cursor_mess2.execute("SELECT * FROM Messwerte2 ODER BY ID DESC LIMIT(4)")
+            self.cursor_mess2.execute("SELECT * FROM Messwerte2")
             result_messwerte2 = self.cursor_mess2.fetchall()
 
             # Daten aus Tabelle 'Messwerte' abrufen
-            self.cursor_dl.execute("SELECT * FROM Durchlauf ORDER BY ID DESC LIMIT(1)")
+            self.cursor_dl.execute("SELECT * FROM Durchlauf")
             result_dl = self.cursor_dl.fetchall()
 
             # Ergebnisse in tbl_phasen einfügen
@@ -450,14 +452,14 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.frm_kontanspruch.hide()
         
         self.frm_kont.tbl_mess1.setColumnCount(2)  # Zwei Spalten
-        self.frm_kont.tbl_mess1.setHorizontalHeaderLabels(["Proben", "Lichtintensität"])
+        self.frm_kont.tbl_mess1.setHorizontalHeaderLabels(["Probe", "Lichtintensität"])
         self.frm_kont.tbl_mess2.setColumnCount(2)  # Zwei Spalten
-        self.frm_kont.tbl_mess2.setHorizontalHeaderLabels(["Proben", "Lichtintensität"])
+        self.frm_kont.tbl_mess2.setHorizontalHeaderLabels(["Probe", "Lichtintensität"])
 
         try:
                 # INSERT INTO-Anweisung für Messwerte
                 insert_messwerte1 = """
-                INSERT INTO Messwerte1 (Proben, Lichtstärke)
+                INSERT INTO Messwerte1 (Probe, Lichtstärke)
                 VALUES 
                 ("P1 in Lumen", %s),
                 ("P2 in Lumen", %s),
@@ -468,7 +470,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
 
                 # INSERT INTO-Anweisung für Messwerte
                 insert_messwerte2 = """
-                INSERT INTO Messwerte2 (Proben, Lichtstärke)
+                INSERT INTO Messwerte2 (Probe, Lichtstärke)
                 VALUES 
                 ("P5 in Lumen", %s),
                 ("P6 in Lumen", %s),
@@ -479,12 +481,12 @@ class Frm_main(QMainWindow, Ui_StartWindow):
                 self.cursor_mess2.execute(insert_messwerte2, (self.frm_kont.p5, self.frm_kont.p6, self.frm_kont.p7, self.frm_kont.p8))
 
                 # Daten aus Tabelle 'Messwerte' abrufen
-                self.cursor_mess1.execute("SELECT * FROM Messwerte1 ODER BY ID DESC LIMIT(4)")
+                self.cursor_mess1.execute("SELECT * FROM Messwerte1")
                 result_messwerte1 = self.cursor_mess1.fetchall()
 
                 
                 # Daten aus Tabelle 'Messwerte' abrufen
-                self.cursor_mess2.execute("SELECT * FROM Messwerte2 ODER BY ID DESC LIMIT(4)")
+                self.cursor_mess2.execute("SELECT * FROM Messwerte2")
                 result_messwerte2 = self.cursor_mess2.fetchall()
 
                 # Ergebnisse in tbl_messwerte einfügen
