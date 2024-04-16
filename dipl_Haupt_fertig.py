@@ -230,6 +230,13 @@ class Frm_main(QMainWindow, Ui_StartWindow):
             self.frm_sens.update_DL_zaehler(self.DL_zaehler_value)
             self.frm_asens.update_DL_zaehler(self.DL_zaehler_value)
             self.frm_elong.update_DL_zaehler(self.DL_zaehler_value)
+            
+            # Daten vom Arduino lesen
+            temp_received = self.read_from_temp()
+
+            self.frm_denat.temp_denat = temp_received[0] 
+            self.frm_aneal.temp_aneal = temp_received[1] 
+            self.frm_elong.temp_elong = temp_received[2] 
     
     def run_phasen_Ablauf(self):
         self.timer.start(1000)  # Timer feuert alle 1000 Millisekunden (1 Sekunde)
@@ -245,14 +252,6 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.frm_sens.Timer_zaehler.display(f"{hours:02d}:{minutes:02d}:{seconds:02d}")
         self.frm_asens.Timer_zaehler.display(f"{hours:02d}:{minutes:02d}:{seconds:02d}")
         self.frm_elong.Timer_zaehler.display(f"{hours:02d}:{minutes:02d}:{seconds:02d}")
-
-        
-        # Daten vom Arduino lesen
-        temp_received = self.read_from_temp()
-
-        self.frm_denat.temp_denat = temp_received[0] 
-        self.frm_aneal.temp_aneal = temp_received[1] 
-        self.frm_elong.temp_elong = temp_received[2] 
         
         self.frm_denat.temp_sensD.display(self.frm_denat.temp_denat)
         self.frm_aneal.temp_sensA.display(self.frm_aneal.temp_aneal)

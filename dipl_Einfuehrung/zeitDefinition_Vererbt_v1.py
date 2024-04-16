@@ -168,7 +168,7 @@ class Frm_zeitDef(QMainWindow, Ui_zeitDef_Voraus):
         # neuer Wert wird in der Instanz-Variable value_elong gespeichert
         # Instanz-Variable wird mit dem jeweils vorherigen Wert addiert, um sicherzustellen, dass sie alle nach einander ablaufen
         self.value_elong_gesamt = self.wasserDauer_elong.value()
-        self.value_elong = self.wasserDauer_elong.value() + self.value_asens +30
+        self.value_elong = self.wasserDauer_elong.value() + self.value_asens +0
         # neuer Wert wird ausgegeben
         print(f"ElongWert: {value}")
 
