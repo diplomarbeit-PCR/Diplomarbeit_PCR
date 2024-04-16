@@ -133,11 +133,11 @@ class Frm_zeitDef(QMainWindow, Ui_zeitDef_Voraus):
         self.setupUi(self)
 
         # Standardwerte setzen
-        self.value_denat = 35 + 12
-        self.value_aneal = 45 * (1/3) + self.value_denat + 12
+        self.value_denat = 35 + 14
+        self.value_aneal = 45 * (1/3) + self.value_denat + 11
         self.value_sens = 45 * (1/3) + self.value_aneal
         self.value_asens = 45 * (1/3) + self.value_sens
-        self.value_elong = 40 + self.value_asens + 30
+        self.value_elong = 40 + self.value_asens + 38
         self.value_denat_gesamt = 35
         self.value_aneal_gesamt = 45
         self.value_elong_gesamt = 40
@@ -150,7 +150,7 @@ class Frm_zeitDef(QMainWindow, Ui_zeitDef_Voraus):
     def Value_Denat_change(self, value):
         # neuer Wert wird in der Instanz-Variable value_denat gespeichert
         self.value_denat_gesamt = self.wasserDauer_denat.value()
-        self.value_denat = self.wasserDauer_denat.value() +12
+        self.value_denat = self.wasserDauer_denat.value() +14
         # neuer Wert wird ausgegeben
         print(f"DenatWert: {value}")
 
@@ -158,7 +158,7 @@ class Frm_zeitDef(QMainWindow, Ui_zeitDef_Voraus):
         # neuer Wert wird durch 3 geteilt und in den Instanz-Variablen gespeichert
         # Instanz-Variable wird mit dem jeweils vorherigen Wert addiert, um sicherzustellen, dass sie alle nach einander ablaufen
         self.value_aneal_gesamt = self.wasserDauer_aneal.value()
-        self.value_aneal = self.wasserDauer_aneal.value() * (1/3) + self.value_denat +12
+        self.value_aneal = self.wasserDauer_aneal.value() * (1/3) + self.value_denat +11
         self.value_sens = self.wasserDauer_aneal.value() * (1/3) + self.value_aneal
         self.value_asens = self.wasserDauer_aneal.value() * (1/3) + self.value_sens
         # der orgiginal Wert (bevor 3-facher Teilung) wird ausgegeben
@@ -168,7 +168,7 @@ class Frm_zeitDef(QMainWindow, Ui_zeitDef_Voraus):
         # neuer Wert wird in der Instanz-Variable value_elong gespeichert
         # Instanz-Variable wird mit dem jeweils vorherigen Wert addiert, um sicherzustellen, dass sie alle nach einander ablaufen
         self.value_elong_gesamt = self.wasserDauer_elong.value()
-        self.value_elong = self.wasserDauer_elong.value() + self.value_asens +0
+        self.value_elong = self.wasserDauer_elong.value() + self.value_asens +28
         # neuer Wert wird ausgegeben
         print(f"ElongWert: {value}")
 
