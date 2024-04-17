@@ -487,7 +487,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
 
                 
                 # Daten aus Tabelle 'Messwerte' abrufen
-                self.cursor_mess2.execute("SELECT Proben, Lichstärke FROM Messwerte2 LIMIT 4")
+                self.cursor_mess2.execute("SELECT Proben, Lichtstärke FROM Messwerte2 LIMIT 4")
                 result_messwerte2 = self.cursor_mess2.fetchall()
 
                 # Ergebnisse in tbl_messwerte einfügen
