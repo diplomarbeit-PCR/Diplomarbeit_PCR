@@ -330,7 +330,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
             """
             self.cursor_phasen.execute(insert_phasen, (self.frm_denat.temp_denat, self.frm_aneal.temp_aneal, self.frm_elong.temp_elong, self.frm_zeitDef.value_denat, self.frm_zeitDef.value_aneal_gesamt, self.frm_zeitDef.value_elong_gesamt))
 
-            self.cursor_phasen.execute("""INSERT INTO PhasenWerte (Kategorien, Denaturierung, Annealing, Elongation) VALUES ("foo", 11, 22, 33),  ("bat", 55, 66, 77)""")
+           # self.cursor_phasen.execute("""INSERT INTO PhasenWerte (Kategorien, Denaturierung, Annealing, Elongation) VALUES ("foo", 11, 22, 33),  ("bat", 55, 66, 77)""")
             
 
             # INSERT INTO-Anweisung für Messwerte
@@ -342,19 +342,19 @@ class Frm_main(QMainWindow, Ui_StartWindow):
             self.cursor_dl.execute(insert_dl, (self.DL_zaehler_value))
 
             # Daten aus Tabelle 'PhasenWerte' abrufen)
-            self.cursor_phasen.execute("SELECT * FROM PhasenWerte ORDER BY ID DESC LIMIT 2")
+            self.cursor_phasen.execute("SELECT Kategorien, Denaturierung, Annealing, Elongation FROM PhasenWerte ORDER BY ID DESC LIMIT 2")
             result_phasen = self.cursor_phasen.fetchall()
 
             # Daten aus Tabelle 'Messwerte' abrufen
-            self.cursor_mess1.execute("SELECT * FROM Messwerte1 ORDER BY ID DESC LIMIT 41")
+            self.cursor_mess1.execute("SELECT Proben, Lichtstärke FROM Messwerte1 ORDER BY ID DESC LIMIT 41")
             result_messwerte1 = self.cursor_mess1.fetchall()
 
             # Daten aus Tabelle 'Messwerte' abrufen
-            self.cursor_mess2.execute("SELECT * FROM Messwerte2 ORDER BY ID DESC LIMIT 42")
+            self.cursor_mess2.execute("SELECT Proben, Lichtstärke FROM Messwerte2 ORDER BY ID DESC LIMIT 42")
             result_messwerte2 = self.cursor_mess2.fetchall()
 
-            # Daten aus Tabelle 'Messwerte' abrufen
-            self.cursor_dl.execute("SELECT * FROM Durchlauf ORDER BY ID DESC LIMIT 1")
+            # Daten aus Tabelle 'Durchlauf' abrufen
+            self.cursor_dl.execute("SELECT Kategorien, Anzahl FROM Durchlauf ORDER BY ID DESC LIMIT 1")
             result_dl = self.cursor_dl.fetchall()
 
             # Ergebnisse in tbl_phasen einfügen
