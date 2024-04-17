@@ -230,13 +230,6 @@ class Frm_main(QMainWindow, Ui_StartWindow):
             self.frm_sens.update_DL_zaehler(self.DL_zaehler_value)
             self.frm_asens.update_DL_zaehler(self.DL_zaehler_value)
             self.frm_elong.update_DL_zaehler(self.DL_zaehler_value)
-            
-            # Daten vom Arduino lesen
-            temp_received = self.read_from_temp()
-
-            self.frm_denat.temp_denat = temp_received[0] 
-            self.frm_aneal.temp_aneal = temp_received[1] 
-            self.frm_elong.temp_elong = temp_received[2] 
     
     def run_phasen_Ablauf(self):
         self.timer.start(1000)  # Timer feuert alle 1000 Millisekunden (1 Sekunde)
@@ -258,6 +251,13 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.frm_sens.temp_sensA.display(self.frm_aneal.temp_aneal)
         self.frm_asens.temp_sensA.display(self.frm_aneal.temp_aneal)
         self.frm_elong.temp_sensE.display(self.frm_elong.temp_elong)
+
+        # Daten vom Arduino lesen
+        temp_received = self.read_from_temp()
+
+        self.frm_denat.temp_denat = temp_received[0] 
+        self.frm_aneal.temp_aneal = temp_received[1] 
+        self.frm_elong.temp_elong = temp_received[2] 
         
         # Funktion - nimmt drei Parameter entgegen: phase, start und end
         # überprüft, dass self.phaseCount zwischen start und end (einschließlich start und ausschließlich end) liegt
@@ -342,19 +342,19 @@ class Frm_main(QMainWindow, Ui_StartWindow):
             self.cursor_dl.execute(insert_dl, (self.DL_zaehler_value))
 
             # Daten aus Tabelle 'PhasenWerte' abrufen)
-            self.cursor_phasen.execute("SELECT Kategorien, Denaturierung, Annealing, Elongation FROM PhasenWerte ORDER BY ID DESC LIMIT 2")
+            self.cursor_phasen.execute("SELECT Kategorien, Denaturierung, Annealing, Elongation FROM PhasenWerte LIMIT 2")
             result_phasen = self.cursor_phasen.fetchall()
 
             # Daten aus Tabelle 'Messwerte' abrufen
-            self.cursor_mess1.execute("SELECT Proben, Lichtstärke FROM Messwerte1 ORDER BY ID DESC LIMIT 4")
+            self.cursor_mess1.execute("SELECT Proben, Lichtstärke FROM Messwerte1 LIMIT 4")
             result_messwerte1 = self.cursor_mess1.fetchall()
 
             # Daten aus Tabelle 'Messwerte' abrufen
-            self.cursor_mess2.execute("SELECT Proben, Lichtstärke FROM Messwerte2 ORDER BY ID DESC LIMIT 4")
+            self.cursor_mess2.execute("SELECT Proben, Lichtstärke FROM Messwerte2 LIMIT 4")
             result_messwerte2 = self.cursor_mess2.fetchall()
 
             # Daten aus Tabelle 'Durchlauf' abrufen
-            self.cursor_dl.execute("SELECT Kategorien, Anzahl FROM Durchlauf ORDER BY ID DESC LIMIT 1")
+            self.cursor_dl.execute("SELECT Kategorien, Anzahl FROM Durchlauf LIMIT 1")
             result_dl = self.cursor_dl.fetchall()
 
             # Ergebnisse in tbl_phasen einfügen
@@ -481,16 +481,13 @@ class Frm_main(QMainWindow, Ui_StartWindow):
 
                 self.cursor_mess2.execute(insert_messwerte2, (self.frm_kont.p5, self.frm_kont.p6, self.frm_kont.p7, self.frm_kont.p8))
 
-                result_messwerte1 = " "
-                result_messwerte2 = " "
-
                 # Daten aus Tabelle 'Messwerte' abrufen
-                self.cursor_mess1.execute("SELECT Proben, Lichtstärke FROM Messwerte1 ORDER BY ID DESC LIMIT 4")
+                self.cursor_mess1.execute("SELECT Proben, Lichtstärke FROM Messwerte1 LIMIT 4")
                 result_messwerte1 = self.cursor_mess1.fetchall()
 
                 
                 # Daten aus Tabelle 'Messwerte' abrufen
-                self.cursor_mess2.execute("SELECT Proben, Lichstärke FROM Messwerte2 ORDER BY ID DESC LIMIT 4")
+                self.cursor_mess2.execute("SELECT Proben, Lichstärke FROM Messwerte2 LIMIT 4")
                 result_messwerte2 = self.cursor_mess2.fetchall()
 
                 # Ergebnisse in tbl_messwerte einfügen
