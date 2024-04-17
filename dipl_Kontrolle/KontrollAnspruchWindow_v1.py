@@ -41,7 +41,7 @@ class Ui_KontrollAnspruch(object):
         self.label.setAlignment(Qt.AlignCenter)
         self.btn_Weiter = QPushButton(self.centralwidget)
         self.btn_Weiter.setObjectName(u"btn_Weiter")
-        self.btn_Weiter.setGeometry(QRect(150, 620, 151, 51))
+        self.btn_Weiter.setGeometry(QRect(170, 620, 151, 51))
         font1 = QFont()
         font1.setFamilies([u"Arial Narrow"])
         font1.setPointSize(20)
