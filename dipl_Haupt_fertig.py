@@ -330,9 +330,6 @@ class Frm_main(QMainWindow, Ui_StartWindow):
             """
             self.cursor_phasen.execute(insert_phasen, (self.frm_denat.temp_denat, self.frm_aneal.temp_aneal, self.frm_elong.temp_elong, self.frm_zeitDef.value_denat, self.frm_zeitDef.value_aneal_gesamt, self.frm_zeitDef.value_elong_gesamt))
 
-           # self.cursor_phasen.execute("""INSERT INTO PhasenWerte (Kategorien, Denaturierung, Annealing, Elongation) VALUES ("foo", 11, 22, 33),  ("bat", 55, 66, 77)""")
-            
-
             # INSERT INTO-Anweisung für Messwerte
             insert_dl = """
             INSERT INTO Durchlauf (Kategorien, Anzahl)
