@@ -48,7 +48,7 @@ class Ui_TempAnspruch(object):
         self.btn_Weiter.setFont(font1)
         self.temp_lbl = QLabel(self.centralwidget)
         self.temp_lbl.setObjectName(u"temp_lbl")
-        self.temp_lbl.setPixmap(QPixmap(r"/home/arog/Diplomarbeit_PCR/dipl_Einfuehrung/LEDUebergang.png"))
+        self.temp_lbl.setPixmap(QPixmap(r"/home/arog/Diplomarbeit_PCR/dipl_Einfuehrung/RotAufGrün.png"))
         self.temp_lbl.setGeometry(QRect(60, 440, 361, 171))
         TempAnspruch.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(TempAnspruch)
