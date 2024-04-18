@@ -307,8 +307,8 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.phasen_running = True   # Starte phasen_Ablauf
         self.phasen_Ablauf()
         self.frm_kont.hide()
-        self.frm_kont.tbl_mess1.clear
-        self.frm_kont.tbl_mess2.clear
+        self.frm_kont.tbl_mess1.clearContents()
+        self.frm_kont.tbl_mess2.clearContents()
 
     def ergebnis(self):
        
@@ -409,12 +409,12 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.frm_zeitDef.wasserDauer_denat.setValue(35)
         self.frm_zeitDef.wasserDauer_aneal.setValue(45)
         self.frm_zeitDef.wasserDauer_elong.setValue(40)
-        self.frm_kont.tbl_mess1.clear
-        self.frm_kont.tbl_mess2.clear
-        self.frm_ergeb.tbl_phasen.clear
-        self.frm_ergeb.tbl_dl.clear
-        self.frm_ergeb.tbl_mess1.clear
-        self.frm_ergeb.tbl_mess2.clear
+        self.frm_kont.tbl_mess1.clearContents()
+        self.frm_kont.tbl_mess2.clearContents()
+        self.frm_ergeb.tbl_phasen.clearContents()
+        self.frm_ergeb.tbl_dl.clearContents()
+        self.frm_ergeb.tbl_mess1.clearContents()
+        self.frm_ergeb.tbl_mess2.clearContents()
 
 
     def shutDown(self):
