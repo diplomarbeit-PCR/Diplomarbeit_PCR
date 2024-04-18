@@ -95,6 +95,21 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.phaseCount = 0
         self.stopped_reading = True
         
+        self.frm_kont.tbl_mess1.setColumnCount(2)  # Zwei Spalten
+        self.frm_kont.tbl_mess1.setHorizontalHeaderLabels(["Proben", "Lichtintensität"])
+        self.frm_kont.tbl_mess2.setColumnCount(2)  # Zwei Spalten
+        self.frm_kont.tbl_mess2.setHorizontalHeaderLabels(["Proben", "Lichtintensität"])
+
+        self.frm_ergeb.tbl_phasen.setColumnCount(4)  # Fünf Spalten
+        self.frm_ergeb.tbl_phasen.setHorizontalHeaderLabels(["Kategorien", "Denaturierung", "Annealing", "Elongation"])
+        self.frm_ergeb.tbl_mess1.setColumnCount(2)  # Zwei Spalten
+        self.frm_ergeb.tbl_mess1.setHorizontalHeaderLabels(["Probe", "Lichtstärke"])
+        self.frm_ergeb.tbl_mess2.setColumnCount(2)  # Zwei Spalten
+        self.frm_ergeb.tbl_mess2.setHorizontalHeaderLabels(["Probe", "Lichtstärke"])
+        self.frm_ergeb.tbl_dl.setColumnCount(2)  # Zwei Spalten
+        self.frm_ergeb.tbl_dl.setHorizontalHeaderLabels(["Kategorie", "Anzahl"])
+
+        
     def erlaubteTemp(self):
         self.frm_voraus.showFullScreen()
         self.hide()
@@ -200,7 +215,6 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         except Exception as e:
             print(f"Fehler beim Senden von Daten an den Slave: {str(e)}")
 
-
     def phasen_Ablauf(self):
         self.frm_ww.hide()
         self.timer.start()
@@ -299,18 +313,10 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.phasen_running = True   # Starte phasen_Ablauf
         self.phasen_Ablauf()
         self.frm_kont.hide()
+        self.frm_kont.tbl_mess1.clearContents()
+        self.frm_kont.tbl_mess2.clearContents()
 
     def ergebnis(self):
-       
-        self.frm_ergeb.tbl_phasen.setColumnCount(4)  # Fünf Spalten
-        self.frm_ergeb.tbl_phasen.setHorizontalHeaderLabels(["Kategorien", "Denaturierung", "Annealing", "Elongation"])
-        self.frm_ergeb.tbl_mess1.setColumnCount(2)  # Zwei Spalten
-        self.frm_ergeb.tbl_mess1.setHorizontalHeaderLabels(["Probe", "Lichtstärke"])
-        self.frm_ergeb.tbl_mess2.setColumnCount(2)  # Zwei Spalten
-        self.frm_ergeb.tbl_mess2.setHorizontalHeaderLabels(["Probe", "Lichtstärke"])
-        self.frm_ergeb.tbl_dl.setColumnCount(2)  # Zwei Spalten
-        self.frm_ergeb.tbl_dl.setHorizontalHeaderLabels(["Kategorie", "Anzahl"])
-
         print("temp_d", self.frm_denat.temp_denat)
         print("temp_a", self.frm_aneal.temp_aneal)
         print("temp_e", self.frm_elong.temp_elong)
@@ -399,6 +405,13 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.frm_zeitDef.wasserDauer_denat.setValue(35)
         self.frm_zeitDef.wasserDauer_aneal.setValue(45)
         self.frm_zeitDef.wasserDauer_elong.setValue(40)
+        self.frm_kont.tbl_mess1.clearContents()
+        self.frm_kont.tbl_mess2.clearContents()
+        self.frm_ergeb.tbl_phasen.clearContents()
+        self.frm_ergeb.tbl_dl.clearContents()
+        self.frm_ergeb.tbl_mess1.clearContents()
+        self.frm_ergeb.tbl_mess2.clearContents()
+
 
     def shutDown(self):
         # Rock herunterfahren
@@ -448,11 +461,6 @@ class Frm_main(QMainWindow, Ui_StartWindow):
 
         self.frm_kont.showFullScreen()
         self.frm_kontanspruch.hide()
-        
-        self.frm_kont.tbl_mess1.setColumnCount(2)  # Zwei Spalten
-        self.frm_kont.tbl_mess1.setHorizontalHeaderLabels(["Proben", "Lichtintensität"])
-        self.frm_kont.tbl_mess2.setColumnCount(2)  # Zwei Spalten
-        self.frm_kont.tbl_mess2.setHorizontalHeaderLabels(["Proben", "Lichtintensität"])
 
         try:
                 # INSERT INTO-Anweisung für Messwerte
