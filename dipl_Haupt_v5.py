@@ -232,6 +232,15 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.frm_tempanspruch.temp_denat_kont = temp_received_kont[0] 
         self.frm_tempanspruch.temp_aneal_kont = temp_received_kont[1] 
         self.frm_tempanspruch.temp_elong_kont = temp_received_kont[2] 
+
+        self.frm_tempanspruch.wasserTemp_denat.display(self.frm_tempanspruch.temp_denat_kont)
+        self.frm_tempanspruch.wasserTemp_aneal.display(self.frm_tempanspruch.temp_aneal_kont)
+        self.frm_tempanspruch.wasserTemp_elong.display(self.frm_tempanspruch.temp_elong_kont)
+
+        self.temperaturen = [self.frm_tempDef.value_denat, self.frm_tempDef.value_aneal, self.frm_tempDef.value_elong]
+
+        self.frm_tempanspruch.lbl_tempdef.setText(str(self.temperaturen))
+
         self.frm_tempanspruch.showFullScreen()
 
     def phasen_Ablauf(self):
@@ -278,19 +287,19 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.frm_sens.Timer_zaehler.display(f"{hours:02d}:{minutes:02d}:{seconds:02d}")
         self.frm_asens.Timer_zaehler.display(f"{hours:02d}:{minutes:02d}:{seconds:02d}")
         self.frm_elong.Timer_zaehler.display(f"{hours:02d}:{minutes:02d}:{seconds:02d}")
+
+         # Daten vom Arduino lesen
+        temp_received = self.read_from_temp()
+
+        self.frm_denat.temp_denat = temp_received[0] 
+        self.frm_aneal.temp_aneal = temp_received[1] 
+        self.frm_elong.temp_elong = temp_received[2] 
         
         self.frm_denat.temp_sensD.display(self.frm_denat.temp_denat)
         self.frm_aneal.temp_sensA.display(self.frm_aneal.temp_aneal)
         self.frm_sens.temp_sensA.display(self.frm_aneal.temp_aneal)
         self.frm_asens.temp_sensA.display(self.frm_aneal.temp_aneal)
         self.frm_elong.temp_sensE.display(self.frm_elong.temp_elong)
-
-        # Daten vom Arduino lesen
-        temp_received = self.read_from_temp()
-
-        self.frm_denat.temp_denat = temp_received[0] 
-        self.frm_aneal.temp_aneal = temp_received[1] 
-        self.frm_elong.temp_elong = temp_received[2] 
         
         # Funktion - nimmt drei Parameter entgegen: phase, start und end
         # überprüft, dass self.phaseCount zwischen start und end (einschließlich start und ausschließlich end) liegt

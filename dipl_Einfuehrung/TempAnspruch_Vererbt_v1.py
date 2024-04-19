@@ -28,7 +28,7 @@ class Ui_TempAnspruch(object):
         self.centralwidget.setObjectName(u"centralwidget")
         self.textEdit = QTextEdit(self.centralwidget)
         self.textEdit.setObjectName(u"textEdit")
-        self.textEdit.setGeometry(QRect(60, 120, 371, 421))
+        self.textEdit.setGeometry(QRect(60, 120, 371, 491))
         self.textEdit.setReadOnly(True)
         self.label = QLabel(self.centralwidget)
         self.label.setObjectName(u"label")
@@ -82,6 +82,16 @@ class Ui_TempAnspruch(object):
         self.Dauer_line_3.setFont(font2)
         self.Dauer_line_3.setAlignment(Qt.AlignCenter)
         self.Dauer_line_3.setReadOnly(True)
+        self.Dauer_line_4 = QLineEdit(self.centralwidget)
+        self.Dauer_line_4.setObjectName(u"Dauer_line_4")
+        self.Dauer_line_4.setGeometry(QRect(70, 540, 151, 31))
+        self.Dauer_line_4.setFont(font2)
+        self.Dauer_line_4.setAlignment(Qt.AlignCenter)
+        self.Dauer_line_4.setReadOnly(True)
+        self.lbl_tempdef = QLabel(self.centralwidget)
+        self.lbl_tempdef = QLabel("", self)
+        self.lbl_tempdef.setObjectName(u"lbl_tempdef")
+        self.lbl_tempdef.setGeometry(QRect(260, 530, 151, 61))
         TempAnspruch.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(TempAnspruch)
         self.menubar.setObjectName(u"menubar")
@@ -113,6 +123,8 @@ class Ui_TempAnspruch(object):
         self.Dauer_line.setText(QCoreApplication.translate("TempAnspruch", u"Elongation:", None))
         self.Dauer_line_2.setText(QCoreApplication.translate("TempAnspruch", u"Annealing:", None))
         self.Dauer_line_3.setText(QCoreApplication.translate("TempAnspruch", u"Denaturierung:", None))
+        self.Dauer_line_4.setText(QCoreApplication.translate("TempAnspruch", u"Ausgew\u00e4hlt:", None))
+        self.lbl_tempdef.setText("")
     # retranslateUi
 
 
@@ -122,5 +134,5 @@ class Frm_tempanspruch(QMainWindow, Ui_TempAnspruch):
         self.setupUi(self)
 
     temp_denat_kont = 0
-    temp_anneal_kont = 0
+    temp_aneal_kont = 0
     temp_elong_kont = 0
