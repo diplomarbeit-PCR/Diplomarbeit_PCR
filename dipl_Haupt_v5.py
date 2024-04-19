@@ -233,7 +233,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.frm_tempanspruch.wasser_aneal.display(self.frm_tempanspruch.temp_aneal_kont)
         self.frm_tempanspruch.wasser_elong.display(self.frm_tempanspruch.temp_elong_kont)
 
-        self.temperaturen = self.frm_tempDef.value_denat, "-", self.frm_tempDef.value_aneal, "-", self.frm_tempDef.value_elong
+        self.temperaturen = self.frm_tempDef.value_denat, self.frm_tempDef.value_aneal, self.frm_tempDef.value_elong
 
         self.frm_tempanspruch.lbl_tempdef.setText(str(self.temperaturen))
         font = QFont()
