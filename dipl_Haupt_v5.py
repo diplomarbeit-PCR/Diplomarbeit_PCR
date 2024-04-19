@@ -1,5 +1,6 @@
 from PySide6.QtWidgets import QMainWindow, QApplication, QTableWidgetItem, QTableWidget
 from PySide6.QtCore import QTimer, Signal
+from PySide6.QtGui import QFont
 import pymysql
 import smbus
 import time
@@ -117,7 +118,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
             self.frm_ergeb.tbl_dl.setColumnCount(2)  # Zwei Spalten
             self.frm_ergeb.tbl_dl.setHorizontalHeaderLabels(["Kategorie", "Anzahl"])
 
-            self. i =1
+            self.i =1
         
     def erlaubteTemp(self):
         self.frm_voraus.showFullScreen()
@@ -237,9 +238,12 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.frm_tempanspruch.wasser_aneal.display(self.frm_tempanspruch.temp_aneal_kont)
         self.frm_tempanspruch.wasser_elong.display(self.frm_tempanspruch.temp_elong_kont)
 
-        self.temperaturen = [self.frm_tempDef.value_denat, self.frm_tempDef.value_aneal, self.frm_tempDef.value_elong]
+        self.temperaturen = self.frm_tempDef.value_denat, self.frm_tempDef.value_aneal, self.frm_tempDef.value_elong
 
         self.frm_tempanspruch.lbl_tempdef.setText(str(self.temperaturen))
+        font = QFont()
+        font.setPointSize(16)  # Hier die gewünschte Schriftgröße einstellen
+        self.frm_tempanspruch.lbl_tempdef.setFont(font)
 
         self.frm_tempanspruch.showFullScreen()
 
