@@ -138,11 +138,6 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.stopped_reading_beweg = False  # Hält den Zustand, ob der Leseprozess gestoppt wurde
         self.i = 0
 
-        self.frm_ww.timer.start(500)
-        print ("show WW")
-        print("Senden der Daten ...")
-        self.frm_ww.showFullScreen()
-        print ("hide Zeit")
         self.frm_zeitDef.hide()
         
         
@@ -238,7 +233,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.frm_tempanspruch.wasser_aneal.display(self.frm_tempanspruch.temp_aneal_kont)
         self.frm_tempanspruch.wasser_elong.display(self.frm_tempanspruch.temp_elong_kont)
 
-        self.temperaturen = self.frm_tempDef.value_denat, self.frm_tempDef.value_aneal, self.frm_tempDef.value_elong
+        self.temperaturen = self.frm_tempDef.value_denat, "-", self.frm_tempDef.value_aneal, "-", self.frm_tempDef.value_elong
 
         self.frm_tempanspruch.lbl_tempdef.setText(str(self.temperaturen))
         font = QFont()
