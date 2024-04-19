@@ -99,21 +99,25 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         
         self.phaseCount = 0
         self.stopped_reading = True
-        
-        self.frm_kont.tbl_mess1.setColumnCount(2)  # Zwei Spalten
-        self.frm_kont.tbl_mess1.setHorizontalHeaderLabels(["Proben", "Lichtintensität"])
-        self.frm_kont.tbl_mess2.setColumnCount(2)  # Zwei Spalten
-        self.frm_kont.tbl_mess2.setHorizontalHeaderLabels(["Proben", "Lichtintensität"])
 
-        self.frm_ergeb.tbl_phasen.setColumnCount(4)  # Fünf Spalten
-        self.frm_ergeb.tbl_phasen.setHorizontalHeaderLabels(["Kategorien", "Denaturierung", "Annealing", "Elongation"])
-        self.frm_ergeb.tbl_mess1.setColumnCount(2)  # Zwei Spalten
-        self.frm_ergeb.tbl_mess1.setHorizontalHeaderLabels(["Probe", "Lichtstärke"])
-        self.frm_ergeb.tbl_mess2.setColumnCount(2)  # Zwei Spalten
-        self.frm_ergeb.tbl_mess2.setHorizontalHeaderLabels(["Probe", "Lichtstärke"])
-        self.frm_ergeb.tbl_dl.setColumnCount(2)  # Zwei Spalten
-        self.frm_ergeb.tbl_dl.setHorizontalHeaderLabels(["Kategorie", "Anzahl"])
+        self.i = 0
 
+        if self.i == 0:       
+            self.frm_kont.tbl_mess1.setColumnCount(2)  # Zwei Spalten
+            self.frm_kont.tbl_mess1.setHorizontalHeaderLabels(["Proben", "Lichtintensität"])
+            self.frm_kont.tbl_mess2.setColumnCount(2)  # Zwei Spalten
+            self.frm_kont.tbl_mess2.setHorizontalHeaderLabels(["Proben", "Lichtintensität"])
+
+            self.frm_ergeb.tbl_phasen.setColumnCount(4)  # Fünf Spalten
+            self.frm_ergeb.tbl_phasen.setHorizontalHeaderLabels(["Kategorien", "Denaturierung", "Annealing", "Elongation"])
+            self.frm_ergeb.tbl_mess1.setColumnCount(2)  # Zwei Spalten
+            self.frm_ergeb.tbl_mess1.setHorizontalHeaderLabels(["Probe", "Lichtstärke"])
+            self.frm_ergeb.tbl_mess2.setColumnCount(2)  # Zwei Spalten
+            self.frm_ergeb.tbl_mess2.setHorizontalHeaderLabels(["Probe", "Lichtstärke"])
+            self.frm_ergeb.tbl_dl.setColumnCount(2)  # Zwei Spalten
+            self.frm_ergeb.tbl_dl.setHorizontalHeaderLabels(["Kategorie", "Anzahl"])
+
+            self. i =1
         
     def erlaubteTemp(self):
         self.frm_voraus.showFullScreen()

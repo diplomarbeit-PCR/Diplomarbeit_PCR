@@ -109,7 +109,6 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.frm_ergeb.tbl_dl.setColumnCount(2)  # Zwei Spalten
         self.frm_ergeb.tbl_dl.setHorizontalHeaderLabels(["Kategorie", "Anzahl"])
 
-        
     def erlaubteTemp(self):
         self.frm_voraus.showFullScreen()
         self.hide()
@@ -357,7 +356,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
             result_messwerte2 = self.cursor_mess2.fetchall()
 
             # Daten aus Tabelle 'Durchlauf' abrufen
-            self.cursor_dl.execute("SELECT Kategorien, Anzahl FROM Durchlauf LIMIT 1")
+            self.cursor_dl.execute("SELECT Kategorien, Anzahl FROM Durchlauf ORDER BY ID DESC LIMIT 1")
             result_dl = self.cursor_dl.fetchall()
 
             # Ergebnisse in tbl_phasen einfügen
