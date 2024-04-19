@@ -221,25 +221,24 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.frm_ww.hide()
         self.u = 0
 
-        for self.u in range(5):
-            # Daten vom Arduino lesen
-            temp_received_kont = self.read_from_temp()
-            print("tempmessung1")
-            self.frm_tempanspruch.temp_denat_kont = temp_received_kont[0] 
-            self.frm_tempanspruch.temp_aneal_kont = temp_received_kont[1] 
-            self.frm_tempanspruch.temp_elong_kont = temp_received_kont[2] 
+        
+        # Daten vom Arduino lesen
+        temp_received_kont = self.read_from_temp()
+        print("tempmessung1")
+        self.frm_tempanspruch.temp_denat_kont = temp_received_kont[0] 
+        self.frm_tempanspruch.temp_aneal_kont = temp_received_kont[1] 
+        self.frm_tempanspruch.temp_elong_kont = temp_received_kont[2] 
 
-            self.frm_tempanspruch.wasser_denat.display(self.frm_tempanspruch.temp_denat_kont)
-            self.frm_tempanspruch.wasser_aneal.display(self.frm_tempanspruch.temp_aneal_kont)
-            self.frm_tempanspruch.wasser_elong.display(self.frm_tempanspruch.temp_elong_kont)
+        self.frm_tempanspruch.wasser_denat.display(self.frm_tempanspruch.temp_denat_kont)
+        self.frm_tempanspruch.wasser_aneal.display(self.frm_tempanspruch.temp_aneal_kont)
+        self.frm_tempanspruch.wasser_elong.display(self.frm_tempanspruch.temp_elong_kont)
 
-            self.temperaturen = self.frm_tempDef.value_denat, self.frm_tempDef.value_aneal, self.frm_tempDef.value_elong
+        self.temperaturen = self.frm_tempDef.value_denat, self.frm_tempDef.value_aneal, self.frm_tempDef.value_elong
 
-            self.frm_tempanspruch.lbl_tempdef.setText(str(self.temperaturen))
-            font = QFont()
-            font.setPointSize(16)  # Hier die gewünschte Schriftgröße einstellen
-            self.frm_tempanspruch.lbl_tempdef.setFont(font)
-            time.sleep(1000)
+        self.frm_tempanspruch.lbl_tempdef.setText(str(self.temperaturen))
+        font = QFont()
+        font.setPointSize(16)  # Hier die gewünschte Schriftgröße einstellen
+        self.frm_tempanspruch.lbl_tempdef.setFont(font)
 
         self.frm_tempanspruch.showFullScreen()
 
