@@ -225,6 +225,10 @@ class Frm_main(QMainWindow, Ui_StartWindow):
 
     def temp_Kontrolle(self):
         self.frm_ww.hide()
+
+        # Starte den Timer mit einer Startverzögerung von 0 Millisekunden und einem Intervall von 2000 Millisekunden (2 Sekunden)
+        self.temp_timer.start(0)
+        self.temp_timer.setInterval(1000)
     
         # Daten vom Arduino lesen
         temp_received_kont = self.read_from_temp()
@@ -248,6 +252,8 @@ class Frm_main(QMainWindow, Ui_StartWindow):
 
     def phasen_Ablauf(self):
         self.frm_tempanspruch.hide()
+
+        self.temp_timer.stop()
         self.timer.start()
 
         # Verbindung des Kontroll-Knopfes mit der Methode kontroll_Erklaerung 
