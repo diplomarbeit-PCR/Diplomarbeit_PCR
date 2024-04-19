@@ -225,6 +225,9 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         # Starte den Timer mit einer Startverzögerung von 0 Millisekunden und einem Intervall von 2000 Millisekunden (2 Sekunden)
         self.temp_timer.start(0)
         self.temp_timer.setInterval(1000)
+        self.temp_Messung_Kontrolle()
+
+    def temp_Messung_Kontrolle(self):
     
         # Daten vom Arduino lesen
         temp_received_kont = self.read_from_temp()
