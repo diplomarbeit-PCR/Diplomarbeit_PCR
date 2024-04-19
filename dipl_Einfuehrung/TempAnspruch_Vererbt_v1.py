@@ -15,8 +15,8 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QLabel, QLineEdit, QMainWindow,
-    QMenuBar, QPushButton, QSizePolicy, QSpinBox,
+from PySide6.QtWidgets import (QApplication, QLCDNumber, QLabel, QLineEdit,
+    QMainWindow, QMenuBar, QPushButton, QSizePolicy,
     QStatusBar, QTextEdit, QWidget)
 
 class Ui_TempAnspruch(object):
@@ -55,27 +55,12 @@ class Ui_TempAnspruch(object):
         self.Dauer_line.setFont(font2)
         self.Dauer_line.setAlignment(Qt.AlignCenter)
         self.Dauer_line.setReadOnly(True)
-        self.wasser_aneal = QSpinBox(self.centralwidget)
-        self.wasser_aneal.setObjectName(u"wasser_aneal")
-        self.wasser_aneal.setGeometry(QRect(260, 390, 161, 51))
-        self.wasser_aneal.setAlignment(Qt.AlignCenter)
-        self.wasser_aneal.setReadOnly(False)
-        self.wasser_denat = QSpinBox(self.centralwidget)
-        self.wasser_denat.setObjectName(u"wasser_denat")
-        self.wasser_denat.setGeometry(QRect(260, 330, 161, 51))
-        self.wasser_denat.setAlignment(Qt.AlignCenter)
-        self.wasser_denat.setReadOnly(False)
         self.Dauer_line_2 = QLineEdit(self.centralwidget)
         self.Dauer_line_2.setObjectName(u"Dauer_line_2")
         self.Dauer_line_2.setGeometry(QRect(70, 400, 151, 31))
         self.Dauer_line_2.setFont(font2)
         self.Dauer_line_2.setAlignment(Qt.AlignCenter)
         self.Dauer_line_2.setReadOnly(True)
-        self.wasser_elong = QSpinBox(self.centralwidget)
-        self.wasser_elong.setObjectName(u"wasser_elong")
-        self.wasser_elong.setGeometry(QRect(260, 450, 161, 51))
-        self.wasser_elong.setAlignment(Qt.AlignCenter)
-        self.wasser_elong.setReadOnly(False)
         self.Dauer_line_3 = QLineEdit(self.centralwidget)
         self.Dauer_line_3.setObjectName(u"Dauer_line_3")
         self.Dauer_line_3.setGeometry(QRect(70, 340, 151, 31))
@@ -91,6 +76,15 @@ class Ui_TempAnspruch(object):
         self.lbl_tempdef = QLabel(self.centralwidget)
         self.lbl_tempdef.setObjectName(u"lbl_tempdef")
         self.lbl_tempdef.setGeometry(QRect(260, 530, 151, 61))
+        self.wasser_denat = QLCDNumber(self.centralwidget)
+        self.wasser_denat.setObjectName(u"wasser_denat")
+        self.wasser_denat.setGeometry(QRect(270, 330, 131, 51))
+        self.wasser_aneal = QLCDNumber(self.centralwidget)
+        self.wasser_aneal.setObjectName(u"wasser_aneal")
+        self.wasser_aneal.setGeometry(QRect(270, 390, 131, 51))
+        self.wasser_elong = QLCDNumber(self.centralwidget)
+        self.wasser_elong.setObjectName(u"wasser_elong")
+        self.wasser_elong.setGeometry(QRect(270, 450, 131, 51))
         TempAnspruch.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(TempAnspruch)
         self.menubar.setObjectName(u"menubar")

@@ -105,38 +105,6 @@ li.checked::marker { content: &quot;\2612&quot;; }
      <bool>true</bool>
     </property>
    </widget>
-   <widget class="QSpinBox" name="wasser_aneal">
-    <property name="geometry">
-     <rect>
-      <x>260</x>
-      <y>390</y>
-      <width>161</width>
-      <height>51</height>
-     </rect>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignCenter</set>
-    </property>
-    <property name="readOnly">
-     <bool>false</bool>
-    </property>
-   </widget>
-   <widget class="QSpinBox" name="wasser_denat">
-    <property name="geometry">
-     <rect>
-      <x>260</x>
-      <y>330</y>
-      <width>161</width>
-      <height>51</height>
-     </rect>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignCenter</set>
-    </property>
-    <property name="readOnly">
-     <bool>false</bool>
-    </property>
-   </widget>
    <widget class="QLineEdit" name="Dauer_line_2">
     <property name="geometry">
      <rect>
@@ -160,22 +128,6 @@ li.checked::marker { content: &quot;\2612&quot;; }
     </property>
     <property name="readOnly">
      <bool>true</bool>
-    </property>
-   </widget>
-   <widget class="QSpinBox" name="wasser_elong">
-    <property name="geometry">
-     <rect>
-      <x>260</x>
-      <y>450</y>
-      <width>161</width>
-      <height>51</height>
-     </rect>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignCenter</set>
-    </property>
-    <property name="readOnly">
-     <bool>false</bool>
     </property>
    </widget>
    <widget class="QLineEdit" name="Dauer_line_3">
@@ -239,6 +191,36 @@ li.checked::marker { content: &quot;\2612&quot;; }
     </property>
     <property name="text">
      <string/>
+    </property>
+   </widget>
+   <widget class="QLCDNumber" name="wasser_denat">
+    <property name="geometry">
+     <rect>
+      <x>270</x>
+      <y>330</y>
+      <width>131</width>
+      <height>51</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLCDNumber" name="wasser_aneal">
+    <property name="geometry">
+     <rect>
+      <x>270</x>
+      <y>390</y>
+      <width>131</width>
+      <height>51</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLCDNumber" name="wasser_elong">
+    <property name="geometry">
+     <rect>
+      <x>270</x>
+      <y>450</y>
+      <width>131</width>
+      <height>51</height>
+     </rect>
     </property>
    </widget>
   </widget>
