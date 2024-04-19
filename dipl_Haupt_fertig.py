@@ -1,5 +1,6 @@
 from PySide6.QtWidgets import QMainWindow, QApplication, QTableWidgetItem, QTableWidget
 from PySide6.QtCore import QTimer, Signal
+from PySide6.QtGui import QFont
 import pymysql
 import smbus
 import time
@@ -9,6 +10,7 @@ from dipl_Einfuehrung.einfuehrung_v4 import Ui_StartWindow
 from dipl_Einfuehrung.Voraussetzungen_Vererbt_v1 import Frm_voraus
 from dipl_Einfuehrung.zeitDefinition_Vererbt_v1 import Frm_zeitDef
 from dipl_Einfuehrung.tempDefinition_Vererbt_v1 import Frm_tempDef
+from dipl_Einfuehrung.TempAnspruch_Vererbt_v1 import Frm_tempanspruch
 from dipl_Einfuehrung.WarteWindow_Vererbt_v1 import Frm_WarteWindow
 from dipl_Phasenablauf.Phasenablauf_Vererbt_v1 import Frm_denat, Frm_aneal, Frm_sens, Frm_asens, Frm_elong
 from dipl_Kontrolle.KontrollErgebnis_Vererbt_v1 import Frm_kont, Frm_ergeb, Frm_kontanspruch
@@ -36,6 +38,9 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         # mit einem Intervall von 
         self.timer.setInterval(1000)
         
+        self.temp_timer = QTimer()
+        self.temp_timer.timeout.connect(self.temp_Kontrolle)
+        
         # Verbindung zur Datenbank herstellen
         self.connection = pymysql.connect(
             host='localhost',
@@ -55,6 +60,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.frm_voraus = Frm_voraus()
         self.frm_zeitDef = Frm_zeitDef()
         self.frm_tempDef = Frm_tempDef()
+        self.frm_tempanspruch = Frm_tempanspruch()
         self.frm_ww = Frm_WarteWindow()
         self.frm_denat = Frm_denat()
         self.frm_aneal = Frm_aneal()
@@ -70,6 +76,9 @@ class Frm_main(QMainWindow, Ui_StartWindow):
          
         # Verbindung des Start-Knopfes mit der Methode erlaubteDauer 
         self.btn_Start.clicked.connect(self.erlaubteTemp)
+
+        # Verbinde von Menüpunkt Weiter
+        self.frm_tempanspruch.btn_Weiter.clicked.connect(self.phasen_Ablauf)
 
         # Verbinde von Menüpunkt Weiter
         self.frm_kontanspruch.btn_Weiter.clicked.connect(self.kontanspruch)
@@ -94,12 +103,13 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         
         self.phaseCount = 0
         self.stopped_reading = True
-        
+
         self.frm_kont.tbl_mess1.setColumnCount(2)  # Zwei Spalten
         self.frm_kont.tbl_mess1.setHorizontalHeaderLabels(["Proben", "Lichtintensität"])
         self.frm_kont.tbl_mess2.setColumnCount(2)  # Zwei Spalten
         self.frm_kont.tbl_mess2.setHorizontalHeaderLabels(["Proben", "Lichtintensität"])
 
+        
         self.frm_ergeb.tbl_phasen.setColumnCount(4)  # Fünf Spalten
         self.frm_ergeb.tbl_phasen.setHorizontalHeaderLabels(["Kategorien", "Denaturierung", "Annealing", "Elongation"])
         self.frm_ergeb.tbl_mess1.setColumnCount(2)  # Zwei Spalten
@@ -108,7 +118,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.frm_ergeb.tbl_mess2.setHorizontalHeaderLabels(["Probe", "Lichtstärke"])
         self.frm_ergeb.tbl_dl.setColumnCount(2)  # Zwei Spalten
         self.frm_ergeb.tbl_dl.setHorizontalHeaderLabels(["Kategorie", "Anzahl"])
-
+        
     def erlaubteTemp(self):
         self.frm_voraus.showFullScreen()
         self.hide()
@@ -127,23 +137,18 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.stopped_reading_beweg = False  # Hält den Zustand, ob der Leseprozess gestoppt wurde
         self.i = 0
 
-        self.frm_ww.timer.start(500)
-        print ("show WW")
-        print("Senden der Daten ...")
-        self.frm_ww.showFullScreen()
-        print ("hide Zeit")
         self.frm_zeitDef.hide()
         
         
         while not self.stopped_reading_beweg:
-             self.frm_ww.showFullScreen()
-             print("Senden der Daten ... ")
-             print(self.read_data_from_beweg())
-             self.read_data_from_beweg()
+            self.frm_ww.showFullScreen()
+            print("Senden der Daten ... ")
+            print(self.read_data_from_beweg())
+            self.read_data_from_beweg()
 
         if self.stopped_reading_beweg:
-             self.timer.stop()  # Stoppen Sie den Timer, da der Leseprozess gestoppt wurde
-             self.phasen_Ablauf()
+            self.timer.stop()  # Stoppen Sie den Timer, da der Leseprozess gestoppt wurde
+            self.temp_Kontrolle()
 
     def read_data_from_beweg(self):
     # Nur Daten vom Slave lesen, wenn der Leseprozess nicht gestoppt wurde
@@ -214,8 +219,40 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         except Exception as e:
             print(f"Fehler beim Senden von Daten an den Slave: {str(e)}")
 
-    def phasen_Ablauf(self):
+    def temp_Kontrolle(self):
         self.frm_ww.hide()
+
+        # Starte den Timer mit einer Startverzögerung von 0 Millisekunden und einem Intervall von 2000 Millisekunden (2 Sekunden)
+        self.temp_timer.start(0)
+        self.temp_timer.setInterval(1000)
+        self.temp_Messung_Kontrolle()
+
+    def temp_Messung_Kontrolle(self):
+    
+        # Daten vom Arduino lesen
+        temp_received_kont = self.read_from_temp()
+        print("tempmessung1")
+        self.frm_tempanspruch.temp_denat_kont = temp_received_kont[0] 
+        self.frm_tempanspruch.temp_aneal_kont = temp_received_kont[1] 
+        self.frm_tempanspruch.temp_elong_kont = temp_received_kont[2] 
+
+        self.frm_tempanspruch.wasser_denat.display(self.frm_tempanspruch.temp_denat_kont)
+        self.frm_tempanspruch.wasser_aneal.display(self.frm_tempanspruch.temp_aneal_kont)
+        self.frm_tempanspruch.wasser_elong.display(self.frm_tempanspruch.temp_elong_kont)
+
+        self.temperaturen = self.frm_tempDef.value_denat, self.frm_tempDef.value_aneal, self.frm_tempDef.value_elong
+
+        self.frm_tempanspruch.lbl_tempdef.setText(str(self.temperaturen))
+        font = QFont()
+        font.setPointSize(16)  # Hier die gewünschte Schriftgröße einstellen
+        self.frm_tempanspruch.lbl_tempdef.setFont(font)
+
+        self.frm_tempanspruch.showFullScreen()
+
+    def phasen_Ablauf(self):
+        self.frm_tempanspruch.hide()
+
+        self.temp_timer.stop()
         self.timer.start()
 
         # Verbindung des Kontroll-Knopfes mit der Methode kontroll_Erklaerung 
@@ -258,19 +295,19 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.frm_sens.Timer_zaehler.display(f"{hours:02d}:{minutes:02d}:{seconds:02d}")
         self.frm_asens.Timer_zaehler.display(f"{hours:02d}:{minutes:02d}:{seconds:02d}")
         self.frm_elong.Timer_zaehler.display(f"{hours:02d}:{minutes:02d}:{seconds:02d}")
+
+         # Daten vom Arduino lesen
+        temp_received = self.read_from_temp()
+        print("Tempmessung")
+        self.frm_denat.temp_denat = temp_received[0] 
+        self.frm_aneal.temp_aneal = temp_received[1] 
+        self.frm_elong.temp_elong = temp_received[2] 
         
         self.frm_denat.temp_sensD.display(self.frm_denat.temp_denat)
         self.frm_aneal.temp_sensA.display(self.frm_aneal.temp_aneal)
         self.frm_sens.temp_sensA.display(self.frm_aneal.temp_aneal)
         self.frm_asens.temp_sensA.display(self.frm_aneal.temp_aneal)
         self.frm_elong.temp_sensE.display(self.frm_elong.temp_elong)
-
-        # Daten vom Arduino lesen
-        temp_received = self.read_from_temp()
-
-        self.frm_denat.temp_denat = temp_received[0] 
-        self.frm_aneal.temp_aneal = temp_received[1] 
-        self.frm_elong.temp_elong = temp_received[2] 
         
         # Funktion - nimmt drei Parameter entgegen: phase, start und end
         # überprüft, dass self.phaseCount zwischen start und end (einschließlich start und ausschließlich end) liegt
@@ -356,7 +393,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
             result_messwerte2 = self.cursor_mess2.fetchall()
 
             # Daten aus Tabelle 'Durchlauf' abrufen
-            self.cursor_dl.execute("SELECT Kategorien, Anzahl FROM Durchlauf ORDER BY ID DESC LIMIT 1")
+            self.cursor_dl.execute("SELECT Kategorien, Anzahl FROM Durchlauf LIMIT 1")
             result_dl = self.cursor_dl.fetchall()
 
             # Ergebnisse in tbl_phasen einfügen
@@ -410,7 +447,6 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.frm_ergeb.tbl_dl.clearContents()
         self.frm_ergeb.tbl_mess1.clearContents()
         self.frm_ergeb.tbl_mess2.clearContents()
-
 
     def shutDown(self):
         # Rock herunterfahren
