@@ -38,6 +38,12 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         # mit einem Intervall von 
         self.timer.setInterval(1000)
         
+        self.temp_timer = QTimer()
+        self.temp_timer.timeout.connect(self.temp_Kontrolle)
+
+        # Starte den Timer mit einer Startverzögerung von 0 Millisekunden und einem Intervall von 2000 Millisekunden (2 Sekunden)
+        self.temp_timer.start(0)
+        self.temp_timer.setInterval(1000)
         
         # Verbindung zur Datenbank herstellen
         self.connection = pymysql.connect(
