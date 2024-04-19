@@ -100,7 +100,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.seconds = 0
         self.temp_second = 0
         self.timer.timeout.connect(self.run_phasen_Ablauf)  # Verbinde den Timer mit der Methode
-        self.temp_timer.connect(self.temp_Kontrolle)
+        self.temp_timer.timeout.connect(self.temp_Kontrolle)
         
         self.phaseCount = 0
         self.stopped_reading = True
