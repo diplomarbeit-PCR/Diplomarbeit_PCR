@@ -233,9 +233,9 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.frm_tempanspruch.temp_aneal_kont = temp_received_kont[1] 
         self.frm_tempanspruch.temp_elong_kont = temp_received_kont[2] 
 
-        self.frm_tempanspruch.wasserTemp_denat.display(self.frm_tempanspruch.temp_denat_kont)
-        self.frm_tempanspruch.wasserTemp_aneal.display(self.frm_tempanspruch.temp_aneal_kont)
-        self.frm_tempanspruch.wasserTemp_elong.display(self.frm_tempanspruch.temp_elong_kont)
+        self.frm_tempanspruch.wasser_denat.display(self.frm_tempanspruch.temp_denat_kont)
+        self.frm_tempanspruch.wasser_aneal.display(self.frm_tempanspruch.temp_aneal_kont)
+        self.frm_tempanspruch.wasser_elong.display(self.frm_tempanspruch.temp_elong_kont)
 
         self.temperaturen = [self.frm_tempDef.value_denat, self.frm_tempDef.value_aneal, self.frm_tempDef.value_elong]
 

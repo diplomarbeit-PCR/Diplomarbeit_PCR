@@ -105,7 +105,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
      <bool>true</bool>
     </property>
    </widget>
-   <widget class="QSpinBox" name="wasserTemp_aneal">
+   <widget class="QSpinBox" name="wasser_aneal">
     <property name="geometry">
      <rect>
       <x>260</x>
@@ -121,7 +121,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
      <bool>false</bool>
     </property>
    </widget>
-   <widget class="QSpinBox" name="wasserTemp_denat">
+   <widget class="QSpinBox" name="wasser_denat">
     <property name="geometry">
      <rect>
       <x>260</x>
@@ -162,7 +162,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
      <bool>true</bool>
     </property>
    </widget>
-   <widget class="QSpinBox" name="wasserTemp_elong">
+   <widget class="QSpinBox" name="wasser_elong">
     <property name="geometry">
      <rect>
       <x>260</x>
