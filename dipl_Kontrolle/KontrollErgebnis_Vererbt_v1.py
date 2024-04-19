@@ -25,11 +25,6 @@ class Frm_kont(QMainWindow, Ui_Kontrolle):
         self.p7 = 0
         self.p8 = 0
 
-        self.tbl_mess1.setColumnCount(2)  # Zwei Spalten
-        self.tbl_mess1.setHorizontalHeaderLabels(["Proben", "Lichtintensität"])
-        self.tbl_mess2.setColumnCount(2)  # Zwei Spalten
-        self.tbl_mess2.setHorizontalHeaderLabels(["Proben", "Lichtintensität"])
-
 class Frm_ergeb(QMainWindow, Ui_Ergebnis):
     def __init__(self):
         super().__init__()

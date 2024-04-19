@@ -100,6 +100,23 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         
         self.phaseCount = 0
         self.stopped_reading = True
+
+        
+
+        self.frm_kont.tbl_mess1.setColumnCount(2)  # Zwei Spalten
+        self.frm_kont.tbl_mess1.setHorizontalHeaderLabels(["Proben", "Lichtintensität"])
+        self.frm_kont.tbl_mess2.setColumnCount(2)  # Zwei Spalten
+        self.frm_kont.tbl_mess2.setHorizontalHeaderLabels(["Proben", "Lichtintensität"])
+
+        
+        self.frm_ergeb.tbl_phasen.setColumnCount(4)  # Fünf Spalten
+        self.frm_ergeb.tbl_phasen.setHorizontalHeaderLabels(["Kategorien", "Denaturierung", "Annealing", "Elongation"])
+        self.frm_ergeb.tbl_mess1.setColumnCount(2)  # Zwei Spalten
+        self.frm_ergeb.tbl_mess1.setHorizontalHeaderLabels(["Probe", "Lichtstärke"])
+        self.frm_ergeb.tbl_mess2.setColumnCount(2)  # Zwei Spalten
+        self.frm_ergeb.tbl_mess2.setHorizontalHeaderLabels(["Probe", "Lichtstärke"])
+        self.frm_ergeb.tbl_dl.setColumnCount(2)  # Zwei Spalten
+        self.frm_ergeb.tbl_dl.setHorizontalHeaderLabels(["Kategorie", "Anzahl"])
         
     def erlaubteTemp(self):
         self.frm_voraus.showFullScreen()
@@ -324,6 +341,13 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.frm_kont.tbl_mess1.clearContents()
         self.frm_kont.tbl_mess2.clearContents()
 
+        self.frm_kont.tbl_mess1.clear()
+        self.frm_kont.tbl_mess1.setColumnCount(0)
+
+        # Für tbl_mess2
+        self.frm_kont.tbl_mess2.clear()
+        self.frm_kont.tbl_mess2.setColumnCount(0)
+
     def ergebnis(self):
         print("temp_d", self.frm_denat.temp_denat)
         print("temp_a", self.frm_aneal.temp_aneal)
@@ -419,6 +443,24 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.frm_ergeb.tbl_dl.clearContents()
         self.frm_ergeb.tbl_mess1.clearContents()
         self.frm_ergeb.tbl_mess2.clearContents()
+
+        self.frm_kont.tbl_mess1.clear()
+        self.frm_kont.tbl_mess1.setColumnCount(0)
+
+        self.frm_kont.tbl_mess2.clear()
+        self.frm_kont.tbl_mess2.setColumnCount(0)
+
+        self.frm_ergeb.tbl_mess1.clear()
+        self.frm_ergeb.tbl_mess1.setColumnCount(0)
+
+        self.frm_ergeb.tbl_mess2.clear()
+        self.frm_ergeb.tbl_mess2.setColumnCount(0)
+
+        self.frm_ergeb.tbl_phasen.clear()
+        self.frm_ergeb.tbl_phasen.setColumnCount(0)
+
+        self.frm_ergeb.tbl_dl.clear()
+        self.frm_ergeb.tbl_dl.setColumnCount(0)
 
 
     def shutDown(self):
