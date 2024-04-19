@@ -34,11 +34,10 @@ class Frm_main(QMainWindow, Ui_StartWindow):
 
         self.timer_seconds = 0
         self.timer = QTimer()
-        self.temp_timer = QTimer()
         self.go_Beweg = False
         # mit einem Intervall von 
         self.timer.setInterval(1000)
-        self.temp_timer.setInterval(1000)
+        
         
         # Verbindung zur Datenbank herstellen
         self.connection = pymysql.connect(
@@ -98,9 +97,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.phasen_running = True  # Flag für den Zustand von phasen_Ablauf
 
         self.seconds = 0
-        self.temp_second = 0
         self.timer.timeout.connect(self.run_phasen_Ablauf)  # Verbinde den Timer mit der Methode
-        self.temp_timer.timeout.connect(self.temp_Kontrolle)
         
         self.phaseCount = 0
         self.stopped_reading = True
@@ -149,7 +146,6 @@ class Frm_main(QMainWindow, Ui_StartWindow):
 
         if self.stopped_reading_beweg:
             self.timer.stop()  # Stoppen Sie den Timer, da der Leseprozess gestoppt wurde
-            self.temp_timer.start()
             self.temp_Kontrolle()
 
     def read_data_from_beweg(self):
@@ -224,8 +220,6 @@ class Frm_main(QMainWindow, Ui_StartWindow):
     def temp_Kontrolle(self):
         self.frm_ww.hide()
 
-        self.temp_timer.start(1000)  # Timer feuert alle 1000 Millisekunden (1 Sekunde)
-        self.temp_second += 1
         # Daten vom Arduino lesen
         temp_received_kont = self.read_from_temp()
         print("tempmessung1")
