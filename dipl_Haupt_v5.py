@@ -142,14 +142,15 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         
         
         while not self.stopped_reading_beweg:
-             self.frm_ww.showFullScreen()
-             print("Senden der Daten ... ")
-             print(self.read_data_from_beweg())
-             self.read_data_from_beweg()
+            self.frm_ww.showFullScreen()
+            print("Senden der Daten ... ")
+            print(self.read_data_from_beweg())
+            self.read_data_from_beweg()
 
         if self.stopped_reading_beweg:
-             self.timer.stop()  # Stoppen Sie den Timer, da der Leseprozess gestoppt wurde
-             self.temp_Kontrolle()
+            self.timer.stop()  # Stoppen Sie den Timer, da der Leseprozess gestoppt wurde
+            self.temp_timer.start()
+            self.temp_Kontrolle()
 
     def read_data_from_beweg(self):
     # Nur Daten vom Slave lesen, wenn der Leseprozess nicht gestoppt wurde
@@ -222,7 +223,6 @@ class Frm_main(QMainWindow, Ui_StartWindow):
 
     def temp_Kontrolle(self):
         self.frm_ww.hide()
-        self.temp_timer.start()
 
         self.temp_timer.start(1000)  # Timer feuert alle 1000 Millisekunden (1 Sekunde)
         self.temp_second += 1
