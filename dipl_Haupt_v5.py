@@ -147,6 +147,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         if self.stopped_reading_beweg:
             self.timer.stop()  # Stoppen Sie den Timer, da der Leseprozess gestoppt wurde
             self.temp_Kontrolle()
+            self.timer.start()
 
     def read_data_from_beweg(self):
     # Nur Daten vom Slave lesen, wenn der Leseprozess nicht gestoppt wurde
@@ -219,7 +220,8 @@ class Frm_main(QMainWindow, Ui_StartWindow):
 
     def temp_Kontrolle(self):
         self.frm_ww.hide()
-
+        self.timer.start(1000)  # Timer feuert alle 1000 Millisekunden (1 Sekunde)
+        self.seconds += 1
         # Daten vom Arduino lesen
         temp_received_kont = self.read_from_temp()
         print("tempmessung1")
@@ -242,7 +244,6 @@ class Frm_main(QMainWindow, Ui_StartWindow):
 
     def phasen_Ablauf(self):
         self.frm_tempanspruch.hide()
-        self.temp_timer.stop()
         self.timer.start()
 
         # Verbindung des Kontroll-Knopfes mit der Methode kontroll_Erklaerung 
