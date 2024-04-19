@@ -38,7 +38,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.go_Beweg = False
         # mit einem Intervall von 
         self.timer.setInterval(1000)
-        self.temp_timer.setIntervall(1000)
+        self.temp_timer.setInterval(1000)
         
         # Verbindung zur Datenbank herstellen
         self.connection = pymysql.connect(
