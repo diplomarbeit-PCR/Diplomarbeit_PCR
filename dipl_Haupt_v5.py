@@ -222,7 +222,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.frm_ww.hide()
         # Daten vom Arduino lesen
         temp_received_kont = self.read_from_temp()
-
+        print("tempmessung1")
         self.frm_tempanspruch.temp_denat_kont = temp_received_kont[0] 
         self.frm_tempanspruch.temp_aneal_kont = temp_received_kont[1] 
         self.frm_tempanspruch.temp_elong_kont = temp_received_kont[2] 
@@ -287,7 +287,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
 
          # Daten vom Arduino lesen
         temp_received = self.read_from_temp()
-
+        print("Tempmessung")
         self.frm_denat.temp_denat = temp_received[0] 
         self.frm_aneal.temp_aneal = temp_received[1] 
         self.frm_elong.temp_elong = temp_received[2] 
