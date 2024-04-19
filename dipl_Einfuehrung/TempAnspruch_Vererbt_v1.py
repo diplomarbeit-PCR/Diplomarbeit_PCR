@@ -120,3 +120,7 @@ class Frm_tempanspruch(QMainWindow, Ui_TempAnspruch):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
+
+    temp_denat_kont = 0
+    temp_anneal_kont = 0
+    temp_elong_kont = 0

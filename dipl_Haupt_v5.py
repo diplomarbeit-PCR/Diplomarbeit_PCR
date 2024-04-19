@@ -226,6 +226,12 @@ class Frm_main(QMainWindow, Ui_StartWindow):
 
     def temp_Kontrolle(self):
         self.frm_ww.hide()
+        # Daten vom Arduino lesen
+        temp_received_kont = self.read_from_temp()
+
+        self.frm_tempanspruch.temp_denat_kont = temp_received_kont[0] 
+        self.frm_tempanspruch.temp_aneal_kont = temp_received_kont[1] 
+        self.frm_tempanspruch.temp_elong_kont = temp_received_kont[2] 
         self.frm_tempanspruch.showFullScreen()
 
     def phasen_Ablauf(self):
