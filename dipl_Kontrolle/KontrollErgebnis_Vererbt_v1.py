@@ -35,12 +35,3 @@ class Frm_ergeb(QMainWindow, Ui_Ergebnis):
         super().__init__()
         # Initialisierung der Benutzeroberfläche 
         self.setupUi(self)
-
-        self.tbl_phasen.setColumnCount(4)  # Fünf Spalten
-        self.tbl_phasen.setHorizontalHeaderLabels(["Kategorien", "Denaturierung", "Annealing", "Elongation"])
-        self.tbl_mess1.setColumnCount(2)  # Zwei Spalten
-        self.tbl_mess1.setHorizontalHeaderLabels(["Probe", "Lichtstärke"])
-        self.tbl_mess2.setColumnCount(2)  # Zwei Spalten
-        self.tbl_mess2.setHorizontalHeaderLabels(["Probe", "Lichtstärke"])
-        self.tbl_dl.setColumnCount(2)  # Zwei Spalten
-        self.tbl_dl.setHorizontalHeaderLabels(["Kategorie", "Anzahl"])

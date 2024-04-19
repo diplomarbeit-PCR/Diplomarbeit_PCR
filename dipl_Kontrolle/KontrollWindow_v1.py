@@ -67,6 +67,11 @@ class Ui_Kontrolle(object):
         self.statusbar.setObjectName(u"statusbar")
         Kontrolle.setStatusBar(self.statusbar)
 
+        self.tbl_mess1.setColumnCount(2)  # Zwei Spalten
+        self.tbl_mess1.setHorizontalHeaderLabels(["Proben", "Lichtintensität"])
+        self.tbl_mess2.setColumnCount(2)  # Zwei Spalten
+        self.tbl_mess2.setHorizontalHeaderLabels(["Proben", "Lichtintensität"])
+
         self.retranslateUi(Kontrolle)
 
         QMetaObject.connectSlotsByName(Kontrolle)
