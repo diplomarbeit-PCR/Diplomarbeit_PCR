@@ -98,7 +98,9 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.phasen_running = True  # Flag für den Zustand von phasen_Ablauf
 
         self.seconds = 0
+        self.temp_second = 0
         self.timer.timeout.connect(self.run_phasen_Ablauf)  # Verbinde den Timer mit der Methode
+        self.temp_timer.connect(self.temp_Kontrolle)
         
         self.phaseCount = 0
         self.stopped_reading = True
@@ -220,8 +222,10 @@ class Frm_main(QMainWindow, Ui_StartWindow):
 
     def temp_Kontrolle(self):
         self.frm_ww.hide()
+        self.temp_timer.start()
 
         self.temp_timer.start(1000)  # Timer feuert alle 1000 Millisekunden (1 Sekunde)
+        self.temp_second += 1
         # Daten vom Arduino lesen
         temp_received_kont = self.read_from_temp()
         print("tempmessung1")
