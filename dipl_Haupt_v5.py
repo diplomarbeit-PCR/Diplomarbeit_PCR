@@ -34,9 +34,11 @@ class Frm_main(QMainWindow, Ui_StartWindow):
 
         self.timer_seconds = 0
         self.timer = QTimer()
+        self.temp_timer = QTimer()
         self.go_Beweg = False
         # mit einem Intervall von 
         self.timer.setInterval(1000)
+        self.temp_timer.setIntervall(1000)
         
         # Verbindung zur Datenbank herstellen
         self.connection = pymysql.connect(
@@ -100,8 +102,6 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         
         self.phaseCount = 0
         self.stopped_reading = True
-
-        
 
         self.frm_kont.tbl_mess1.setColumnCount(2)  # Zwei Spalten
         self.frm_kont.tbl_mess1.setHorizontalHeaderLabels(["Proben", "Lichtintensität"])
@@ -220,6 +220,8 @@ class Frm_main(QMainWindow, Ui_StartWindow):
 
     def temp_Kontrolle(self):
         self.frm_ww.hide()
+
+        self.temp_timer.start(1000)  # Timer feuert alle 1000 Millisekunden (1 Sekunde)
         # Daten vom Arduino lesen
         temp_received_kont = self.read_from_temp()
         print("tempmessung1")
@@ -242,6 +244,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
 
     def phasen_Ablauf(self):
         self.frm_tempanspruch.hide()
+        self.temp_timer.stop()
         self.timer.start()
 
         # Verbindung des Kontroll-Knopfes mit der Methode kontroll_Erklaerung 
@@ -341,13 +344,6 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.frm_kont.tbl_mess1.clearContents()
         self.frm_kont.tbl_mess2.clearContents()
 
-        self.frm_kont.tbl_mess1.clear()
-        self.frm_kont.tbl_mess1.setColumnCount(0)
-
-        # Für tbl_mess2
-        self.frm_kont.tbl_mess2.clear()
-        self.frm_kont.tbl_mess2.setColumnCount(0)
-
     def ergebnis(self):
         print("temp_d", self.frm_denat.temp_denat)
         print("temp_a", self.frm_aneal.temp_aneal)
@@ -443,25 +439,6 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.frm_ergeb.tbl_dl.clearContents()
         self.frm_ergeb.tbl_mess1.clearContents()
         self.frm_ergeb.tbl_mess2.clearContents()
-
-        self.frm_kont.tbl_mess1.clear()
-        self.frm_kont.tbl_mess1.setColumnCount(0)
-
-        self.frm_kont.tbl_mess2.clear()
-        self.frm_kont.tbl_mess2.setColumnCount(0)
-
-        self.frm_ergeb.tbl_mess1.clear()
-        self.frm_ergeb.tbl_mess1.setColumnCount(0)
-
-        self.frm_ergeb.tbl_mess2.clear()
-        self.frm_ergeb.tbl_mess2.setColumnCount(0)
-
-        self.frm_ergeb.tbl_phasen.clear()
-        self.frm_ergeb.tbl_phasen.setColumnCount(0)
-
-        self.frm_ergeb.tbl_dl.clear()
-        self.frm_ergeb.tbl_dl.setColumnCount(0)
-
 
     def shutDown(self):
         # Rock herunterfahren
