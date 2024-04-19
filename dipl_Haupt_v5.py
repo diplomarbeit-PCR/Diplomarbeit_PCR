@@ -147,7 +147,6 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         if self.stopped_reading_beweg:
             self.timer.stop()  # Stoppen Sie den Timer, da der Leseprozess gestoppt wurde
             self.temp_Kontrolle()
-            self.timer.start()
 
     def read_data_from_beweg(self):
     # Nur Daten vom Slave lesen, wenn der Leseprozess nicht gestoppt wurde
@@ -220,25 +219,27 @@ class Frm_main(QMainWindow, Ui_StartWindow):
 
     def temp_Kontrolle(self):
         self.frm_ww.hide()
-        self.timer.start(1000)  # Timer feuert alle 1000 Millisekunden (1 Sekunde)
-        self.seconds += 1
-        # Daten vom Arduino lesen
-        temp_received_kont = self.read_from_temp()
-        print("tempmessung1")
-        self.frm_tempanspruch.temp_denat_kont = temp_received_kont[0] 
-        self.frm_tempanspruch.temp_aneal_kont = temp_received_kont[1] 
-        self.frm_tempanspruch.temp_elong_kont = temp_received_kont[2] 
+        self.u = 0
 
-        self.frm_tempanspruch.wasser_denat.display(self.frm_tempanspruch.temp_denat_kont)
-        self.frm_tempanspruch.wasser_aneal.display(self.frm_tempanspruch.temp_aneal_kont)
-        self.frm_tempanspruch.wasser_elong.display(self.frm_tempanspruch.temp_elong_kont)
+        for self.u in range(5):
+            # Daten vom Arduino lesen
+            temp_received_kont = self.read_from_temp()
+            print("tempmessung1")
+            self.frm_tempanspruch.temp_denat_kont = temp_received_kont[0] 
+            self.frm_tempanspruch.temp_aneal_kont = temp_received_kont[1] 
+            self.frm_tempanspruch.temp_elong_kont = temp_received_kont[2] 
 
-        self.temperaturen = self.frm_tempDef.value_denat, self.frm_tempDef.value_aneal, self.frm_tempDef.value_elong
+            self.frm_tempanspruch.wasser_denat.display(self.frm_tempanspruch.temp_denat_kont)
+            self.frm_tempanspruch.wasser_aneal.display(self.frm_tempanspruch.temp_aneal_kont)
+            self.frm_tempanspruch.wasser_elong.display(self.frm_tempanspruch.temp_elong_kont)
 
-        self.frm_tempanspruch.lbl_tempdef.setText(str(self.temperaturen))
-        font = QFont()
-        font.setPointSize(16)  # Hier die gewünschte Schriftgröße einstellen
-        self.frm_tempanspruch.lbl_tempdef.setFont(font)
+            self.temperaturen = self.frm_tempDef.value_denat, self.frm_tempDef.value_aneal, self.frm_tempDef.value_elong
+
+            self.frm_tempanspruch.lbl_tempdef.setText(str(self.temperaturen))
+            font = QFont()
+            font.setPointSize(16)  # Hier die gewünschte Schriftgröße einstellen
+            self.frm_tempanspruch.lbl_tempdef.setFont(font)
+            time.sleep(1000)
 
         self.frm_tempanspruch.showFullScreen()
 
