@@ -219,9 +219,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
 
     def temp_Kontrolle(self):
         self.frm_ww.hide()
-        self.u = 0
-
-        
+    
         # Daten vom Arduino lesen
         temp_received_kont = self.read_from_temp()
         print("tempmessung1")
