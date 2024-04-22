@@ -553,6 +553,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
     def read_data(self):
         data = []
         i = 0
+        time.sleep(5)
         self.bus.write_byte(self.detect_address, 10)
         time.sleep(1)
 
