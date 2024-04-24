@@ -159,38 +159,35 @@ class Frm_main(QMainWindow, Ui_StartWindow):
     # Nur Daten vom Slave lesen, wenn der Leseprozess nicht gestoppt wurde
         if not self.stopped_reading_beweg:
             try:
-                if self.i == 0:
+                data = self.read_from_beweg()
+                if data is None:             
                     data = self.read_from_beweg()
-                    if data is None:             
-                        data = self.read_from_beweg()
 
-                    if data == 7:
-                        data = self.read_from_beweg()
+                if data == 7:
+                    data = self.read_from_beweg()
                         
-                    if data == 0:
-                        data = self.read_from_beweg()
+                if data == 0:
+                    data = self.read_from_beweg()
 
-                    if data == 5 and not self.data_sent:
-                        self.data_sent = True
-                        print("5 erhalten")
-                        self.i += 1
-                        print(self.i)
-                        # Hier könnten Sie die gewünschten Daten an den Slave senden
-                        self.write_to_beweg(1)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
-                        self.write_to_beweg(self.frm_zeitDef.value_denat_gesamt)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
-                        self.write_to_beweg(2)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
-                        self.write_to_beweg(self.frm_zeitDef.value_aneal_gesamt)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
-                        self.write_to_beweg(3)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
-                        self.write_to_beweg(self.frm_zeitDef.value_elong_gesamt)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
+                if data == 5 and not self.data_sent:
+                    self.data_sent = True
+                    print("5 erhalten")
+                    # Hier könnten Sie die gewünschten Daten an den Slave senden
+                    self.write_to_beweg(1)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
+                    self.write_to_beweg(self.frm_zeitDef.value_denat_gesamt)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
+                    self.write_to_beweg(2)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
+                    self.write_to_beweg(self.frm_zeitDef.value_aneal_gesamt)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
+                    self.write_to_beweg(3)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
+                    self.write_to_beweg(self.frm_zeitDef.value_elong_gesamt)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
 
-                        self.bus.write_byte(self.temp_address, 1)
-                        self.bus.write_byte(self.temp_address, self.frm_tempDef.value_denat)
-                        self.bus.write_byte(self.temp_address, 2)
-                        self.bus.write_byte(self.temp_address, self.frm_tempDef.value_aneal)
-                        self.bus.write_byte(self.temp_address, 3)
-                        self.bus.write_byte(self.temp_address, self.frm_tempDef.value_elong)
+                    self.bus.write_byte(self.temp_address, 1)
+                    self.bus.write_byte(self.temp_address, self.frm_tempDef.value_denat)
+                    self.bus.write_byte(self.temp_address, 2)
+                    self.bus.write_byte(self.temp_address, self.frm_tempDef.value_aneal)
+                    self.bus.write_byte(self.temp_address, 3)
+                    self.bus.write_byte(self.temp_address, self.frm_tempDef.value_elong)
 
-                        self.stopped_reading_beweg = True  # Leseprozess stoppen
+                    self.stopped_reading_beweg = True  # Leseprozess stoppen
                     
             except Exception as e:
                 print(f"Fehler beim Lesen von Daten vom Slave: {str(e)}")
