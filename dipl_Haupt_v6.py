@@ -554,7 +554,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         data = []
         #i = 0
         self.bus.write_byte(self.detect_address, 10)
-        time.sleep(12)
+        time.sleep(5)
 
         # for i in range(8):
         #     i = i+1
@@ -562,9 +562,8 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         #     print(i)
         #     time.sleep(1)
             
-        for _ in range(8):  # Wir erwarten 3 Datenpunkte (temp_denat, temp_aneal, temp_elong)
+        for _ in range(8):  
             data.append(self.bus.read_byte(self.detect_address))
-            
         return data
 
     def read_from_detect(self):
