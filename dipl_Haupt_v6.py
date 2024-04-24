@@ -226,6 +226,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
 
     def temp_Kontrolle(self):
         self.frm_zeitDef.hide()
+        self.beweg_timer.stop()
 
         # Starte den Timer mit einer Startverzögerung von 0 Millisekunden und einem Intervall von 2000 Millisekunden (2 Sekunden)
         self.temp_timer.start(0)
