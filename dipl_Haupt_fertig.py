@@ -560,7 +560,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
             i = i+1
             self.bus.write_byte(self.detect_address, i)
             print(i)
-            #time.sleep(3)
+            time.sleep(1)
             
         for _ in range(8):  # Wir erwarten 3 Datenpunkte (temp_denat, temp_aneal, temp_elong)
             data.append(self.bus.read_byte(self.detect_address))
