@@ -90,7 +90,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.frm_tempDef.btn_Weiter.clicked.connect(self.erlaubteDauer)
 
         # Verbindung des Weiter-Knopfes mit der Methode phasen_Ablauf
-        self.frm_zeitDef.btn_Weiter.clicked.connect(self.WarteStart)
+        self.frm_zeitDef.btn_Weiter.clicked.connect(self.i2c_pruef)
 
         # Verbindung des Fortfuehren-Knopfes mit der Methode weiter
         self.frm_kont.btn_Fortfuehren.clicked.connect(self.weiter)
@@ -566,7 +566,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
             i = i+1
             self.bus.write_byte(self.detect_address, i)
             print(i)
-            time.sleep(1)
+            time.sleep(2)
             
             
         for _ in range(8):  # Wir erwarten 3 Datenpunkte (temp_denat, temp_aneal, temp_elong)
