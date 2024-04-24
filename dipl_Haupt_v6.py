@@ -40,9 +40,6 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         
         self.temp_timer = QTimer()
         self.temp_timer.timeout.connect(self.temp_Kontrolle)
-
-        self.beweg_timer = QTimer()
-        self.beweg_timer.timeout.connect(self.i2c_pruef)
         
         # Verbindung zur Datenbank herstellen
         self.connection = pymysql.connect(
@@ -90,7 +87,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.frm_tempDef.btn_Weiter.clicked.connect(self.erlaubteDauer)
 
         # Verbindung des Weiter-Knopfes mit der Methode phasen_Ablauf
-        self.frm_zeitDef.btn_Weiter.clicked.connect(self.i2c_pruef)
+        self.frm_zeitDef.btn_Weiter.clicked.connect(self.WarteStart)
 
         # Verbindung des Fortfuehren-Knopfes mit der Methode weiter
         self.frm_kont.btn_Fortfuehren.clicked.connect(self.weiter)
@@ -133,22 +130,19 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.frm_zeitDef.showFullScreen()
         self.frm_tempDef.hide()
 
-    def i2c_pruef(self):
-        self.frm_zeitDef.hide()
-
-        # Starte den Timer mit einer Startverzögerung von 0 Millisekunden und einem Intervall von 2000 Millisekunden (2 Sekunden)
-        self.beweg_timer.start(0)
-        self.beweg_timer.setInterval(1000)
-        self.WarteStart()
-
     def WarteStart(self):
         self.i2c_operation_requested = Signal(int)
         
         self.data_sent = False  # Hält den Zustand, ob die Daten gesendet wurden
         self.stopped_reading_beweg = False  # Hält den Zustand, ob der Leseprozess gestoppt wurde
+        self.i = 0
 
-        print("Senden der Daten ... ")
-        if not self.stopped_reading_beweg:
+        self.frm_zeitDef.hide()
+        
+        
+        while not self.stopped_reading_beweg:
+            self.frm_ww.showFullScreen()
+            print("Senden der Daten ... ")
             print(self.read_data_from_beweg())
             self.read_data_from_beweg()
 
@@ -160,35 +154,38 @@ class Frm_main(QMainWindow, Ui_StartWindow):
     # Nur Daten vom Slave lesen, wenn der Leseprozess nicht gestoppt wurde
         if not self.stopped_reading_beweg:
             try:
-                data = self.read_from_beweg()
-                if data is None:             
+                if self.i == 0:
                     data = self.read_from_beweg()
+                    if data is None:             
+                        data = self.read_from_beweg()
 
-                if data == 7:
-                    data = self.read_from_beweg()
+                    if data == 7:
+                        data = self.read_from_beweg()
                         
-                if data == 0:
-                    data = self.read_from_beweg()
+                    if data == 0:
+                        data = self.read_from_beweg()
 
-                if data == 5 and not self.data_sent:
-                    self.data_sent = True
-                    print("5 erhalten")
-                    # Hier könnten Sie die gewünschten Daten an den Slave senden
-                    self.write_to_beweg(1)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
-                    self.write_to_beweg(self.frm_zeitDef.value_denat_gesamt)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
-                    self.write_to_beweg(2)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
-                    self.write_to_beweg(self.frm_zeitDef.value_aneal_gesamt)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
-                    self.write_to_beweg(3)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
-                    self.write_to_beweg(self.frm_zeitDef.value_elong_gesamt)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
+                    if data == 5 and not self.data_sent:
+                        self.data_sent = True
+                        print("5 erhalten")
+                        self.i += 1
+                        print(self.i)
+                        # Hier könnten Sie die gewünschten Daten an den Slave senden
+                        self.write_to_beweg(1)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
+                        self.write_to_beweg(self.frm_zeitDef.value_denat_gesamt)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
+                        self.write_to_beweg(2)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
+                        self.write_to_beweg(self.frm_zeitDef.value_aneal_gesamt)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
+                        self.write_to_beweg(3)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
+                        self.write_to_beweg(self.frm_zeitDef.value_elong_gesamt)  # Beispielwert 10 für Daten, die an den Slave gesendet werden sollen
 
-                    self.bus.write_byte(self.temp_address, 1)
-                    self.bus.write_byte(self.temp_address, self.frm_tempDef.value_denat)
-                    self.bus.write_byte(self.temp_address, 2)
-                    self.bus.write_byte(self.temp_address, self.frm_tempDef.value_aneal)
-                    self.bus.write_byte(self.temp_address, 3)
-                    self.bus.write_byte(self.temp_address, self.frm_tempDef.value_elong)
+                        self.bus.write_byte(self.temp_address, 1)
+                        self.bus.write_byte(self.temp_address, self.frm_tempDef.value_denat)
+                        self.bus.write_byte(self.temp_address, 2)
+                        self.bus.write_byte(self.temp_address, self.frm_tempDef.value_aneal)
+                        self.bus.write_byte(self.temp_address, 3)
+                        self.bus.write_byte(self.temp_address, self.frm_tempDef.value_elong)
 
-                    self.stopped_reading_beweg = True  # Leseprozess stoppen
+                        self.stopped_reading_beweg = True  # Leseprozess stoppen
                     
             except Exception as e:
                 print(f"Fehler beim Lesen von Daten vom Slave: {str(e)}")
@@ -223,8 +220,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
             print(f"Fehler beim Senden von Daten an den Slave: {str(e)}")
 
     def temp_Kontrolle(self):
-        self.frm_zeitDef.hide()
-        self.beweg_timer.stop()
+        self.frm_ww.hide()
 
         # Starte den Timer mit einer Startverzögerung von 0 Millisekunden und einem Intervall von 2000 Millisekunden (2 Sekunden)
         self.temp_timer.start(0)
@@ -556,15 +552,15 @@ class Frm_main(QMainWindow, Ui_StartWindow):
     # Funktion zum Lesen von Daten vom Arduino
     def read_data(self):
         data = []
-        i = 0
+        #i = 0
         self.bus.write_byte(self.detect_address, 10)
-        time.sleep(1)
+        time.sleep(12)
 
-        for i in range(8):
-            i = i+1
-            self.bus.write_byte(self.detect_address, i)
-            print(i)
-            time.sleep(3)
+        # for i in range(8):
+        #     i = i+1
+        #     self.bus.write_byte(self.detect_address, i)
+        #     print(i)
+        #     time.sleep(1)
             
         for _ in range(8):  # Wir erwarten 3 Datenpunkte (temp_denat, temp_aneal, temp_elong)
             data.append(self.bus.read_byte(self.detect_address))
