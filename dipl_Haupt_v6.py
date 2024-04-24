@@ -554,7 +554,7 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         data = []
         #i = 0
         self.bus.write_byte(self.detect_address, 10)
-        time.sleep(12)
+        time.sleep(15)
 
         # for i in range(8):
         #     i = i+1
