@@ -148,8 +148,9 @@ class Frm_main(QMainWindow, Ui_StartWindow):
         self.stopped_reading_beweg = False  # Hält den Zustand, ob der Leseprozess gestoppt wurde
 
         print("Senden der Daten ... ")
-        print(self.read_data_from_beweg())
-        self.read_data_from_beweg()
+        if not self.stopped_reading_beweg:
+            print(self.read_data_from_beweg())
+            self.read_data_from_beweg()
 
         if self.stopped_reading_beweg:
             self.timer.stop()  # Stoppen Sie den Timer, da der Leseprozess gestoppt wurde
