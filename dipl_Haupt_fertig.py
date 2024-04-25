@@ -552,19 +552,18 @@ class Frm_main(QMainWindow, Ui_StartWindow):
     # Funktion zum Lesen von Daten vom Arduino
     def read_data(self):
         data = []
-        i = 0
+        #i = 0
         self.bus.write_byte(self.detect_address, 10)
-        time.sleep(1)
+        time.sleep(15)
 
-        for i in range(8):
-            i = i+1
-            self.bus.write_byte(self.detect_address, i)
-            print(i)
-            time.sleep(1)
+        # for i in range(8):
+        #     i = i+1
+        #     self.bus.write_byte(self.detect_address, i)
+        #     print(i)
+        #     time.sleep(1)
             
-        for _ in range(8):  # Wir erwarten 3 Datenpunkte (temp_denat, temp_aneal, temp_elong)
+        for _ in range(8):  
             data.append(self.bus.read_byte(self.detect_address))
-            
         return data
 
     def read_from_detect(self):
